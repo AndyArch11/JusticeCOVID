@@ -1,204 +1,260 @@
-State,Prison,Status,Capacity,Latitude,Longitude
-Australian Capital Territory,Alexander Maconochie Centre,Operational,300,-35.370943,149.171805
-Australian Capital Territory,Belconnen Remand Centre,Closed,60,-35.2386,149.0626
-Australian Capital Territory,Bimberi Youth Justice Centre,Operational,40,-35.2192874,149.134957
-Australian Capital Territory,Periodic Detention Centre,Operational,49,-35.34639,149.17778
-Australian Capital Territory,Symonston Correctional Centre,Operational,22,-35.34639,149.17778
-New South Wales,Acmena Juvenile Justice Centre,Operational,?,-29.68333,152.93333
-New South Wales,Albury Gaol,Closed,?,-36.08056,146.91583
-New South Wales,Armidale Gaol,Closed,?,-30.5,151.65
-New South Wales,Balranald Gaol,Museum,?,-34.61667,143.56667
-New South Wales,Bathurst Correctional Centre,Operational,650,-33.41778,149.55833
-New South Wales,Bega Gaol,Closed,?,-36.667,149.833
-New South Wales,Old Berrima Gaol,Operational,?,-34.483,150.35
-New South Wales,Berrima Correctional Centre,Operational,75,-34.48748,150.33545
-New South Wales,Biloela Gaol (Convict Precinct),Events venue,?,0,0
-New South Wales,Bombala Gaol,Closed,?,-36.91667,149.23333
-New South Wales,Braidwood Gaol,Closed,?,-35.43333,149.8
-New South Wales,Brewarrina (Yetta Dhinnakkal) Centre,Operational,70,-30.350835,146.891024
-New South Wales,Broken Hill Correctional Centre(initially as Silverton Gaol),Operational,89,-31.9651528,141.4564861
-New South Wales,Broken Hill Juvenile Justice Centre,Operational,?,-31.95667,141.46778
-New South Wales,Burrowa Gaol (or maybe Boorowa Gaol),Closed,?,-34.433,148.717
-New South Wales,Cessnock Correctional Centre,Operational,750,-32.81694,151.33917
-New South Wales,Cobham Juvenile Justice Centre,Operational,?,-33.7607,150.7774
-New South Wales,Condobolin Gaol,Closed,?,-33.08861,147.14944
-New South Wales,Cooma Correctional Centre,Operational+ museum,160,-36.232967,149.122833
-New South Wales,Coonabarabran Gaol,Closed,?,-31.25,149.267
-New South Wales,Cootamundra Gaol,Closed,?,-34.64167,148.025
-New South Wales,Darlinghurst Gaol,Closed,?,-33.87972,151.21861
-New South Wales,Defence Force Correctional Establishment,Operational,22,-33.995,150.95167
-New South Wales,Deniliquin Gaol,Closed,?,-35.53333,144.96667
-New South Wales,Dillwynia Women's Correctional Centre,Operational,200,-33.6471424,150.7803607
-New South Wales,Dubbo Gaol,Museum & events venue,?,-32.2459,148.6025
-New South Wales,Emu Plains Correctional Centre,Operational,190,-33.7379,150.6679
-New South Wales,Fort Denison,Museum,?,-33.8549,151.2255
-New South Wales,Frank Baxter Juvenile Justice Centre,Operational,120,-33.44,151.301
-New South Wales,Glen Innes Correctional Centre,Operational,95,-29.641667,152.09999
-New South Wales,Goulburn Correctional Centre,Operational,650,-34.74139,149.74056
-New South Wales,Grafton Correctional Centre,Operational,270,-29.676647,152.940196
-New South Wales,Grenfell Gaol,Closed,?,-33.9,148.15
-New South Wales,Hay Gaol,Closed,?,-34.5031,144.851
-New South Wales,Ivanhoe (Warakirri) Correctional Centre,Operational,50,-32.91528,144.31083
-New South Wales,John Morony Correctional Centre,Operational,400,-33.6518556,150.7840917
-New South Wales,Junee Correctional Centre,Operational,790,-34.86083,147.55639
-New South Wales,Juniperina Juvenile Justice Centre,Operational,?,-33.86462,151.04563
-New South Wales,Kariong Youth Correctional Centre,Operational,100,-33.44,151.301
-New South Wales,Keelong Juvenile Justice Centre,Closed,?,-34.45361,150.84472
-New South Wales,Kempsey Gaol (opened as West Kempsey Gaol),Closed,,-31.083,152.833
-New South Wales,Kirkconnell Correctional Centre,Operational,250,-33.4171859,149.8417139
-New South Wales,"Leslie Nott Afforestation Camp, Laurel Hill",Closed,?,-35.60028,148.09306
-New South Wales,Lithgow Correctional Centre,Operational,460,-33.42972,150.11639
-New South Wales,Long Bay Correctional Centre,Operational,"1,100",-33.96944,151.24583
-New South Wales,Maitland Gaol b,Museum,400,-32.745,151.58972
-New South Wales,Mannus Correctional Centre,Operational,164,-35.79,147.96
-New South Wales,Metropolitan Remand and Reception Centre (MRRC),Operational,"1,050",-33.830972,151.057667
-New South Wales,Mid North Coast Correctional Centre,Operational,500,-31.0675,152.7527
-New South Wales,Mudgee Gaol,Closed,,0,0
-New South Wales,Narrabri Gaol,Museum,,-30.31667,149.76667
-New South Wales,Oberon Correctional Centre,Operational,100,-33.929667,149.848667
-New South Wales,Orana Juvenile Justice Centre,Operational,45,-32.25694,148.60111
-New South Wales,Parklea Correctional Centre,Operational,893,-33.72333,150.91861
-New South Wales,Parramatta Correctional Centre,Museum,580,-33.79905,151
-New South Wales,Port Macquarie Gaol,Closed,,-31.433,152.9
-New South Wales,Reiby Juvenile Justice Centre,Operational,?,-34.0916,150.8249
-New South Wales,Riverina Juvenile Justice Centre,Operational,33,-35.11889,147.36889
-New South Wales,Silverwater Correctional Centre,Operational,?,-33.830972,151.057667
-New South Wales,Silverwater Women's Correctional Centre,Operational,200,-33.830972,151.057667
-New South Wales,South Coast Correctional Centre,Operational,549,-34.883,150.6
-New South Wales,St Heliers Correctional Centre,Operational,280,-32.22785,150.913599
-New South Wales,Tamworth Correctional Centre,Operational,90,-31.09222,150.93056
-New South Wales,Taree Gaol,Closed,,-31.9,152.45
-New South Wales,Trial Bay Gaol,Museum,,-30.8831528,153.0715444
-New South Wales,Tuncurry Afforestation Camp,Closed,,-32.175,152.49889
-New South Wales,Wagga Wagga Gaol,Closed,,-35.11889,147.36889
-New South Wales,Wellington Correctional Centre,Operational,700,-32.5059028,148.9817762
-New South Wales,Wentworth Gaol,School then to Museum,,-34.1026,141.9134
-New South Wales,Windsor Gaol,Closed,,-33.615,150.81722
-New South Wales,Wollongong Gaol,Closed,,-34.43306,150.88306
-New South Wales,Wyalong Gaol,Closed,,-33.91667,147.21667
-New South Wales,Yarrangobilly Gaol,Closed,,-35.74833,148.50111
-New South Wales,Yasmar Juvenile Justice Centre,Closed,36,-33.8889,151.1249
-New South Wales,Yass Gaol,Closed,,-34.81667,148.9
-New South Wales,Young Gaol,Closed,,-34.3,148.3
-Northern Territory,Alice Springs Correctional Centre,Operational,470,-23.858288,133.799143
-Northern Territory,Alice Springs Juvenile Holding Centre,Operational,10,-23.858288,133.799143
-Northern Territory,Berrimah Prison,Operational,750,-12.445775,130.940616
-Northern Territory,Don Dale Youth Detention Centre,Operational,38,-12.445775,130.940616
-Northern Territory,Darwin Correctional Centre,Operational,1000,-12.4628987,131.0309609
-Northern Territory,Fannie Bay Gaol,Museum,?,-12.425,130.83639
-Northern Territory,Wildman River Wilderness Work Camp,Operational,20,-12.3,132.05
-Queensland,Arthur Gorrie Correctional Centre,Operational,890,-27.5799528,152.9339389
-Queensland,Boggo Road Gaol,Museum+ events venue+,?,-27.49512,153.02842
-Queensland,Borallon Correctional Centre,Operational,494,-27.5499556,152.6747611
-Queensland,Brisbane Correctional Centre(formerly known as Sir David Longland Correctional Centre),Operational,600,-27.5824667,152.9207028
-Queensland,Brisbane Women's Correctional Centre,Operational,270,-27.5842167,152.9048972
-Queensland,Brisbane Youth Detention Centre,Operational,105,-27.583,152.9205
-Queensland,Cairns Gaol,Closed,-,-16.93028,145.77028
-Queensland,Capricornia Correctional Centre,Operational,500,-23.2202083,150.4735417
-Queensland,Cleveland Youth Detention Centre,Operational,100,-19.25639,146.81833
-Queensland,Darling Downs Correctional Centre,Closed,170,-27.61685,151.8306389
-Queensland,Ingham Gaol,Closed,-,-18.65,146.16667
-Queensland,John Oxley Youth Detention Centre,Closed,–,-27.583,152.9205
-Queensland,Lotus Glen Correctional Centre,Operational,500,-17.11306,145.36389
-Queensland,Maryborough Correctional Centre,Operational,500,-25.47917,152.64861
-Queensland,Numinbah Correctional Centre,Operational,129,-28.16333,153.2125
-Queensland,Palen Creek Correctional Centre,Operational,170,-28.20806,152.865
-Queensland,Rockhampton Correctional Centre (formerly known as Etna Creek Prison),Closed,,-23.218833,150.4720139
-Queensland,Roma Gaol,Closed,-,-26.5733,148.7869
-Queensland,Sir Leslie Wilson Youth Detention Centre,Closed,–,-27.433,153.033
-Queensland,Southern Queensland Correctional Centre,Operational,300,-27.471821,152.302745
-Queensland,St. Helena Penal Establishment,Closed,–,-27.46778,153.02806
-Queensland,Stone River Prison Farm,Closed,-,0,0
-Queensland,Toowoomba Prison,Closed,–,-27.55,151.95
-Queensland,Townsville Correctional Centre (formerly known as H.M.P.E. Stewart's Creek),Operational,494,-19.35,146.84556
-Queensland,Whitenbah Prison Farm,Closed,-,0,0
-Queensland,Wolston Correctional Centre,Operational,600,-27.58278,152.916611
-Queensland,Woodford Correctional Centre,Operational,1008,-26.94806,152.75028
-South Australia,Adelaide Gaol,Museum,[440],-34.9176,138.5849
-South Australia,Adelaide Pre-Release Centre,Operational,104,-34.844099,138.628578
-South Australia,Adelaide Remand Centre,Operational,274,-34.92444,138.59028
-South Australia,Adelaide Women's Prison,Operational,176,-34.84556,138.64111
-South Australia,Cadell Training Centre,Operational,204,-34.05694,139.7575
-South Australia,Gladstone Gaol,Museum,86,-33.267,138.35
-South Australia,Kyeema Prison Camp,Demolished,,-35.277754,138.6717
-South Australia,Magill Youth Training Centre,Closed,,-34.907736,138.685236
-South Australia,Mobilong Prison,Operational,472,-35.11306,139.23389
-South Australia,Mount Gambier Gaol,Boarding hostel,,-37.833,140.773
-South Australia,Mount Gambier Prison,Operational,503,-37.85861,140.68444
-South Australia,Port Augusta Prison,Operational,624,-32.51326,137.810864
-South Australia,Port Lincoln Prison,Operational,176,-34.7046472,135.797525
-South Australia,Redruth Gaol,Museum,,-33.66667,138.93333
-South Australia,Yatala Labour Prison,Operational,578,-34.84444,138.62861
-Tasmania,Ashley Youth Detention Centre,Operational,51,-41.524949,146.704347
-Tasmania,Campbell Street Gaol,Closed,[150],-42.8774,147.327
-Tasmania,Cascades Female Factory,Closed: Ruins,?,-42.8938,147.2993
-Tasmania,George Town Female Factory,Demolished,?,0,0
-Tasmania,HM Hayes Prison Farm,Closed and sold.[48] Not demolished as per latest google earth accessed 1 July 2018.,70,-42.75,147
-Tasmania,Hobart Town Female Factory,Closed,?,-42.8938,147.2993
-Tasmania,Hobart Reception Centre,Operational,50,-42.87905,147.3295
-Tasmania,Launceston Female Factory,Closed,?,-41.44194,147.145
-Tasmania,Launceston Reception Centre,Operational,33,-41.4356,147.136
-Tasmania,Macquarie Harbour Penal Station,Closed,?,-42.387889,145.448611
-Tasmania,Maria Island Penal colony (Darlington),Closed,?,-42.633,148.083
-Tasmania,Mary Hutchinson Women's Prison,Operational,45,-42.812,147.34
-Tasmania,Port Arthur,Closed,,-43.15,147.85
-Tasmania,Risdon Prison Complex[47](incorporating the Ron Barwick Minimum Security Prison and the Wilfred Lopes Centre for Forensic Mental Health),Operational,280,-42.812,147.34
-Tasmania,Ross Female Factory,Museum,?,-42.032,147.492
-Tasmania,Saltwater River Penal colony,Closed,?,-43.01861,147.72167
-Victoria,Acheron Boys Home,Operational,10,-37.509726,145.545502
-Victoria,Ashendene Boys Home,Closed,?,-37.8425611,145.3696167
-Victoria,Ballarat Gaol,"Closed. Mostly demolished except The main gate, warden's residence, governor's residence and the guard tower",[74],-37.5656583,143.8572861
-Victoria,Beechworth Correctional Centre,Operational,210,-36.3489,146.6541083
-Victoria,Old Beechworth Gaol,Closed,[132],-36.35778,146.69
-Victoria,Castlemaine Gaol,Museum,?,-37.06194,144.21139
-Victoria,Dame Phyllis Frost Centre,Operational,604,-37.7825,144.74222
-Victoria,Fulham Correctional Centre (including NALU),Operational,893,-38.1075,146.97028
-Victoria,HM Prison Barwon (including Barwon Supermax),Operational,478,-37.98472,144.3525
-Victoria,HM Prison Bendigo (Sandhurst Gaol),Closed,[85],-36.75444,144.28028
-Victoria,HM Prison Dhurringile,Operational,328,-36.52083,145.22806
-Victoria,HM Prison Geelong,Museum,?,-38.15389,144.36556
-Victoria,HM Prison Langi Kal Kal,Operational,428,-37.40611,143.48944
-Victoria,HM Prison Loddon,Operational,468,-37.08278,144.23917
-Victoria,HM Prison Morwell River,Reused as Adventure and accommodation centre[citation needed,?,-38.2161,146.3666
-Victoria,HM Prison Pentridge,Closed,?,-37.73917,144.96917
-Victoria,HM Prison Sale,Only façade survived. Land developed into police station.,?,-38.1111,147.0605
-Victoria,HM Prison Won Wron,Reused as Wulgunggo Ngalu Learning Place,[127],-38.48556,146.67194
-Victoria,HM Prison Fairlea,Closed. Demolished,?,-37.79082,145.010637
-Victoria,HM Prison Tarrengower,Operational,78,-36.977,144.0476
-Victoria,Hopkins Correctional Centre (Ararat),Operational,762,-37.278,142.9815
-Victoria,J Ward (HM Prison Ararat),Museum,?,-37.2788,142.9303
-Victoria,Malmsbury Youth Justice Centre,Operational,74,-37.18889,144.385
-Victoria,Marngoneet Correctional Centre,Operational,559,-37.98194,144.35194
-Victoria,McLeod Prison Farm,"Reused as Bed and breakfast motel, then into a Farm",,0,0
-Victoria,HM Melbourne Assessment Prison,Operational,305,-37.81278,144.95056
-Victoria,Old Melbourne Gaol,Museum & Event's venue,?,-37.80806,144.96528
-Victoria,Melbourne Youth Justice Centre,Operational,110,-37.77694,144.94528
-Victoria,Metropolitan Remand Centre,Operational,954,-37.79278,144.74611
-Victoria,Parkville Youth Residential Centre,Operational,30,-37.788,144.951
-Victoria,Port Phillip Prison,Operational,1117,-37.82833,144.75222
-Victoria,Ravenhall Correctional Centre,Operational,1300,-37.7874286,144.7413394
-Victoria,Turana Youth Training Centre,Closed,[86],-37.77694,144.94528
-Western Australia,Acacia Prison,Operational,"1,525",-31.8351,116.3409
-Western Australia,Albany Regional Prison,Operational,310,-35.04389,117.81778
-Western Australia,Bandyup Women's Prison,Operational,259,-31.86222,115.99556
-Western Australia,Banksia Hill Juvenile Detention Centre,Operational,?,-32.109705,115.919085
-Western Australia,Boronia Pre-release Centre for Women,Operational,82,-32.0031,115.8973
-Western Australia,Broome Regional Prison,Operational,138,-17.958,122.2412
-Western Australia,Bunbury Regional Prison,Operational,340,-33.383589,115.670852
-Western Australia,Casuarina Prison,Operational,680,-32.23972,115.87806
-Western Australia,Eastern Goldfields Regional Prison,Operational,136,-30.7905,121.486
-Western Australia,Fremantle Prison,Closed,[800],-32.055,115.75361
-Western Australia,Greenough Regional Prison,Operational,323,-28.834674,114.69919
-Western Australia,Hakea Prison,Operational,897,-32.10167,115.91944
-Western Australia,Karnet Prison Farm,Operational,326,-32.4397,116.0772
-Western Australia,Melaleuca Remand and Reintegration Facility,Operational,254,-32.1054,115.921
-Western Australia,Nyandi Women's Prison,Closed. Reused as Boronia Pre-release Centre for Women,,-32.0008,115.8964
-Western Australia,Pardelup Prison Farm,Operational,96,-34.63678,117.38274
-Western Australia,Perth Gaol,Closed,,-31.9496,115.8618
-Western Australia,Rangeview Juvenile Remand Centre,Closed,92,-32.075793,115.845119
-Western Australia,Riverbank Prison,Closed. Not used.,,0,0
-Western Australia,Roebourne Regional Prison,Operational,161,-20.721277,117.133462
-Western Australia,Round House,Closed,,-32.05611,115.74139
-Western Australia,Wandoo Reintegration Facility,Operational,80,-32.075793,115.845119
-Western Australia,West Kimberley Regional Prison,Operational,150,-17.35389,123.677194
-Western Australia,Wooroloo Prison Farm,Operational,360,-31.8134,116.3385
+State,Prison,Status,Capacity,Males,Females,Latitude,Longitude
+Australian Capital Territory,Alexander Maconochie Centre,Operational,300,444,33,-35.370943,149.171805
+Australian Capital Territory,Belconnen Remand Centre,Closed,60,0,0,-35.2386,149.0626
+Australian Capital Territory,Bimberi Youth Justice Centre,Operational,40,0,0,-35.2192874,149.134957
+Australian Capital Territory,Periodic Detention Centre,Operational,49,0,0,-35.34639,149.17778
+Australian Capital Territory,Symonston Correctional Centre,Operational,22,0,0,0.0,0.0
+New South Wales,Acmena Juvenile Justice Centre,Operational,?,0,0,-29.68333,152.93333
+New South Wales,Albury Gaol,Closed,?,0,0,-36.08056,146.91583
+New South Wales,Armidale Gaol,Closed,?,0,0,-30.5,151.65
+New South Wales,Balranald Gaol,Museum,?,0,0,-34.61667,143.56667
+New South Wales,Bathurst Correctional Centre,Operational,650,615,10,-33.41778,149.55833
+New South Wales,Bega Gaol,Closed,?,0,0,-36.667,149.833
+New South Wales,Old Berrima Gaol,Operational,?,0,0,-34.483,150.35
+New South Wales,Berrima Correctional Centre,Operational,75,0,51,-34.48748,150.33545
+New South Wales,Biloela Gaol (Convict Precinct),Events venue,?,0,0,0.0,0.0
+New South Wales,Bombala Gaol,Closed,?,0,0,-36.91667,149.23333
+New South Wales,Braidwood Gaol,Closed,?,0,0,-35.43333,149.8
+New South Wales,Brewarrina (Yetta Dhinnakkal) Centre,Operational,70,21,0,-30.350835,146.891024
+New South Wales,Broken Hill Correctional Centre(initially as Silverton Gaol),Operational,89,0,0,-31.9651528,141.4564861
+New South Wales,Broken Hill Juvenile Justice Centre,Operational,?,0,0,-31.95667,141.46778
+New South Wales,Burrowa Gaol (or maybe Boorowa Gaol),Closed,?,0,0,-34.433,148.717
+New South Wales,Cessnock Correctional Centre,Operational,750,524,0,-32.81694,151.33917
+New South Wales,Cobham Juvenile Justice Centre,Operational,?,0,0,-33.7607,150.7774
+New South Wales,Condobolin Gaol,Closed,?,0,0,-33.08861,147.14944
+New South Wales,Cooma Correctional Centre,Operational+ museum,160,199,0,-36.232967,149.122833
+New South Wales,Coonabarabran Gaol,Closed,?,0,0,-31.25,149.267
+New South Wales,Cootamundra Gaol,Closed,?,0,0,-34.64167,148.025
+New South Wales,Darlinghurst Gaol,Closed,?,0,0,-33.87972,151.21861
+New South Wales,Defence Force Correctional Establishment,Operational,22,0,0,-33.995,150.95167
+New South Wales,Deniliquin Gaol,Closed,?,0,0,-35.53333,144.96667
+New South Wales,Dillwynia Women's Correctional Centre,Operational,200,0,0,-33.6471424,150.7803607
+New South Wales,Dubbo Gaol,Museum & events venue,?,0,0,-32.2459,148.6025
+New South Wales,Emu Plains Correctional Centre,Operational,190,0,136,-33.7379,150.6679
+New South Wales,Fort Denison,Museum,?,0,0,-33.8549,151.2255
+New South Wales,Frank Baxter Juvenile Justice Centre,Operational,120[22],0,0,-33.44,151.301
+New South Wales,Glen Innes Correctional Centre,Operational,95,168,0,-29.641667,152.09999
+New South Wales,Goulburn Correctional Centre,Operational,650,524,0,-34.74139,149.74056
+New South Wales,Grafton Correctional Centre,Operational,270,244,21,-29.676647,152.940196
+New South Wales,Grenfell Gaol,Closed,?,0,0,-33.9,148.15
+New South Wales,Hay Gaol,Closed,?,0,0,-34.5031,144.851
+New South Wales,Ivanhoe (Warakirri) Correctional Centre,Operational,50,0,0,-32.91528,144.31083
+New South Wales,John Morony Correctional Centre,Operational,400,0,0,-33.6518556,150.7840917
+New South Wales,Junee Correctional Centre,Operational,790 adult males[25],834,0,-34.86083,147.55639
+New South Wales,Juniperina Juvenile Justice Centre,Operational,?,0,0,-33.86462,151.04563
+New South Wales,Kariong Youth Correctional Centre,Operational,100,0,0,-33.44,151.301
+New South Wales,Keelong Juvenile Justice Centre,Closed,?,0,0,-34.45361,150.84472
+New South Wales,Kempsey Gaol (opened as West Kempsey Gaol),Closed,,0,0,-31.083,152.833
+New South Wales,Kirkconnell Correctional Centre,Operational,250,259,0,-33.4171859,149.8417139
+New South Wales,"Leslie Nott Afforestation Camp, Laurel Hill",Closed,?,0,0,-35.60028,148.09306
+New South Wales,Lithgow Correctional Centre,Operational,460,421,0,-33.42972,150.11639
+New South Wales,Long Bay Correctional Centre,Operational,"1,100",0,0,-33.96944,151.24583
+New South Wales,Maitland Gaol b,Museum,400,0,0,-32.745,151.58972
+New South Wales,Mannus Correctional Centre,Operational,164,153,0,-35.79,147.96
+New South Wales,Metropolitan Remand and Reception Centre (MRRC),Operational,"1,050",0,0,-33.830972,151.057667
+New South Wales,Mid North Coast Correctional Centre,Operational,500,573,44,-31.0675,152.7527
+New South Wales,Mudgee Gaol,Closed,,0,0,0.0,0.0
+New South Wales,Narrabri Gaol,Museum,,0,0,-30.31667,149.76667
+New South Wales,Oberon Correctional Centre,Operational,100,115,0,-33.929667,149.848667
+New South Wales,Orana Juvenile Justice Centre,Operational,45,0,0,-32.25694,148.60111
+New South Wales,Parklea Correctional Centre,Operational,893,1098,0,-33.72333,150.91861
+New South Wales,Parramatta Correctional Centre,Museum,580,0,0,-33.79905,151.0
+New South Wales,Port Macquarie Gaol,Closed,,0,0,-31.433,152.9
+New South Wales,Reiby Juvenile Justice Centre,Operational,?,0,0,-34.0916,150.8249
+New South Wales,Riverina Juvenile Justice Centre,Operational,33,0,0,-35.11889,147.36889
+New South Wales,Silverwater Correctional Centre,Operational,?,0,0,-33.830972,151.057667
+New South Wales,Silverwater Women's Correctional Centre,Operational,200,0,279,-33.830972,151.057667
+New South Wales,South Coast Correctional Centre,Operational,549,528,0,-34.883,150.6
+New South Wales,St Heliers Correctional Centre,Operational,280,263,0,-32.22785,150.913599
+New South Wales,Tamworth Correctional Centre,Operational,90,87,0,-31.09222,150.93056
+New South Wales,Taree Gaol,Closed,,0,0,-31.9,152.45
+New South Wales,Trial Bay Gaol,Museum,,0,0,-30.8831528,153.0715444
+New South Wales,Tuncurry Afforestation Camp,Closed,,0,0,-32.175,152.49889
+New South Wales,Wagga Wagga Gaol,Closed,,0,0,-35.11889,147.36889
+New South Wales,Wellington Correctional Centre,Operational,700,612,65,-32.5059028,148.9817762
+New South Wales,Wentworth Gaol,School then to Museum,,0,0,-34.1026,141.9134
+New South Wales,Windsor Gaol,Closed,,0,0,-33.615,150.81722
+New South Wales,Wollongong Gaol,Closed,,0,0,-34.43306,150.88306
+New South Wales,Wyalong Gaol,Closed,,0,0,-33.91667,147.21667
+New South Wales,Yarrangobilly Gaol,Closed,,0,0,-35.74833,148.50111
+New South Wales,Yasmar Juvenile Justice Centre,Closed,36,0,0,-33.8889,151.1249
+New South Wales,Yass Gaol,Closed,,0,0,-34.81667,148.9
+New South Wales,Young Gaol,Closed,,0,0,-34.3,148.3
+Northern Territory,Alice Springs Correctional Centre,Operational,470,518,32,-23.858288,133.799143
+Northern Territory,Alice Springs Juvenile Holding Centre,Operational,10,0,0,-23.858288,133.799143
+Northern Territory,Berrimah Prison,Operational,750,0,0,-12.445775,130.940616
+Northern Territory,Don Dale Youth Detention Centre,Operational,38,0,0,-12.445775,130.940616
+Northern Territory,Darwin Correctional Centre,Operational,1000,1007,79,-12.4628987,131.0309609
+Northern Territory,Fannie Bay Gaol,Museum,?,0,0,-12.425,130.83639
+Northern Territory,Wildman River Wilderness Work Camp,Operational,20,0,0,-12.3,132.05
+Queensland,Arthur Gorrie Correctional Centre,Operational,890,1167,0,-27.5799528,152.9339389
+Queensland,Boggo Road Gaol,Museum+ events venue+,?,0,0,-27.49512,153.02842
+Queensland,Borallon Correctional Centre,Operational,494,0,0,-27.5499556,152.6747611
+Queensland,Brisbane Correctional Centre(formerly known as Sir David Longland Correctional Centre),Operational,600,0,0,-27.5824667,152.9207028
+Queensland,Brisbane Women's Correctional Centre,Operational,270,0,225,-27.5842167,152.9048972
+Queensland,Brisbane Youth Detention Centre,Operational,105,0,0,-27.583,152.9205
+Queensland,Cairns Gaol,Closed,-,0,0,-16.93028,145.77028
+Queensland,Capricornia Correctional Centre,Operational,500,586,0,-23.2202083,150.4735417
+Queensland,Cleveland Youth Detention Centre,Operational,100,0,0,-19.25639,146.81833
+Queensland,Darling Downs Correctional Centre,Closed,170,0,0,-27.61685,151.8306389
+Queensland,Ingham Gaol,Closed,-,0,0,-18.65,146.16667
+Queensland,John Oxley Youth Detention Centre,Closed,–,0,0,-27.583,152.9205
+Queensland,Lotus Glen Correctional Centre,Operational,500,0,0,-17.11306,145.36389
+Queensland,Maryborough Correctional Centre,Operational,500,575,0,-25.47917,152.64861
+Queensland,Numinbah Correctional Centre,Operational,129,0,0,-28.16333,153.2125
+Queensland,Palen Creek Correctional Centre,Operational,170,190,0,-28.20806,152.865
+Queensland,Rockhampton Correctional Centre (formerly known as Etna Creek Prison),Closed,,0,0,-23.218833,150.4720139
+Queensland,Roma Gaol,Closed,-,0,0,-26.5733,148.7869
+Queensland,Sir Leslie Wilson Youth Detention Centre,Closed,–,0,0,-27.433,153.033
+Queensland,Southern Queensland Correctional Centre,Operational,300,0,295,-27.471821,152.302745
+Queensland,St. Helena Penal Establishment,Closed,–,0,0,-27.46778,153.02806
+Queensland,Stone River Prison Farm,Closed,-,0,0,0.0,0.0
+Queensland,Toowoomba Prison,Closed,–,0,0,-27.55,151.95
+Queensland,Townsville Correctional Centre (formerly known as H.M.P.E. Stewart's Creek),Operational,494,0,0,-19.35,146.84556
+Queensland,Whitenbah Prison Farm,Closed,-,0,0,0.0,0.0
+Queensland,Wolston Correctional Centre,Operational,600,787,0,-27.58278,152.916611
+Queensland,Woodford Correctional Centre,Operational,1008,1291,0,-26.94806,152.75028
+South Australia,Adelaide Gaol,Museum,[440],0,0,-34.9176,138.5849
+South Australia,Adelaide Pre-Release Centre,Operational,104,56,16,-34.844099,138.628578
+South Australia,Adelaide Remand Centre,Operational,274,161,0,-34.92444,138.59028
+South Australia,Adelaide Women's Prison,Operational,176,0,158,-34.84556,138.64111
+South Australia,Cadell Training Centre,Operational,204,190,0,-34.05694,139.7575
+South Australia,Gladstone Gaol,Museum,86,0,0,-33.267,138.35
+South Australia,Kyeema Prison Camp,Demolished,,0,0,-35.277754,138.6717
+South Australia,Magill Youth Training Centre,Closed,,0,0,-34.907736,138.685236
+South Australia,Mobilong Prison,Operational,472,424,0,-35.11306,139.23389
+South Australia,Mount Gambier Gaol,Boarding hostel,,0,0,-37.833,140.773
+South Australia,Mount Gambier Prison,Operational,503,610,0,-37.85861,140.68444
+South Australia,Port Augusta Prison,Operational,624,547,24,-32.51326,137.810864
+South Australia,Port Lincoln Prison,Operational,176,153,0,-34.7046472,135.797525
+South Australia,Redruth Gaol,Museum,,0,0,-33.66667,138.93333
+South Australia,Yatala Labour Prison,Operational,578,521,0,-34.84444,138.62861
+Tasmania,Ashley Youth Detention Centre,Operational,51,0,0,-41.524949,146.704347
+Tasmania,Campbell Street Gaol,Closed,[150],0,0,-42.8774,147.327
+Tasmania,Cascades Female Factory,Closed: Ruins,?,0,0,-42.8938,147.2993
+Tasmania,George Town Female Factory,Demolished,?,0,0,0.0,0.0
+Tasmania,HM Hayes Prison Farm,Closed and sold.[48] Not demolished as per latest google earth accessed 1 July 2018.,70,0,0,-42.75,147.0
+Tasmania,Hobart Town Female Factory,Closed,?,0,0,-42.8938,147.2993
+Tasmania,Hobart Reception Centre,Operational,50,0,0,-42.87905,147.3295
+Tasmania,Launceston Female Factory,Closed,?,0,0,-41.44194,147.145
+Tasmania,Launceston Reception Centre,Operational,33,0,0,-41.4356,147.136
+Tasmania,Macquarie Harbour Penal Station,Closed,?,0,0,-42.387889,145.448611
+Tasmania,Maria Island Penal colony (Darlington),Closed,?,0,0,-42.633,148.083
+Tasmania,Mary Hutchinson Women's Prison,Operational,45,0,52,-42.812,147.34
+Tasmania,Port Arthur,Closed,,0,0,-43.15,147.85
+Tasmania,Risdon Prison Complex[47](incorporating the Ron Barwick Minimum Security Prison and the Wilfred Lopes Centre for Forensic Mental Health),Operational,280,0,0,-42.812,147.34
+Tasmania,Ross Female Factory,Museum,?,0,0,-42.032,147.492
+Tasmania,Saltwater River Penal colony,Closed,?,0,0,-43.01861,147.72167
+Victoria,Acheron Boys Home,Operational,10,0,0,-37.509726,145.545502
+Victoria,Ashendene Boys Home,Closed,?,0,0,-37.8425611,145.3696167
+Victoria,Ballarat Gaol,"Closed. Mostly demolished except The main gate, warden's residence, governor's residence and the guard tower",[74],0,0,-37.5656583,143.8572861
+Victoria,Beechworth Correctional Centre,Operational,210,165,0,-36.3489,146.6541083
+Victoria,Old Beechworth Gaol,Closed,[132],0,0,-36.35778,146.69
+Victoria,Castlemaine Gaol,Museum,?,0,0,-37.06194,144.21139
+Victoria,Dame Phyllis Frost Centre,Operational,604,0,513,-37.7825,144.74222
+Victoria,Fulham Correctional Centre (including NALU),Operational,893,0,0,-38.1075,146.97028
+Victoria,HM Prison Barwon (including Barwon Supermax),Operational,478,0,0,-37.98472,144.3525
+Victoria,HM Prison Bendigo (Sandhurst Gaol),Closed,[85],0,0,-36.75444,144.28028
+Victoria,HM Prison Dhurringile,Operational,328,0,0,-36.52083,145.22806
+Victoria,HM Prison Geelong,Museum,?,0,0,-38.15389,144.36556
+Victoria,HM Prison Langi Kal Kal,Operational,428[60],0,0,-37.40611,143.48944
+Victoria,HM Prison Loddon,Operational,468[61],0,0,-37.08278,144.23917
+Victoria,HM Prison Morwell River,Reused as Adventure and accommodation centre[citation needed,?,0,0,-38.2161,146.3666
+Victoria,HM Prison Pentridge,Closed,?,0,0,-37.73917,144.96917
+Victoria,HM Prison Sale,Only façade survived. Land developed into police station.,?,0,0,-38.1111,147.0605
+Victoria,HM Prison Won Wron,Reused as Wulgunggo Ngalu Learning Place,[127],0,0,-38.48556,146.67194
+Victoria,HM Prison Fairlea,Closed. Demolished,?,0,0,-37.79082,145.010637
+Victoria,HM Prison Tarrengower,Operational,78,0,0,-36.977,144.0476
+Victoria,Hopkins Correctional Centre (Ararat),Operational,762,0,0,-37.278,142.9815
+Victoria,J Ward (HM Prison Ararat),Museum,?,0,0,-37.2788,142.9303
+Victoria,Malmsbury Youth Justice Centre,Operational,74,0,0,-37.18889,144.385
+Victoria,Marngoneet Correctional Centre,Operational,559,799,0,-37.98194,144.35194
+Victoria,McLeod Prison Farm,"Reused as Bed and breakfast motel, then into a Farm",,0,0,0.0,0.0
+Victoria,HM Melbourne Assessment Prison,Operational,305,0,0,-37.81278,144.95056
+Victoria,Old Melbourne Gaol,Museum & Event's venue,?,0,0,-37.80806,144.96528
+Victoria,Melbourne Youth Justice Centre,Operational,110,0,0,-37.77694,144.94528
+Victoria,Metropolitan Remand Centre,Operational,954,915,0,-37.79278,144.74611
+Victoria,Parkville Youth Residential Centre,Operational,30,0,0,-37.788,144.951
+Victoria,Port Phillip Prison,Operational,1117,1046,0,-37.82833,144.75222
+Victoria,Ravenhall Correctional Centre,Operational,1300,1193,0,-37.7874286,144.7413394
+Victoria,Turana Youth Training Centre,Closed,[86],0,0,-37.77694,144.94528
+Western Australia,Acacia Prison,Operational,"1,525",1513,0,-31.8351,116.3409
+Western Australia,Albany Regional Prison,Operational,310,467,3,-35.04389,117.81778
+Western Australia,Bandyup Women's Prison,Operational,259,0,229,-31.86222,115.99556
+Western Australia,Banksia Hill Juvenile Detention Centre,Operational,?,0,0,-32.109705,115.919085
+Western Australia,Boronia Pre-release Centre for Women,Operational,82,0,92,-32.0031,115.8973
+Western Australia,Broome Regional Prison,Operational,138,67,0,-17.958,122.2412
+Western Australia,Bunbury Regional Prison,Operational,340,370,0,-33.383589,115.670852
+Western Australia,Casuarina Prison,Operational,680,950,0,-32.23972,115.87806
+Western Australia,Eastern Goldfields Regional Prison,Operational,136,266,35,-30.7905,121.486
+Western Australia,Fremantle Prison,Closed,[800],0,0,-32.055,115.75361
+Western Australia,Greenough Regional Prison,Operational,323,163,0,-28.834674,114.69919
+Western Australia,Hakea Prison,Operational,897,1155,0,-32.10167,115.91944
+Western Australia,Karnet Prison Farm,Operational,326,368,0,-32.4397,116.0772
+Western Australia,Melaleuca Remand and Reintegration Facility,Operational,254,0,240,-32.1054,115.921
+Western Australia,Nyandi Women's Prison,Closed. Reused as Boronia Pre-release Centre for Women,,0,0,-32.0008,115.8964
+Western Australia,Pardelup Prison Farm,Operational,96,93,0,-34.63678,117.38274
+Western Australia,Perth Gaol,Closed,,0,0,-31.9496,115.8618
+Western Australia,Rangeview Juvenile Remand Centre,Closed,92,0,0,-32.075793,115.845119
+Western Australia,Riverbank Prison,Closed. Not used.,,0,0,0.0,0.0
+Western Australia,Roebourne Regional Prison,Operational,161,197,12,-20.721277,117.133462
+Western Australia,Round House,Closed,,0,0,-32.05611,115.74139
+Western Australia,Wandoo Reintegration Facility,Operational,80,0,0,-32.075793,115.845119
+Western Australia,West Kimberley Regional Prison,Operational,150,186,34,-17.35389,123.677194
+Western Australia,Wooroloo Prison Farm,Operational,360,425,0,-31.8134,116.3385
+New South Wales,Amber Laurel Correctional Centre,Operational (ABS),?,17,0,0.0,0.0
+New South Wales,Batemans Bay Police/Court Cells,Operational (ABS),?,3,0,0.0,0.0
+New South Wales,Broken Hill Correctional Centre,Operational (ABS),?,66,9,0.0,0.0
+New South Wales,Compulsory Drug Treatment Correctional Centre,Operational (ABS),?,52,0,0.0,0.0
+New South Wales,Dawn de Loas Correctional Centre,Operational (ABS),?,478,0,0.0,0.0
+New South Wales,Dubbo Police/Court Cells,Operational (ABS),?,3,0,0.0,0.0
+New South Wales,High Risk Management Correctional Centre,Operational (ABS),?,58,0,0.0,0.0
+New South Wales,Hunter Correctional Centre,Operational (ABS),?,396,0,0.0,0.0
+New South Wales,Illawarra Reintegration Centre,Operational (ABS),?,58,0,0.0,0.0
+New South Wales,Ivanhoe (Warakirri) Centre,Operational (ABS),?,27,0,0.0,0.0
+New South Wales,John Morony Correctional Centre (I),Operational (ABS),?,426,0,0.0,0.0
+New South Wales,Kariong Correctional Centre,Operational (ABS),?,98,0,0.0,0.0
+New South Wales,Lismore Police/Court Cells,Operational (ABS),?,7,0,0.0,0.0
+New South Wales,Long Bay Hospital Area ,Operational (ABS),?,469,0,0.0,0.0
+New South Wales,Macquarie Correctional Centre,Operational (ABS),?,359,0,0.0,0.0
+New South Wales,Metropolitan Remand and Reception Centre,Operational (ABS),?,1067,0,0.0,0.0
+New South Wales,Metropolitan Special Programs Centre,Operational (ABS),?,1060,0,0.0,0.0
+New South Wales,Moree Police/Court Cells,Operational (ABS),?,3,0,0.0,0.0
+New South Wales,Newcastle Police/Court Cells,Operational (ABS),?,3,0,0.0,0.0
+New South Wales,Outer Metropolitan Multi-Purpose Correctional Centre,Operational (ABS),?,223,0,0.0,0.0
+New South Wales,Port Macquarie Police/Court Cells,Operational (ABS),?,3,0,0.0,0.0
+New South Wales,Shortland Correctional Centre,Operational (ABS),?,332,0,0.0,0.0
+New South Wales,Special Purpose Centre,Operational (ABS),?,52,3,0.0,0.0
+New South Wales,Surry Hills Police/Court Cells,Operational (ABS),?,26,3,0.0,0.0
+New South Wales,Bolwara House Transitional Centre,Operational (ABS),?,0,14,0.0,0.0
+New South Wales,Dillwynia Correctional Centre,Operational (ABS),?,0,210,0.0,0.0
+New South Wales,Mary Wade Correctional Centre,Operational (ABS),?,0,86,0.0,0.0
+New South Wales,Parramatta Transitional Centre,Operational (ABS),?,0,14,0.0,0.0
+Victoria,Barwon Prison,Operational (ABS),?,405,0,0.0,0.0
+Victoria,Dhurringile Prison,Operational (ABS),?,199,0,0.0,0.0
+Victoria,Fulham Correctional Centre,Operational (ABS),?,867,0,0.0,0.0
+Victoria,Hopkins Correctional Centre,Operational (ABS),?,694,0,0.0,0.0
+Victoria,Judy Lazarus Transition Centre,Operational (ABS),?,23,0,0.0,0.0
+Victoria,Langi Kal Kal Prison,Operational (ABS),?,363,0,0.0,0.0
+Victoria,Loddon Prison,Operational (ABS),?,640,0,0.0,0.0
+Victoria,Melbourne Assessment Prison,Operational (ABS),?,219,0,0.0,0.0
+Victoria,Tarrengower Prison,Operational (ABS),?,0,66,0.0,0.0
+Queensland,Borallon Training and Correctional Centre,Operational (ABS),?,706,0,0.0,0.0
+Queensland,Brisbane Correctional Centre,Operational (ABS),?,783,0,0.0,0.0
+Queensland,Capricornia Correctional Centre - Farm,Operational (ABS),?,72,0,0.0,0.0
+Queensland,Lotus Glen Correctional Centre - Farm,Operational (ABS),?,124,0,0.0,0.0
+Queensland,Lotus Glen Correctional Centre - Main,Operational (ABS),?,844,0,0.0,0.0
+Queensland,Townsville Correctional Centre - Male Farm,Operational (ABS),?,96,0,0.0,0.0
+Queensland,Townsville Correctional Centre - Male Main,Operational (ABS),?,693,0,0.0,0.0
+Queensland,Numinbah Correctional Centre - Women's Unit,Operational (ABS),?,0,101,0.0,0.0
+Queensland,The Helana Jones Community Corrections Centre,Operational (ABS),?,0,23,0.0,0.0
+Queensland,Townsville Correctional Centre - Female Farm,Operational (ABS),?,0,51,0.0,0.0
+Queensland,Townsville Womens Correctional Centre,Operational (ABS),?,0,160,0.0,0.0
+South Australia,James Nash House,Operational (ABS),?,3,0,0.0,0.0
+Western Australia,Wandoo Rehabilitiation Facility,Operational (ABS),?,0,72,0.0,0.0
+Tasmania,Hobart Reception Prison,Operational (ABS),?,48,0,0.0,0.0
+Tasmania,Launceston Reception Prison,Operational (ABS),?,21,4,0.0,0.0
+Tasmania,Risdon Prison Complex,Operational (ABS),?,301,0,0.0,0.0
+Tasmania,Ron Barwick Minimum Security Prison,Operational (ABS),?,265,0,0.0,0.0
+Northern Territory,Barkly Work Camp,Operational (ABS),?,48,0,0.0,0.0
+Northern Territory,Datjala Work Camp,Operational (ABS),?,44,0,0.0,0.0

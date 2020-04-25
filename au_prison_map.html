@@ -4,31 +4,1795 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Australian Prison Map</title>
 	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script type="text/javascript">
-        Plotly.d3.csv('prison_list.csv', function(err, rows){
+</head>
+<body>
+    <div id="mapDiv" style="width: 1200px; height: 900px;"></div>
 
+    <script type="text/javascript">
+
+        //Associative Array of Prisons (created from csv using http://bl.ocks.org/shancarter/raw/4748131/ rather than referencing an external data file)
+        //screenscraped from https://en.wikipedia.org/wiki/List_of_prisons_in_Australia
+        //expanded from https://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/4517.02019?OpenDocument
+        var prisons = [
+    {
+      "State": "Australian Capital Territory",
+      "Prison": "Alexander Maconochie Centre",
+      "Status": "Operational",
+      "Capacity": "300",
+      "Males": "444",
+      "Females": "33",
+      "Max": "477",
+      "Latitude": "-35.370943",
+      "Longitude": "149.171805"
+    },
+    {
+      "State": "Australian Capital Territory",
+      "Prison": "Bimberi Youth Justice Centre",
+      "Status": "Operational",
+      "Capacity": "40",
+      "Males": "0",
+      "Females": "0",
+      "Max": "40",
+      "Latitude": "-35.2192874",
+      "Longitude": "149.134957"
+    },
+    {
+      "State": "Australian Capital Territory",
+      "Prison": "Periodic Detention Centre",
+      "Status": "Operational",
+      "Capacity": "49",
+      "Males": "0",
+      "Females": "0",
+      "Max": "49",
+      "Latitude": "-35.34639",
+      "Longitude": "149.17778"
+    },
+    {
+      "State": "Australian Capital Territory",
+      "Prison": "Symonston Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "22",
+      "Males": "0",
+      "Females": "0",
+      "Max": "22",
+      "Latitude": "-35.34639",
+      "Longitude": "149.17778"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Acmena Juvenile Justice Centre",
+      "Status": "Operational",
+      "Capacity": "?",
+      "Males": "0",
+      "Females": "0",
+      "Max": "0",
+      "Latitude": "-29.68333",
+      "Longitude": "152.93333"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Amber Laurel Correctional Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "17",
+      "Females": "0",
+      "Max": "17",
+      "Latitude": "-33.7440146",
+      "Longitude": "150.6693439"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Batemans Bay Police/Court Cells",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "3",
+      "Females": "0",
+      "Max": "3",
+      "Latitude": "-35.707662",
+      "Longitude": "150.1752743"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Bathurst Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "650",
+      "Males": "615",
+      "Females": "10",
+      "Max": "650",
+      "Latitude": "-33.41778",
+      "Longitude": "149.55833"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Berrima Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "75",
+      "Males": "0",
+      "Females": "51",
+      "Max": "75",
+      "Latitude": "-34.48748",
+      "Longitude": "150.33545"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Bolwara House Transitional Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "0",
+      "Females": "14",
+      "Max": "14",
+      "Latitude": "-32.7107955",
+      "Longitude": "151.5686517"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Brewarrina (Yetta Dhinnakkal) Centre",
+      "Status": "Operational",
+      "Capacity": "70",
+      "Males": "21",
+      "Females": "0",
+      "Max": "70",
+      "Latitude": "-30.350835",
+      "Longitude": "146.891024"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Broken Hill Correctional Centre (initially as Silverton Gaol)",
+      "Status": "Operational",
+      "Capacity": "89",
+      "Males": "66",
+      "Females": "9",
+      "Max": "89",
+      "Latitude": "-31.9651528",
+      "Longitude": "141.4564861"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Broken Hill Juvenile Justice Centre",
+      "Status": "Operational",
+      "Capacity": "?",
+      "Males": "0",
+      "Females": "0",
+      "Max": "0",
+      "Latitude": "-31.95667",
+      "Longitude": "141.46778"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Cessnock Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "750",
+      "Males": "524",
+      "Females": "0",
+      "Max": "750",
+      "Latitude": "-32.81694",
+      "Longitude": "151.33917"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Cobham Juvenile Justice Centre",
+      "Status": "Operational",
+      "Capacity": "?",
+      "Males": "0",
+      "Females": "0",
+      "Max": "0",
+      "Latitude": "-33.7607",
+      "Longitude": "150.7774"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Compulsory Drug Treatment Correctional Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "52",
+      "Females": "0",
+      "Max": "52",
+      "Latitude": "-33.720558",
+      "Longitude": "150.9096353"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Cooma Correctional Centre",
+      "Status": "Operational+ museum",
+      "Capacity": "160",
+      "Males": "199",
+      "Females": "0",
+      "Max": "199",
+      "Latitude": "-36.232967",
+      "Longitude": "149.122833"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Dawn de Loas Correctional Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "478",
+      "Females": "0",
+      "Max": "478",
+      "Latitude": "-33.8308128",
+      "Longitude": "151.0532726"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Defence Force Correctional Establishment",
+      "Status": "Operational",
+      "Capacity": "22",
+      "Males": "0",
+      "Females": "0",
+      "Max": "22",
+      "Latitude": "-33.995",
+      "Longitude": "150.95167"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Dillwynia Women's Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "200",
+      "Males": "0",
+      "Females": "210",
+      "Max": "210",
+      "Latitude": "-33.6471424",
+      "Longitude": "150.7803607"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Dubbo Police/Court Cells",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "3",
+      "Females": "0",
+      "Max": "3",
+      "Latitude": "-32.2476988",
+      "Longitude": "148.6012436"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Emu Plains Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "190",
+      "Males": "0",
+      "Females": "136",
+      "Max": "190",
+      "Latitude": "-33.7379",
+      "Longitude": "150.6679"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Frank Baxter Juvenile Justice Centre",
+      "Status": "Operational",
+      "Capacity": "120",
+      "Males": "0",
+      "Females": "0",
+      "Max": "120",
+      "Latitude": "-33.44",
+      "Longitude": "151.301"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Glen Innes Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "95",
+      "Males": "168",
+      "Females": "0",
+      "Max": "168",
+      "Latitude": "-29.641667",
+      "Longitude": "152.09999"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Goulburn Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "650",
+      "Males": "524",
+      "Females": "0",
+      "Max": "650",
+      "Latitude": "-34.74139",
+      "Longitude": "149.74056"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Grafton Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "270",
+      "Males": "244",
+      "Females": "21",
+      "Max": "270",
+      "Latitude": "-29.676647",
+      "Longitude": "152.940196"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "High Risk Management Correctional Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "58",
+      "Females": "0",
+      "Max": "58",
+      "Latitude": "0",
+      "Longitude": "0"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Hunter Correctional Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "396",
+      "Females": "0",
+      "Max": "396",
+      "Latitude": "-32.817123",
+      "Longitude": "151.334153"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Illawarra Reintegration Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "58",
+      "Females": "0",
+      "Max": "58",
+      "Latitude": "-34.46201",
+      "Longitude": "150.8452372"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Ivanhoe (Warakirri) Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "50",
+      "Males": "27",
+      "Females": "0",
+      "Max": "50",
+      "Latitude": "-32.91528",
+      "Longitude": "144.31083"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "John Morony Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "400",
+      "Males": "0",
+      "Females": "0",
+      "Max": "400",
+      "Latitude": "-33.6518556",
+      "Longitude": "150.7840917"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "John Morony Correctional Centre (I)",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "426",
+      "Females": "0",
+      "Max": "426",
+      "Latitude": "-33.6499674",
+      "Longitude": "150.781043"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Junee Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "790",
+      "Males": "834",
+      "Females": "0",
+      "Max": "834",
+      "Latitude": "-34.86083",
+      "Longitude": "147.55639"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Juniperina Juvenile Justice Centre",
+      "Status": "Operational",
+      "Capacity": "?",
+      "Males": "0",
+      "Females": "0",
+      "Max": "0",
+      "Latitude": "-33.86462",
+      "Longitude": "151.04563"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Kariong Youth Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "100",
+      "Males": "98",
+      "Females": "0",
+      "Max": "100",
+      "Latitude": "-33.44",
+      "Longitude": "151.301"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Kirkconnell Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "250",
+      "Males": "259",
+      "Females": "0",
+      "Max": "259",
+      "Latitude": "-33.4171859",
+      "Longitude": "149.8417139"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Lismore Police/Court Cells",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "7",
+      "Females": "0",
+      "Max": "7",
+      "Latitude": "-28.8055336",
+      "Longitude": "153.2770778"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Lithgow Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "460",
+      "Males": "421",
+      "Females": "0",
+      "Max": "460",
+      "Latitude": "-33.42972",
+      "Longitude": "150.11639"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Long Bay Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "1,100",
+      "Males": "469",
+      "Females": "0",
+      "Max": "1100",
+      "Latitude": "-33.96944",
+      "Longitude": "151.24583"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Macquarie Correctional Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "359",
+      "Females": "0",
+      "Max": "359",
+      "Latitude": "-32.5078025",
+      "Longitude": "148.978781"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Mannus Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "164",
+      "Males": "153",
+      "Females": "0",
+      "Max": "164",
+      "Latitude": "-35.79",
+      "Longitude": "147.96"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Mary Wade Correctional Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "0",
+      "Females": "86",
+      "Max": "86",
+      "Latitude": "-33.8865358",
+      "Longitude": "151.0386907"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Metropolitan Remand and Reception Centre (MRRC)",
+      "Status": "Operational",
+      "Capacity": "1,050",
+      "Males": "1067",
+      "Females": "0",
+      "Max": "1067",
+      "Latitude": "-33.830972",
+      "Longitude": "151.057667"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Metropolitan Special Programs Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "1060",
+      "Females": "0",
+      "Max": "1060",
+      "Latitude": "0",
+      "Longitude": "0"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Mid North Coast Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "500",
+      "Males": "573",
+      "Females": "44",
+      "Max": "617",
+      "Latitude": "-31.0675",
+      "Longitude": "152.7527"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Moree Police/Court Cells",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "3",
+      "Females": "0",
+      "Max": "3",
+      "Latitude": "-29.4638856",
+      "Longitude": "149.8411218"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Newcastle Police/Court Cells",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "3",
+      "Females": "0",
+      "Max": "3",
+      "Latitude": "-32.9284171",
+      "Longitude": "151.7759166"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Oberon Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "100",
+      "Males": "115",
+      "Females": "0",
+      "Max": "115",
+      "Latitude": "-33.929667",
+      "Longitude": "149.848667"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Old Berrima Gaol",
+      "Status": "Operational",
+      "Capacity": "?",
+      "Males": "0",
+      "Females": "0",
+      "Max": "0",
+      "Latitude": "-34.483",
+      "Longitude": "150.35"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Orana Juvenile Justice Centre",
+      "Status": "Operational",
+      "Capacity": "45",
+      "Males": "0",
+      "Females": "0",
+      "Max": "45",
+      "Latitude": "-32.25694",
+      "Longitude": "148.60111"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Outer Metropolitan Multi-Purpose Correctional Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "223",
+      "Females": "0",
+      "Max": "223",
+      "Latitude": "0",
+      "Longitude": "0"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Parklea Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "893",
+      "Males": "1098",
+      "Females": "0",
+      "Max": "1098",
+      "Latitude": "-33.72333",
+      "Longitude": "150.91861"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Parramatta Transitional Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "0",
+      "Females": "14",
+      "Max": "14",
+      "Latitude": "0",
+      "Longitude": "0"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Port Macquarie Police/Court Cells",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "3",
+      "Females": "0",
+      "Max": "3",
+      "Latitude": "-31.4300438",
+      "Longitude": "152.9091798"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Reiby Juvenile Justice Centre",
+      "Status": "Operational",
+      "Capacity": "?",
+      "Males": "0",
+      "Females": "0",
+      "Max": "0",
+      "Latitude": "-34.0916",
+      "Longitude": "150.8249"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Riverina Juvenile Justice Centre",
+      "Status": "Operational",
+      "Capacity": "33",
+      "Males": "0",
+      "Females": "0",
+      "Max": "33",
+      "Latitude": "-35.11889",
+      "Longitude": "147.36889"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Shortland Correctional Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "332",
+      "Females": "0",
+      "Max": "332",
+      "Latitude": "0",
+      "Longitude": "0"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Silverwater Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "?",
+      "Males": "0",
+      "Females": "0",
+      "Max": "0",
+      "Latitude": "-33.830972",
+      "Longitude": "151.057667"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Silverwater Women's Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "200",
+      "Males": "0",
+      "Females": "279",
+      "Max": "279",
+      "Latitude": "-33.830972",
+      "Longitude": "151.057667"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "South Coast Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "549",
+      "Males": "528",
+      "Females": "0",
+      "Max": "549",
+      "Latitude": "-34.883",
+      "Longitude": "150.6"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Special Purpose Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "52",
+      "Females": "3",
+      "Max": "55",
+      "Latitude": "0",
+      "Longitude": "0"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "St Heliers Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "280",
+      "Males": "263",
+      "Females": "0",
+      "Max": "280",
+      "Latitude": "-32.22785",
+      "Longitude": "150.913599"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Surry Hills Police/Court Cells",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "26",
+      "Females": "3",
+      "Max": "29",
+      "Latitude": "-33.8796684",
+      "Longitude": "151.2113048"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Tamworth Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "90",
+      "Males": "87",
+      "Females": "0",
+      "Max": "90",
+      "Latitude": "-31.09222",
+      "Longitude": "150.93056"
+    },
+    {
+      "State": "New South Wales",
+      "Prison": "Wellington Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "700",
+      "Males": "612",
+      "Females": "65",
+      "Max": "700",
+      "Latitude": "-32.5059028",
+      "Longitude": "148.9817762"
+    },
+    {
+      "State": "Northern Territory",
+      "Prison": "Alice Springs Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "470",
+      "Males": "518",
+      "Females": "32",
+      "Max": "550",
+      "Latitude": "-23.858288",
+      "Longitude": "133.799143"
+    },
+    {
+      "State": "Northern Territory",
+      "Prison": "Alice Springs Juvenile Holding Centre",
+      "Status": "Operational",
+      "Capacity": "10",
+      "Males": "0",
+      "Females": "0",
+      "Max": "10",
+      "Latitude": "-23.858288",
+      "Longitude": "133.799143"
+    },
+    {
+      "State": "Northern Territory",
+      "Prison": "Barkly Work Camp",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "48",
+      "Females": "0",
+      "Max": "48",
+      "Latitude": "-19.653365",
+      "Longitude": "134.216102"
+    },
+    {
+      "State": "Northern Territory",
+      "Prison": "Berrimah Prison",
+      "Status": "Operational",
+      "Capacity": "750",
+      "Males": "0",
+      "Females": "0",
+      "Max": "750",
+      "Latitude": "-12.445775",
+      "Longitude": "130.940616"
+    },
+    {
+      "State": "Northern Territory",
+      "Prison": "Darwin Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "1000",
+      "Males": "1007",
+      "Females": "79",
+      "Max": "1086",
+      "Latitude": "-12.4628987",
+      "Longitude": "131.0309609"
+    },
+    {
+      "State": "Northern Territory",
+      "Prison": "Datjala Work Camp",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "44",
+      "Females": "0",
+      "Max": "44",
+      "Latitude": "-12.1907399",
+      "Longitude": "136.7860341"
+    },
+    {
+      "State": "Northern Territory",
+      "Prison": "Don Dale Youth Detention Centre",
+      "Status": "Operational",
+      "Capacity": "38",
+      "Males": "0",
+      "Females": "0",
+      "Max": "38",
+      "Latitude": "-12.445775",
+      "Longitude": "130.940616"
+    },
+    {
+      "State": "Northern Territory",
+      "Prison": "Wildman River Wilderness Work Camp",
+      "Status": "Operational",
+      "Capacity": "20",
+      "Males": "0",
+      "Females": "0",
+      "Max": "20",
+      "Latitude": "-12.3",
+      "Longitude": "132.05"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Arthur Gorrie Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "890",
+      "Males": "1167",
+      "Females": "0",
+      "Max": "1167",
+      "Latitude": "-27.5799528",
+      "Longitude": "152.9339389"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Borallon Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "494",
+      "Males": "706",
+      "Females": "0",
+      "Max": "706",
+      "Latitude": "-27.5499556",
+      "Longitude": "152.6747611"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Brisbane Correctional Centre (formerly known as Sir David Longland Correctional Centre)",
+      "Status": "Operational",
+      "Capacity": "600",
+      "Males": "783",
+      "Females": "0",
+      "Max": "783",
+      "Latitude": "-27.5824667",
+      "Longitude": "152.9207028"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Brisbane Women's Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "270",
+      "Males": "0",
+      "Females": "225",
+      "Max": "270",
+      "Latitude": "-27.5842167",
+      "Longitude": "152.9048972"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Brisbane Youth Detention Centre",
+      "Status": "Operational",
+      "Capacity": "105",
+      "Males": "0",
+      "Females": "0",
+      "Max": "105",
+      "Latitude": "-27.583",
+      "Longitude": "152.9205"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Capricornia Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "500",
+      "Males": "586",
+      "Females": "0",
+      "Max": "586",
+      "Latitude": "-23.2202083",
+      "Longitude": "150.4735417"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Capricornia Correctional Centre - Farm",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "72",
+      "Females": "0",
+      "Max": "72",
+      "Latitude": "-23.2274888",
+      "Longitude": "150.4687386"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Cleveland Youth Detention Centre",
+      "Status": "Operational",
+      "Capacity": "100",
+      "Males": "0",
+      "Females": "0",
+      "Max": "100",
+      "Latitude": "-19.25639",
+      "Longitude": "146.81833"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Lotus Glen Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "500",
+      "Males": "0",
+      "Females": "0",
+      "Max": "500",
+      "Latitude": "-17.11306",
+      "Longitude": "145.36389"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Lotus Glen Correctional Centre - Farm",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "124",
+      "Females": "0",
+      "Max": "124",
+      "Latitude": "-17.1124458",
+      "Longitude": "145.3592545"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Lotus Glen Correctional Centre - Main",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "844",
+      "Females": "0",
+      "Max": "844",
+      "Latitude": "-17.1124458",
+      "Longitude": "145.3592545"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Maryborough Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "500",
+      "Males": "575",
+      "Females": "0",
+      "Max": "575",
+      "Latitude": "-25.47917",
+      "Longitude": "152.64861"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Numinbah Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "129",
+      "Males": "0",
+      "Females": "101",
+      "Max": "129",
+      "Latitude": "-28.16333",
+      "Longitude": "153.2125"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Palen Creek Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "170",
+      "Males": "190",
+      "Females": "0",
+      "Max": "190",
+      "Latitude": "-28.20806",
+      "Longitude": "152.865"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Southern Queensland Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "300",
+      "Males": "0",
+      "Females": "295",
+      "Max": "300",
+      "Latitude": "-27.471821",
+      "Longitude": "152.302745"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "The Helana Jones Community Corrections Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "0",
+      "Females": "23",
+      "Max": "23",
+      "Latitude": "-27.4283221",
+      "Longitude": "153.0405915"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Townsville Correctional Centre - Female Farm",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "0",
+      "Females": "51",
+      "Max": "51",
+      "Latitude": "-19.3503586",
+      "Longitude": "146.8417382"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Townsville Correctional Centre - Male Farm",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "96",
+      "Females": "0",
+      "Max": "96",
+      "Latitude": "-19.3503586",
+      "Longitude": "146.8417382"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Townsville Correctional Centre - Male Main",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "693",
+      "Females": "0",
+      "Max": "693",
+      "Latitude": "-19.3503586",
+      "Longitude": "146.8417382"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Townsville Correctional Centre (formerly known as H.M.P.E. Stewart's Creek)",
+      "Status": "Operational",
+      "Capacity": "494",
+      "Males": "0",
+      "Females": "0",
+      "Max": "494",
+      "Latitude": "-19.35",
+      "Longitude": "146.84556"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Townsville Womens Correctional Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "0",
+      "Females": "160",
+      "Max": "160",
+      "Latitude": "-19.3503586",
+      "Longitude": "146.8417382"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Wolston Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "600",
+      "Males": "787",
+      "Females": "0",
+      "Max": "787",
+      "Latitude": "-27.58278",
+      "Longitude": "152.916611"
+    },
+    {
+      "State": "Queensland",
+      "Prison": "Woodford Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "1008",
+      "Males": "1291",
+      "Females": "0",
+      "Max": "1291",
+      "Latitude": "-26.94806",
+      "Longitude": "152.75028"
+    },
+    {
+      "State": "South Australia",
+      "Prison": "Adelaide Pre-Release Centre",
+      "Status": "Operational",
+      "Capacity": "104",
+      "Males": "56",
+      "Females": "16",
+      "Max": "104",
+      "Latitude": "-34.844099",
+      "Longitude": "138.628578"
+    },
+    {
+      "State": "South Australia",
+      "Prison": "Adelaide Remand Centre",
+      "Status": "Operational",
+      "Capacity": "274",
+      "Males": "161",
+      "Females": "0",
+      "Max": "274",
+      "Latitude": "-34.92444",
+      "Longitude": "138.59028"
+    },
+    {
+      "State": "South Australia",
+      "Prison": "Adelaide Women's Prison",
+      "Status": "Operational",
+      "Capacity": "176",
+      "Males": "0",
+      "Females": "158",
+      "Max": "176",
+      "Latitude": "-34.84556",
+      "Longitude": "138.64111"
+    },
+    {
+      "State": "South Australia",
+      "Prison": "Cadell Training Centre",
+      "Status": "Operational",
+      "Capacity": "204",
+      "Males": "190",
+      "Females": "0",
+      "Max": "204",
+      "Latitude": "-34.05694",
+      "Longitude": "139.7575"
+    },
+    {
+      "State": "South Australia",
+      "Prison": "James Nash House",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "3",
+      "Females": "0",
+      "Max": "3",
+      "Latitude": "-34.8497717",
+      "Longitude": "138.6349354"
+    },
+    {
+      "State": "South Australia",
+      "Prison": "Mobilong Prison",
+      "Status": "Operational",
+      "Capacity": "472",
+      "Males": "424",
+      "Females": "0",
+      "Max": "472",
+      "Latitude": "-35.11306",
+      "Longitude": "139.23389"
+    },
+    {
+      "State": "South Australia",
+      "Prison": "Mount Gambier Prison",
+      "Status": "Operational",
+      "Capacity": "503",
+      "Males": "610",
+      "Females": "0",
+      "Max": "610",
+      "Latitude": "-37.85861",
+      "Longitude": "140.68444"
+    },
+    {
+      "State": "South Australia",
+      "Prison": "Port Augusta Prison",
+      "Status": "Operational",
+      "Capacity": "624",
+      "Males": "547",
+      "Females": "24",
+      "Max": "624",
+      "Latitude": "-32.51326",
+      "Longitude": "137.810864"
+    },
+    {
+      "State": "South Australia",
+      "Prison": "Port Lincoln Prison",
+      "Status": "Operational",
+      "Capacity": "176",
+      "Males": "153",
+      "Females": "0",
+      "Max": "176",
+      "Latitude": "-34.7046472",
+      "Longitude": "135.797525"
+    },
+    {
+      "State": "South Australia",
+      "Prison": "Yatala Labour Prison",
+      "Status": "Operational",
+      "Capacity": "578",
+      "Males": "521",
+      "Females": "0",
+      "Max": "578",
+      "Latitude": "-34.84444",
+      "Longitude": "138.62861"
+    },
+    {
+      "State": "Tasmania",
+      "Prison": "Ashley Youth Detention Centre",
+      "Status": "Operational",
+      "Capacity": "51",
+      "Males": "0",
+      "Females": "0",
+      "Max": "51",
+      "Latitude": "-41.524949",
+      "Longitude": "146.704347"
+    },
+    {
+      "State": "Tasmania",
+      "Prison": "Hobart Reception Centre",
+      "Status": "Operational",
+      "Capacity": "50",
+      "Males": "48",
+      "Females": "0",
+      "Max": "50",
+      "Latitude": "-42.87905",
+      "Longitude": "147.3295"
+    },
+    {
+      "State": "Tasmania",
+      "Prison": "Launceston Reception Centre",
+      "Status": "Operational",
+      "Capacity": "33",
+      "Males": "21",
+      "Females": "4",
+      "Max": "33",
+      "Latitude": "-41.4356",
+      "Longitude": "147.136"
+    },
+    {
+      "State": "Tasmania",
+      "Prison": "Mary Hutchinson Women's Prison",
+      "Status": "Operational",
+      "Capacity": "45",
+      "Males": "0",
+      "Females": "52",
+      "Max": "52",
+      "Latitude": "-42.812",
+      "Longitude": "147.34"
+    },
+    {
+      "State": "Tasmania",
+      "Prison": "Risdon Prison Complex (incorporating the Ron Barwick Minimum Security Prison and the Wilfred Lopes Centre for Forensic Mental Health)",
+      "Status": "Operational",
+      "Capacity": "280",
+      "Males": "301",
+      "Females": "0",
+      "Max": "301",
+      "Latitude": "-42.812",
+      "Longitude": "147.34"
+    },
+    {
+      "State": "Tasmania",
+      "Prison": "Ron Barwick Minimum Security Prison",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "265",
+      "Females": "0",
+      "Max": "265",
+      "Latitude": "0",
+      "Longitude": "0"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Acheron Boys Home",
+      "Status": "Operational",
+      "Capacity": "10",
+      "Males": "0",
+      "Females": "0",
+      "Max": "10",
+      "Latitude": "-37.509726",
+      "Longitude": "145.545502"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Barwon Prison",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "405",
+      "Females": "0",
+      "Max": "405",
+      "Latitude": "-37.984492",
+      "Longitude": "144.3503924"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Beechworth Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "210",
+      "Males": "165",
+      "Females": "0",
+      "Max": "210",
+      "Latitude": "-36.3489",
+      "Longitude": "146.6541083"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Dame Phyllis Frost Centre",
+      "Status": "Operational",
+      "Capacity": "604",
+      "Males": "0",
+      "Females": "513",
+      "Max": "604",
+      "Latitude": "-37.7825",
+      "Longitude": "144.74222"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Dhurringile Prison",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "199",
+      "Females": "0",
+      "Max": "199",
+      "Latitude": "-36.5183741",
+      "Longitude": "145.2228608"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Fulham Correctional Centre (including NALU)",
+      "Status": "Operational",
+      "Capacity": "893",
+      "Males": "867",
+      "Females": "0",
+      "Max": "893",
+      "Latitude": "-38.1075",
+      "Longitude": "146.97028"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "HM Melbourne Assessment Prison",
+      "Status": "Operational",
+      "Capacity": "305",
+      "Males": "0",
+      "Females": "0",
+      "Max": "305",
+      "Latitude": "-37.81278",
+      "Longitude": "144.95056"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "HM Prison Barwon (including Barwon Supermax)",
+      "Status": "Operational",
+      "Capacity": "478",
+      "Males": "0",
+      "Females": "0",
+      "Max": "478",
+      "Latitude": "-37.98472",
+      "Longitude": "144.3525"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "HM Prison Dhurringile",
+      "Status": "Operational",
+      "Capacity": "328",
+      "Males": "0",
+      "Females": "0",
+      "Max": "328",
+      "Latitude": "-36.52083",
+      "Longitude": "145.22806"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "HM Prison Langi Kal Kal",
+      "Status": "Operational",
+      "Capacity": "428",
+      "Males": "0",
+      "Females": "0",
+      "Max": "428",
+      "Latitude": "-37.40611",
+      "Longitude": "143.48944"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "HM Prison Loddon",
+      "Status": "Operational",
+      "Capacity": "468",
+      "Males": "0",
+      "Females": "0",
+      "Max": "468",
+      "Latitude": "-37.08278",
+      "Longitude": "144.23917"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "HM Prison Tarrengower",
+      "Status": "Operational",
+      "Capacity": "78",
+      "Males": "0",
+      "Females": "0",
+      "Max": "78",
+      "Latitude": "-36.977",
+      "Longitude": "144.0476"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Hopkins Correctional Centre (Ararat)",
+      "Status": "Operational",
+      "Capacity": "762",
+      "Males": "694",
+      "Females": "0",
+      "Max": "762",
+      "Latitude": "-37.278",
+      "Longitude": "142.9815"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Judy Lazarus Transition Centre",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "23",
+      "Females": "0",
+      "Max": "23",
+      "Latitude": "-37.8124179",
+      "Longitude": "144.9471572"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Langi Kal Kal Prison",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "363",
+      "Females": "0",
+      "Max": "363",
+      "Latitude": "-37.406586",
+      "Longitude": "143.4860178"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Loddon Prison",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "640",
+      "Females": "0",
+      "Max": "640",
+      "Latitude": "-37.0807227",
+      "Longitude": "144.2369062"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Malmsbury Youth Justice Centre",
+      "Status": "Operational",
+      "Capacity": "74",
+      "Males": "0",
+      "Females": "0",
+      "Max": "74",
+      "Latitude": "-37.18889",
+      "Longitude": "144.385"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Marngoneet Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "559",
+      "Males": "799",
+      "Females": "0",
+      "Max": "799",
+      "Latitude": "-37.98194",
+      "Longitude": "144.35194"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Melbourne Assessment Prison",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "219",
+      "Females": "0",
+      "Max": "219",
+      "Latitude": "-37.8126843",
+      "Longitude": "144.9487482"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Melbourne Youth Justice Centre",
+      "Status": "Operational",
+      "Capacity": "110",
+      "Males": "0",
+      "Females": "0",
+      "Max": "110",
+      "Latitude": "-37.77694",
+      "Longitude": "144.94528"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Metropolitan Remand Centre",
+      "Status": "Operational",
+      "Capacity": "954",
+      "Males": "915",
+      "Females": "0",
+      "Max": "954",
+      "Latitude": "-37.79278",
+      "Longitude": "144.74611"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Parkville Youth Residential Centre",
+      "Status": "Operational",
+      "Capacity": "30",
+      "Males": "0",
+      "Females": "0",
+      "Max": "30",
+      "Latitude": "-37.788",
+      "Longitude": "144.951"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Port Phillip Prison",
+      "Status": "Operational",
+      "Capacity": "1117",
+      "Males": "1046",
+      "Females": "0",
+      "Max": "1117",
+      "Latitude": "-37.82833",
+      "Longitude": "144.75222"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Ravenhall Correctional Centre",
+      "Status": "Operational",
+      "Capacity": "1300",
+      "Males": "1193",
+      "Females": "0",
+      "Max": "1300",
+      "Latitude": "-37.7874286",
+      "Longitude": "144.7413394"
+    },
+    {
+      "State": "Victoria",
+      "Prison": "Tarrengower Prison",
+      "Status": "Operational (ABS)",
+      "Capacity": "?",
+      "Males": "0",
+      "Females": "66",
+      "Max": "66",
+      "Latitude": "-36.977904",
+      "Longitude": "144.0454277"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Acacia Prison",
+      "Status": "Operational",
+      "Capacity": "1,525",
+      "Males": "1513",
+      "Females": "0",
+      "Max": "1525",
+      "Latitude": "-31.8351",
+      "Longitude": "116.3409"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Albany Regional Prison",
+      "Status": "Operational",
+      "Capacity": "310",
+      "Males": "467",
+      "Females": "3",
+      "Max": "470",
+      "Latitude": "-35.04389",
+      "Longitude": "117.81778"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Bandyup Women's Prison",
+      "Status": "Operational",
+      "Capacity": "259",
+      "Males": "0",
+      "Females": "229",
+      "Max": "259",
+      "Latitude": "-31.86222",
+      "Longitude": "115.99556"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Banksia Hill Juvenile Detention Centre",
+      "Status": "Operational",
+      "Capacity": "?",
+      "Males": "0",
+      "Females": "0",
+      "Max": "0",
+      "Latitude": "-32.109705",
+      "Longitude": "115.919085"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Boronia Pre-release Centre for Women",
+      "Status": "Operational",
+      "Capacity": "82",
+      "Males": "0",
+      "Females": "92",
+      "Max": "92",
+      "Latitude": "-32.0031",
+      "Longitude": "115.8973"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Broome Regional Prison",
+      "Status": "Operational",
+      "Capacity": "138",
+      "Males": "67",
+      "Females": "0",
+      "Max": "138",
+      "Latitude": "-17.958",
+      "Longitude": "122.2412"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Bunbury Regional Prison",
+      "Status": "Operational",
+      "Capacity": "340",
+      "Males": "370",
+      "Females": "0",
+      "Max": "370",
+      "Latitude": "-33.383589",
+      "Longitude": "115.670852"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Casuarina Prison",
+      "Status": "Operational",
+      "Capacity": "680",
+      "Males": "950",
+      "Females": "0",
+      "Max": "950",
+      "Latitude": "-32.23972",
+      "Longitude": "115.87806"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Eastern Goldfields Regional Prison",
+      "Status": "Operational",
+      "Capacity": "136",
+      "Males": "266",
+      "Females": "35",
+      "Max": "301",
+      "Latitude": "-30.7905",
+      "Longitude": "121.486"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Greenough Regional Prison",
+      "Status": "Operational",
+      "Capacity": "323",
+      "Males": "163",
+      "Females": "0",
+      "Max": "323",
+      "Latitude": "-28.834674",
+      "Longitude": "114.69919"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Hakea Prison",
+      "Status": "Operational",
+      "Capacity": "897",
+      "Males": "1155",
+      "Females": "0",
+      "Max": "1155",
+      "Latitude": "-32.10167",
+      "Longitude": "115.91944"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Karnet Prison Farm",
+      "Status": "Operational",
+      "Capacity": "326",
+      "Males": "368",
+      "Females": "0",
+      "Max": "368",
+      "Latitude": "-32.4397",
+      "Longitude": "116.0772"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Melaleuca Remand and Reintegration Facility",
+      "Status": "Operational",
+      "Capacity": "254",
+      "Males": "0",
+      "Females": "240",
+      "Max": "254",
+      "Latitude": "-32.1054",
+      "Longitude": "115.921"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Pardelup Prison Farm",
+      "Status": "Operational",
+      "Capacity": "96",
+      "Males": "93",
+      "Females": "0",
+      "Max": "96",
+      "Latitude": "-34.63678",
+      "Longitude": "117.38274"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Roebourne Regional Prison",
+      "Status": "Operational",
+      "Capacity": "161",
+      "Males": "197",
+      "Females": "12",
+      "Max": "209",
+      "Latitude": "-20.721277",
+      "Longitude": "117.133462"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Wandoo Rehabilitiation Facility",
+      "Status": "Operational",
+      "Capacity": "80",
+      "Males": "0",
+      "Females": "72",
+      "Max": "80",
+      "Latitude": "-32.075793",
+      "Longitude": "115.845119"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "West Kimberley Regional Prison",
+      "Status": "Operational",
+      "Capacity": "150",
+      "Males": "186",
+      "Females": "34",
+      "Max": "220",
+      "Latitude": "-17.35389",
+      "Longitude": "123.677194"
+    },
+    {
+      "State": "Western Australia",
+      "Prison": "Wooroloo Prison Farm",
+      "Status": "Operational",
+      "Capacity": "360",
+      "Males": "425",
+      "Females": "0",
+      "Max": "425",
+      "Latitude": "-31.8134",
+      "Longitude": "116.3385"
+    }
+  ];
+    
         function unpack(rows, key) {
             return rows.map(function(row) { return row[key]; });
         }
-
-        var state = unpack(rows, 'State'),
-            prison = unpack(rows, 'Prison'),
-            prisonCap = unpack(rows, 'Capacity'),
-            prisonStatus = unpack(rows, 'Status'),
-            prisonLat = unpack(rows, 'Latitude'),
-            prisonLon = unpack(rows, 'Longitude'),
-            color = [,"rgb(255,65,54)","rgb(133,20,75)","rgb(255,133,27)","lightgrey"],
+    
+        var state = unpack(prisons, 'State'),
+            prison = unpack(prisons, 'Prison'),
+            prisonCap = unpack(prisons, 'Capacity'),
+            prisonMales = unpack(prisons, 'Males'),
+            prisonFemales = unpack(prisons, 'Females'),
+            prisonStatus = unpack(prisons, 'Status'),
+            prisonLat = unpack(prisons, 'Latitude'),
+            prisonLon = unpack(prisons, 'Longitude'),
             prisonSize = [],
             hoverText = [],
-            scale = 50000;
-
+            scale = 20; //max value 1525
+    
         for ( var i = 0 ; i < prisonCap.length; i++) {
             var currentSize = prisonCap[i] / scale;
-            var currentText = prison[i] + " pop: " + prisonCap[i];
+            if (currentSize < (scale/1.5)) {
+                currentSize = scale/1.5
+            }
+
+            var currentText = prison[i] + ". Capacity: " + prisonCap[i];            
+            if (prisonMales[i] > 0){
+                currentText += ", Males: " + prisonMales[i];
+            }
+            if (prisonFemales[i] > 0){
+                currentText += ", Females: " + prisonFemales[i];
+            }
             prisonSize.push(currentSize);
             hoverText.push(currentText);
         }
-
+        
+        var data = [{
+            type: 'scattermapbox',
+            locationmode: 'AUS',
+            lat: prisonLat,
+            lon: prisonLon,
+            hoverinfo: 'text',
+            text: hoverText,
+            marker: {
+                size: prisonSize,
+                line: {
+                    color: 'black',
+                    width: 2
+                },
+            }
+        }];
+    
+        var layout = {
+            title: 'Australian Prisons',
+            showlegend: false,
+            mapbox: {
+                style: "open-street-map",
+                center: {
+                    lon: 133.7751,
+                    lat: -27
+                },
+                zoom: 4
+            },
+            width: 1200,
+            height: 1200,
+            margin: {
+                l: 0,
+                r: 0,
+                b: 0,
+                t: 0,
+                pad: 2
+            },
+        };        
+    
+        /*
         var data = [{
             type: 'scattergeo',
             locationmode: 'AUS',
@@ -44,15 +1808,23 @@
                 },
             }
         }];
-
+    
         var layout = {
             title: 'Australian Prisons',
             showlegend: false,
             geo: {
                 scope: 'world',
+                resolution: 10,
+                showframe: true,
                 center: {
                     lon: 130.5,
                     lat: -22.5
+                },
+                lonaxis: {
+                    'range': [113, 154]
+                },
+                lataxis: {
+                    'range': [-10, -44]
                 },
                 projection: {
                     type: 'mercator'
@@ -64,14 +1836,20 @@
                 subunitcolor: 'rgb(255,255,255)',
                 countrycolor: 'rgb(255,255,255)'
             },
+            width: 1200,
+            height: 900,
+            margin: {
+                l: 0,
+                r: 0,
+                b: 0,
+                t: 0,
+                pad: 2
+            },
         };
-
-        Plotly.newPlot("myDiv", data, layout, {showLink: false});
-
-        });
-    </script>
-</head>
-<body>
-    <div id="MyDiv"></div>
+        */      
+    
+        Plotly.newPlot("mapDiv", data, layout, {showLink: false});
+    
+        </script>
 </body>
 </html>
