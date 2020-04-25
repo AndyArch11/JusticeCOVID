@@ -1791,63 +1791,7 @@
                 pad: 2
             },
         };        
-    
-        /*
-        var data = [{
-            type: 'scattergeo',
-            locationmode: 'AUS',
-            lat: prisonLat,
-            lon: prisonLon,
-            hoverinfo: 'text',
-            text: hoverText,
-            marker: {
-                size: prisonSize,
-                line: {
-                    color: 'black',
-                    width: 2
-                },
-            }
-        }];
-    
-        var layout = {
-            title: 'Australian Prisons',
-            showlegend: false,
-            geo: {
-                scope: 'world',
-                resolution: 10,
-                showframe: true,
-                center: {
-                    lon: 130.5,
-                    lat: -22.5
-                },
-                lonaxis: {
-                    'range': [113, 154]
-                },
-                lataxis: {
-                    'range': [-10, -44]
-                },
-                projection: {
-                    type: 'mercator'
-                },
-                showland: true,
-                landcolor: 'rgb(217, 217, 217)',
-                subunitwidth: 1,
-                countrywidth: 1,
-                subunitcolor: 'rgb(255,255,255)',
-                countrycolor: 'rgb(255,255,255)'
-            },
-            width: 1200,
-            height: 900,
-            margin: {
-                l: 0,
-                r: 0,
-                b: 0,
-                t: 0,
-                pad: 2
-            },
-        };
-        */      
-    
+        
         Plotly.newPlot("mapDiv", data, layout, {showLink: false});
     
         </script>
