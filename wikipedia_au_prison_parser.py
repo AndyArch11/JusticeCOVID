@@ -252,8 +252,3 @@ print(wiki_prison_df)
 
 wiki_prison_df.to_csv('prison_list.csv', index=False, header=True)
 
-"""
-with open('prison_list.csv', 'w', newline='', encoding='utf-8') as csv_prison_file:
-    csvwriter = csv.writer(csv_prison_file, dialect='excel')
-    csvwriter.writerows(wiki_prison_df)
-"""
