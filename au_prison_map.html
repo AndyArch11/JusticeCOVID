@@ -1659,16 +1659,16 @@
             //Set Marker Colour
             //Default circle: blue
             var currentColour = 'rgb(51, 153, 255)';
-            if (prisonMalesInt + prisonFemalesInt > prisCapInt) {
+            if ((prisonMalesInt + prisonFemalesInt > 0) && (prisCapInt == 0 || prisonCap[i] == "?")) {
+                //ABS data with no Wikipedia data circle: purple
+                currentColour = 'rgb(178,102,255)';
+            } else if (prisonMalesInt + prisonFemalesInt > prisCapInt) {
                 //Overcrowded circle: red
                 currentColour = 'rgb(255, 51, 51)';
             } else if (prisonMalesInt + prisonFemalesInt == 0) {
                 //Not in ABS data circle: grey
                 currentColour = 'rgb(160, 160, 160)';
-            } else if ((prisonMalesInt + prisonFemalesInt > 0) && (prisCapInt == 0 || prisonCap[i] == "?")) {
-                //ABS data with no Wikipedia data circle: purple
-                currentColour = 'rgb(178,102,255)';
-            }
+            } 
 
             prisonSize.push(currentSize);
             hoverText.push(currentText);
