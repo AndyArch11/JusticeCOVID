@@ -43,12 +43,11 @@ New South Wales,Goulburn Correctional Centre,Operational,650,524,0,650,-34.74139
 New South Wales,Grafton Correctional Centre,Operational,270,244,21,270,-29.676647,152.940196
 New South Wales,Grenfell Gaol,Closed,?,0,0,0,-33.9,148.15
 New South Wales,Hay Gaol,Closed,?,0,0,0,-34.5031,144.851
-New South Wales,High Risk Management Correctional Centre,Operational (ABS),?,58,0,58,0,0
+New South Wales,High Risk Management Correctional Centre (Goulburn Correctional Centre),Operational (ABS),?,58,0,58,-34.741389,149.740556
 New South Wales,Hunter Correctional Centre,Operational (ABS),?,396,0,396,-32.817123,151.334153
 New South Wales,Illawarra Reintegration Centre,Operational (ABS),?,58,0,58,-34.46201,150.8452372
 New South Wales,Ivanhoe (Warakirri) Correctional Centre,Operational,50,27,0,50,-32.91528,144.31083
-New South Wales,John Morony Correctional Centre,Operational,400,0,0,400,-33.6518556,150.7840917
-New South Wales,John Morony Correctional Centre (I),Operational (ABS),?,426,0,426,-33.6499674,150.781043
+New South Wales,John Morony Correctional Centre,Operational,400,426,0,426,-33.6518556,150.7840917
 New South Wales,Junee Correctional Centre,Operational,790,834,0,834,-34.86083,147.55639
 New South Wales,Juniperina Juvenile Justice Centre,Operational,?,0,0,0,-33.86462,151.04563
 New South Wales,Kariong Youth Correctional Centre,Operational,100,98,0,100,-33.44,151.301
@@ -64,7 +63,7 @@ New South Wales,Maitland Gaol b,Museum,400,0,0,400,-32.745,151.58972
 New South Wales,Mannus Correctional Centre,Operational,164,153,0,164,-35.79,147.96
 New South Wales,Mary Wade Correctional Centre,Operational (ABS),?,0,86,86,-33.8865358,151.0386907
 New South Wales,Metropolitan Remand and Reception Centre (MRRC),Operational,"1,050",1067,0,1067,-33.830972,151.057667
-New South Wales,Metropolitan Special Programs Centre,Operational (ABS),?,1060,0,1060,0,0
+New South Wales,Metropolitan Special Programs Centre (Long Bay Correctional Centre),Operational (ABS),?,1060,0,1060,-33.969444,151.245833
 New South Wales,Mid North Coast Correctional Centre,Operational,500,573,44,617,-31.0675,152.7527
 New South Wales,Moree Police/Court Cells,Operational (ABS),?,3,0,3,-29.4638856,149.8411218
 New South Wales,Mudgee Gaol,Closed,,0,0,0,-32.6145,149.5733
@@ -73,19 +72,18 @@ New South Wales,Newcastle Police/Court Cells,Operational (ABS),?,3,0,3,-32.92841
 New South Wales,Oberon Correctional Centre,Operational,100,115,0,115,-33.929667,149.848667
 New South Wales,Old Berrima Gaol,Operational,?,0,0,0,-34.483,150.35
 New South Wales,Orana Juvenile Justice Centre,Operational,45,0,0,45,-32.25694,148.60111
-New South Wales,Outer Metropolitan Multi-Purpose Correctional Centre,Operational (ABS),?,223,0,223,0,0
+New South Wales,Outer Metropolitan Multi-Purpose Correctional Centre (John Morony Correctional Complex),Operational (ABS),?,223,0,223,-33.651856,150.784092
 New South Wales,Parklea Correctional Centre,Operational,893,1098,0,1098,-33.72333,150.91861
 New South Wales,Parramatta Correctional Centre,Museum,580,0,0,580,-33.79905,151
-New South Wales,Parramatta Transitional Centre,Operational (ABS),?,0,14,14,0,0
+New South Wales,Parramatta Transitional Centre,Operational (ABS),?,0,14,14,-33.815,151.001111
 New South Wales,Port Macquarie Gaol,Closed,,0,0,0,-31.433,152.9
 New South Wales,Port Macquarie Police/Court Cells,Operational (ABS),?,3,0,3,-31.4300438,152.9091798
 New South Wales,Reiby Juvenile Justice Centre,Operational,?,0,0,0,-34.0916,150.8249
 New South Wales,Riverina Juvenile Justice Centre,Operational,33,0,0,33,-35.11889,147.36889
-New South Wales,Shortland Correctional Centre,Operational (ABS),?,332,0,332,0,0
-New South Wales,Silverwater Correctional Centre,Operational,?,0,0,0,-33.830972,151.057667
+New South Wales,Shortland Correctional Centre (Cessnock Correctional Complex),Operational (ABS),?,332,0,332,-32.816944,151.339167
 New South Wales,Silverwater Women's Correctional Centre,Operational,200,0,279,279,-33.830972,151.057667
 New South Wales,South Coast Correctional Centre,Operational,549,528,0,549,-34.883,150.6
-New South Wales,Special Purpose Centre,Operational (ABS),?,52,3,55,0,0
+New South Wales,Special Purpose Centre (Long Bay Correctional Centre),Operational (ABS),?,52,3,55,-33.969444,151.245833
 New South Wales,St Heliers Correctional Centre,Operational,280,263,0,280,-32.22785,150.913599
 New South Wales,Surry Hills Police/Court Cells,Operational (ABS),?,26,3,29,-33.8796684,151.2113048
 New South Wales,Tamworth Correctional Centre,Operational,90,87,0,90,-31.09222,150.93056
@@ -174,7 +172,7 @@ Tasmania,Maria Island Penal colony (Darlington),Closed,?,0,0,0,-42.633,148.083
 Tasmania,Mary Hutchinson Women's Prison,Operational,45,0,52,52,-42.812,147.34
 Tasmania,Port Arthur,Closed,,0,0,0,-43.15,147.85
 Tasmania,Risdon Prison Complex (incorporating the Ron Barwick Minimum Security Prison and the Wilfred Lopes Centre for Forensic Mental Health),Operational,280,301,0,301,-42.812,147.34
-Tasmania,Ron Barwick Minimum Security Prison,Operational (ABS),?,265,0,265,0,0
+Tasmania,Ron Barwick Minimum Security Prison (Risdon Prison Complex),Operational (ABS),?,265,0,265,-42.812,147.34
 Tasmania,Ross Female Factory,Museum,?,0,0,0,-42.032,147.492
 Tasmania,Saltwater River Penal colony,Closed,?,0,0,0,-43.01861,147.72167
 Victoria,Acheron Boys Home,Operational,10,0,0,10,-37.509726,145.545502
