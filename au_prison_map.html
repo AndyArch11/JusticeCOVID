@@ -424,7 +424,7 @@
         "State": "New South Wales",
         "Prison": "Long Bay Correctional Centre",
         "Status": "Operational",
-        "Capacity": "1,100",
+        "Capacity": "1100",
         "Males": "469",
         "Females": "0",
         "Max": "1100",
@@ -468,7 +468,7 @@
         "State": "New South Wales",
         "Prison": "Metropolitan Remand and Reception Centre (MRRC)",
         "Status": "Operational",
-        "Capacity": "1,050",
+        "Capacity": "1050",
         "Males": "1067",
         "Females": "0",
         "Max": "1067",
@@ -1414,8 +1414,8 @@
         "State": "Western Australia",
         "Prison": "Acacia Prison",
         "Status": "Operational",
-        "Capacity": "1,525",
-        "Males": "1513",
+        "Capacity": "1525",
+        "Males": "1,513",
         "Females": "0",
         "Max": "1525",
         "Latitude": "-31.8351",
@@ -1629,28 +1629,28 @@
             scale = 20; //max value 1525
     
         for ( var i = 0 ; i < prison.length; i++) {
-            var currentSize = parseInt(prisonMax[i]) / scale;
+            var currentSize = parseInt(prisonMax[i].replace(',','')) / scale;
             if (currentSize < (scale/1.5)) {
                 currentSize = scale/1.5;
             }
 
             var currentText = prison[i] + ". Capacity: " + prisonCap[i];            
-            if (parseInt(prisonMales[i]) > 0){
+            if (parseInt(prisonMales[i].replace(',','')) > 0){
                 currentText += ", Males: " + prisonMales[i];
             }
-            if (parseInt(prisonFemales[i]) > 0){
+            if (parseInt(prisonFemales[i].replace(',','')) > 0){
                 currentText += ", Females: " + prisonFemales[i];
             }
 
             //Default circle: blue
             var currentColour = 'rgb(51, 153, 255)';
-            if ((parseInt(prisonMales[i]) + parseInt(prisonFemales[i])) > parseInt(prisonCap[i])) {
+            if ((parseInt(prisonMales[i].replace(',','')) + parseInt(prisonFemales[i].replace(',',''))) > parseInt(prisonCap[i].replace(',',''))) {
                 //Overcrowded circle: red
                 currentColour = 'rgb(255, 51, 51)';
-            } else if ((parseInt(prisonMales[i]) + parseInt(prisonFemales[i])) == 0) {
+            } else if ((parseInt(prisonMales[i].replace(',','')) + parseInt(prisonFemales[i].replace(',',''))) == 0) {
                 //Not in ABS data circle: grey
                 currentColour = 'rgb(160, 160, 160)';
-            } else if ((parseInt(prisonMales[i]) + parseInt(prisonFemales[i]) > 0) && (parseInt(prisonCap[i]) == 0 || prisonCap[i] == "?")) {
+            } else if ((parseInt(prisonMales[i].replace(',','')) + parseInt(prisonFemales[i].replace(',','')) > 0) && (parseInt(prisonCap[i].replace(',','')) == 0 || prisonCap[i] == "?")) {
                 //ABS data with no Wikipedia data circle: purple
                 currentColour = 'rgb(178,102,255)';
             }
