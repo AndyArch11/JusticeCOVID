@@ -5,14 +5,25 @@
     <title>Australian Prison Map</title>
 	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
-<body>
+<body onload = "displayMap()">
     <div id="mapDiv" style="width: 1200px; height: 1000px;"></div>
+
+    <label for="prison_filter">Select Filter:</label>
+
+    <select id="prison_filter" onchange = "displayMap()">
+      <option value="all" selected>All</option>
+      <option value="females">With Females</option>
+      <option value="males">With Males</option>
+      <option value="overcrowded">Over Crowded</option>
+      <option value="unknowncap">Unknown Capacity</option>
+      <option value="unknownpop">Unknown Prisoner Population</option>      
+    </select> 
 
     <script type="text/javascript">
 
-        //screenscraped from https://en.wikipedia.org/wiki/List_of_prisons_in_Australia
-        //expanded from https://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/4517.02019?OpenDocument
-        var prisons = [
+    //screenscraped from https://en.wikipedia.org/wiki/List_of_prisons_in_Australia
+    //expanded from https://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/4517.02019?OpenDocument
+    const prisons = [
     {
         "State": "Australian Capital Territory",
         "Prison": "Alexander Maconochie Centre",
@@ -1613,109 +1624,134 @@
         function unpack(rows, key) {
             return rows.map(function(row) { return row[key]; });
         }
-    
-        var state = unpack(prisons, 'State'),
-            prison = unpack(prisons, 'Prison'),
-            prisonCap = unpack(prisons, 'Capacity'),
-            prisonMales = unpack(prisons, 'Males'),
-            prisonFemales = unpack(prisons, 'Females'),
-            prisonMax = unpack(prisons, 'Max'),
-            prisonStatus = unpack(prisons, 'Status'),
-            prisonLat = unpack(prisons, 'Latitude'),
-            prisonLon = unpack(prisons, 'Longitude'),
-            prisonSize = [],
-            hoverText = [],
-            circleColour = [],
-            scale = 20; //max value 1525
-    
-        for ( var i = 0 ; i < prison.length; i++) {
-            //Calculate size of the marker
-            var currentSize = parseInt(prisonMax[i].replace(',','')) / scale;
-            if (currentSize < (scale/1.5)) {
-                currentSize = scale/1.5;
-            }
+        
+        function displayMap() {
+            var selFilter = document.getElementById("prison_filter");
+            var selFilterValue = selFilter.value;
 
-            //Get Prison Capacity
-            prisCapStr = "";
-            prisCapInt = 0;
-            if (prisonCap[i] == "?") {
-                prisCapStr = prisonCap[i];
-            } else {
-                prisCapInt = parseInt(prisonCap[i])
-                prisCapStr = prisCapInt.toLocaleString();
+            if (selFilterValue == "all") {
+                //unfiltered
+                var filtered_prisons = prisons;
+            } else if (selFilterValue == "females") {
+                //Prisons with females
+                var filtered_prisons = prisons.filter(d => d.Females > 0);
+            } else if (selFilterValue == "males") {
+                //Prisons with males
+                var filtered_prisons = prisons.filter(d => d.Males > 0);
+            } else if (selFilterValue == 'overcrowded') {
+                //Overcrowded prisons
+                var filtered_prisons = prisons.filter(d => (d.Capacity > 0 && parseInt(d.Females) + parseInt(d.Males) > parseInt(d.Capacity)));
+            } else if (selFilterValue == 'unknowncap') {
+                //Unknown prison capacity
+                var filtered_prisons = prisons.filter(d => (d.Capacity == "?"));
+            } else if (selFilterValue == 'unknownpop') {
+                //Unknown prison population
+                var filtered_prisons = prisons.filter(d => (parseInt(d.Females) + parseInt(d.Males) == 0));
+            } 
+        
+            var state = unpack(filtered_prisons, 'State'),
+                prison = unpack(filtered_prisons, 'Prison'),
+                prisonCap = unpack(filtered_prisons, 'Capacity'),
+                prisonMales = unpack(filtered_prisons, 'Males'),
+                prisonFemales = unpack(filtered_prisons, 'Females'),
+                prisonMax = unpack(filtered_prisons, 'Max'),
+                prisonStatus = unpack(filtered_prisons, 'Status'),
+                prisonLat = unpack(filtered_prisons, 'Latitude'),
+                prisonLon = unpack(filtered_prisons, 'Longitude'),
+                prisonSize = [],
+                hoverText = [],
+                circleColour = [],
+                scale = 20; //max value 1525
+        
+            for ( var i = 0 ; i < prison.length; i++) {
+                //Calculate size of the marker
+                var currentSize = parseInt(prisonMax[i].replace(',','')) / scale;
+                if (currentSize < (scale/1.5)) {
+                    currentSize = scale/1.5;
+                }
+
+                //Get Prison Capacity
+                prisCapStr = "";
+                prisCapInt = 0;
+                if (prisonCap[i] == "?") {
+                    prisCapStr = prisonCap[i];
+                } else {
+                    prisCapInt = parseInt(prisonCap[i])
+                    prisCapStr = prisCapInt.toLocaleString();
+                }
+                
+                //Create Marker hover text
+                var currentText = prison[i] + ". Capacity: " + prisCapStr;  
+                prisonMalesInt = parseInt(prisonMales[i].replace(',',''));        
+                if (prisonMalesInt > 0) {
+                    currentText += "; Males: " + prisonMalesInt.toLocaleString();
+                }
+                prisonFemalesInt = parseInt(prisonFemales[i].replace(',',''));
+                if (prisonFemalesInt > 0){
+                    currentText += "; Females: " + prisonFemales[i].toLocaleString();
+                }
+
+                //Set Marker Colour
+                //Default circle: blue
+                var currentColour = 'rgb(51, 153, 255)';
+                if ((prisonMalesInt + prisonFemalesInt > 0) && (prisCapInt == 0 || prisonCap[i] == "?")) {
+                    //ABS data with no Wikipedia data circle: purple
+                    currentColour = 'rgb(178,102,255)';
+                } else if (prisonMalesInt + prisonFemalesInt > prisCapInt) {
+                    //Overcrowded circle: red
+                    currentColour = 'rgb(255, 51, 51)';
+                } else if (prisonMalesInt + prisonFemalesInt == 0) {
+                    //Not in ABS data circle: grey
+                    currentColour = 'rgb(160, 160, 160)';
+                } 
+
+                prisonSize.push(currentSize);
+                hoverText.push(currentText);
+                circleColour.push(currentColour);
             }
             
-            //Create Marker hover text
-            var currentText = prison[i] + ". Capacity: " + prisCapStr;  
-            prisonMalesInt = parseInt(prisonMales[i].replace(',',''));        
-            if (prisonMalesInt > 0) {
-                currentText += "; Males: " + prisonMalesInt.toLocaleString();
-            }
-            prisonFemalesInt = parseInt(prisonFemales[i].replace(',',''));
-            if (prisonFemalesInt > 0){
-                currentText += "; Females: " + prisonFemales[i].toLocaleString();
-            }
-
-            //Set Marker Colour
-            //Default circle: blue
-            var currentColour = 'rgb(51, 153, 255)';
-            if ((prisonMalesInt + prisonFemalesInt > 0) && (prisCapInt == 0 || prisonCap[i] == "?")) {
-                //ABS data with no Wikipedia data circle: purple
-                currentColour = 'rgb(178,102,255)';
-            } else if (prisonMalesInt + prisonFemalesInt > prisCapInt) {
-                //Overcrowded circle: red
-                currentColour = 'rgb(255, 51, 51)';
-            } else if (prisonMalesInt + prisonFemalesInt == 0) {
-                //Not in ABS data circle: grey
-                currentColour = 'rgb(160, 160, 160)';
-            } 
-
-            prisonSize.push(currentSize);
-            hoverText.push(currentText);
-            circleColour.push(currentColour);
+            var data = [{
+                type: 'scattermapbox',
+                locationmode: 'AUS',
+                lat: prisonLat,
+                lon: prisonLon,
+                hoverinfo: 'text',
+                text: hoverText,
+                marker: {
+                    size: prisonSize,
+                    color: circleColour,
+                    line: {
+                        color: 'black',
+                        width: 2
+                    },
+                }
+            }];
+        
+            var layout = {
+                title: 'Australian Prisons',
+                showlegend: false,
+                mapbox: {
+                    style: "open-street-map",
+                    center: {
+                        lon: 135.5,
+                        lat: -28
+                    },
+                    zoom: 4
+                },
+                width: 1200,
+                height: 1000,
+                margin: {
+                    l: 0,
+                    r: 0,
+                    b: 0,
+                    t: 0,
+                    pad: 2
+                },
+            };        
+            
+            Plotly.newPlot("mapDiv", data, layout, {showLink: false});
+        
         }
-        
-        var data = [{
-            type: 'scattermapbox',
-            locationmode: 'AUS',
-            lat: prisonLat,
-            lon: prisonLon,
-            hoverinfo: 'text',
-            text: hoverText,
-            marker: {
-                size: prisonSize,
-                color: circleColour,
-                line: {
-                    color: 'black',
-                    width: 2
-                },
-            }
-        }];
-    
-        var layout = {
-            title: 'Australian Prisons',
-            showlegend: false,
-            mapbox: {
-                style: "open-street-map",
-                center: {
-                    lon: 135.5,
-                    lat: -28
-                },
-                zoom: 4
-            },
-            width: 1200,
-            height: 1000,
-            margin: {
-                l: 0,
-                r: 0,
-                b: 0,
-                t: 0,
-                pad: 2
-            },
-        };        
-        
-        Plotly.newPlot("mapDiv", data, layout, {showLink: false});
-    
         </script>
 </body>
 </html>
