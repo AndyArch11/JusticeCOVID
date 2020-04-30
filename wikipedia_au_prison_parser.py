@@ -135,9 +135,10 @@ prison_tables = html_content.xpath('//div[@id="mw-content-text"]/div/table', sma
 
 prison_list = []
 prison_details = []
-prison_detail_columns = ['State', 'Prison', 'Status', 'Capacity', 'Males', 'Females', 'Latitude', 'Longitude']
+prison_detail_columns = ['State', 'Prison', 'Status', 'Managed', 'Public/Private', 'Capacity', 'Males', 'Females', 'Latitude', 'Longitude']
 prison_column = 0
 status_column = 1
+managed_column = 3
 capacity_column = 6
 location_column = 7
 
@@ -152,6 +153,7 @@ for state_prisons in prison_tables:
     status = ''
     capacity = ''
     location = ''
+    managedby = ''
     for row in prisons:
         #Get the state from the first row in each table, which is determined by only having a single merged column
         if len(row) == 1:
@@ -197,6 +199,17 @@ for state_prisons in prison_tables:
             print('Status')
             status = row[status_column].text_content().strip().rstrip('[0123456789]')
             print(status)
+            print('Managed')
+            if len(row) == 8:
+                #only use the value from the first row of the merged columns.
+                managedby = row[managed_column].text_content().strip()
+            print(managedby)     
+            print('Public/Private')
+            if 'geo' in managedby.lower() or 'serco' in managedby.lower() or 'g4s' in managedby.lower() or 'sodexo' in managedby.lower():
+                pubpriv = 'Private'
+            else:
+                pubpriv = 'Public'
+            print(pubpriv)
             print('Capacity')
             capacity = row[capacity_column + column_offset].text_content().strip()
             print(capacity)
@@ -220,10 +233,13 @@ for state_prisons in prison_tables:
             print('Prison Latitude: ' + str(prison_lat))
             print('Prison Longitude: ' + str(prison_lon))
 
-            prison_details = [state, prison_name, status, capacity, 0, 0, prison_lat, prison_lon]
+            prison_details = [state, prison_name, status, managedby, pubpriv, capacity, 0, 0, prison_lat, prison_lon]
             prison_list.append(prison_details)
 
             row_count += 1
+
+
+#['State', 'Prison', 'Status', 'Managed', 'Public/Private', 'Capacity', 'Males', 'Females', 'Latitude', 'Longitude']
 
 #merge abs data with wikipedia data
 wiki_prison_df = pd.DataFrame(prison_list, columns=prison_detail_columns)
@@ -243,9 +259,9 @@ for index, state_prison in abs_prison_df.iterrows():
     else:
         #if no match, add new record to the dataframe
         if state_prison['Sex'] == 'Male':
-            wiki_prison_df = wiki_prison_df.append({'State': state_prison['State'], 'Prison': state_prison['Prison'], 'Status': 'Operational (ABS)', 'Capacity': '?', 'Males': state_prison['Prisoners'], 'Females': 0, 'Latitude': 0, 'Longitude': 0}, ignore_index=True)
+            wiki_prison_df = wiki_prison_df.append({'State': state_prison['State'], 'Prison': state_prison['Prison'], 'Status': 'Operational (ABS)', 'Managed': 'Unknown', 'Public/Private': '?', 'Capacity': '?', 'Males': state_prison['Prisoners'], 'Females': 0, 'Latitude': 0, 'Longitude': 0}, ignore_index=True)
         elif state_prison['Sex'] == 'Female':
-            wiki_prison_df = wiki_prison_df.append({'State': state_prison['State'], 'Prison': state_prison['Prison'], 'Status': 'Operational (ABS)', 'Capacity': '?', 'Males': 0, 'Females': state_prison['Prisoners'], 'Latitude': 0, 'Longitude': 0}, ignore_index=True)
+            wiki_prison_df = wiki_prison_df.append({'State': state_prison['State'], 'Prison': state_prison['Prison'], 'Status': 'Operational (ABS)', 'Managed': 'Unknown', 'Public/Private': '?', 'Capacity': '?', 'Males': 0, 'Females': state_prison['Prisoners'], 'Latitude': 0, 'Longitude': 0}, ignore_index=True)
 
 #Write scraped details to file
 print(wiki_prison_df)
