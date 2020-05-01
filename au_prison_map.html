@@ -4,6 +4,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Australian Prison Map</title>
 	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        table, caption, th, td {
+            border: 1px solid grey;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
 </head>
 <body onload = "displayMap()">
     <div id="mapDiv" style="width: 1200px; height: 1000px;"></div>
@@ -14,15 +24,22 @@
       <option value="all" selected>All</option>
       <option value="females">With Females</option>
       <option value="males">With Males</option>
+      <option value="mixedsex">Mixed Sex</option>
       <option value="overcrowded">Overcrowded</option>
       <option value="unknowncap">Unknown Capacity</option>
       <option value="unknownpop">Unknown Prisoner Population</option>  
       <option value="private">Private Prisons</option>
       <option value="public">Public Prisons</option>    
-      <option value="unkownMgmt">Unknown Prison Management</option>
+      <option value="unkownmgmt">Unknown Prison Management</option>
     </select> 
 
     <p id="prisoner_counter"></p>
+
+    <details>
+        <div id="prison_table"></div>
+    </details>
+
+    <p>Prison capacity and management sourced from <a href="https://en.wikipedia.org/wiki/List_of_prisons_in_Australia">Wikipedia</a>, Prison population sourced from <a href="https://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/4517.02019?OpenDocument">ABS 2019 prison census</a>.</p>
 
     <script type="text/javascript">
 
@@ -1919,42 +1936,86 @@
         function unpack(rows, key) {
             return rows.map(function(row) { return row[key]; });
         }
+
+        function displayPrisonTable(title, tableData) {
+            //remove any existing table
+            const tableDiv = document.getElementById("prison_table");
+            if (tableDiv.hasChildNodes()) {
+                tableDiv.removeChild(tableDiv.childNodes[0]);
+            }
+
+            var table = document.createElement("table");
+            let tableCaption = table.createCaption();
+            tableCaption.innerHTML = "<b>" + title + "</b>"
+
+            //build table content
+            for (let element of tableData) {
+                let row = table.insertRow();
+                for (let key in element) {
+                    if (key != "Latitude" && key != "Longitude") {
+                        let cell = row.insertCell();
+                        let text = document.createTextNode(element[key]);
+                        cell.appendChild(text);
+                    }
+                }
+            }
+                        
+            //create the header
+            let headerData = Object.keys(tableData[0])
+            let thead = table.createTHead();
+            let row = thead.insertRow();
+            for (let key of headerData) {
+                if (key != "Latitude" && key != "Longitude") {
+                    let th = document.createElement("th");
+                    let text = document.createTextNode(key);
+                    th.appendChild(text);
+                    row.appendChild(th);
+                }
+            }
+            
+            tableDiv.appendChild(table);
+        }
         
         function displayMap() {
             var selFilter = document.getElementById("prison_filter");
             var selFilterValue = selFilter.value;
-
+            
             if (selFilterValue == "all") {
                 //unfiltered
                 var filtered_prisons = prisons;
             } else if (selFilterValue == "females") {
                 //Prisons with females
-                var filtered_prisons = prisons.filter(d => d.Females > 0);
+                var filtered_prisons = prisons.filter(d => d.Females.replace(',','') > 0);
             } else if (selFilterValue == "males") {
                 //Prisons with males
-                var filtered_prisons = prisons.filter(d => d.Males > 0);
+                var filtered_prisons = prisons.filter(d => d.Males.replace(',','') > 0);
+            } else if (selFilterValue == "mixedsex") {
+                //Prisons with females and males
+                var filtered_prisons = prisons.filter(d => d.Females.replace(',','') > 0 && d.Males.replace(',','') > 0);
             } else if (selFilterValue == 'overcrowded') {
                 //Overcrowded prisons
-                var filtered_prisons = prisons.filter(d => (d.Capacity > 0 && parseInt(d.Females) + parseInt(d.Males) > parseInt(d.Capacity)));
+                var filtered_prisons = prisons.filter(d => (d.Capacity > 0 && parseInt(d.Females.replace(',','')) + parseInt(d.Males.replace(',','')) > parseInt(d.Capacity.replace(',',''))));
             } else if (selFilterValue == 'unknowncap') {
                 //Unknown prison capacity
                 var filtered_prisons = prisons.filter(d => (d.Capacity == "?"));
             } else if (selFilterValue == 'unknownpop') {
                 //Unknown prison population
-                var filtered_prisons = prisons.filter(d => (parseInt(d.Females) + parseInt(d.Males) == 0));
+                var filtered_prisons = prisons.filter(d => (parseInt(d.Females.replace(',','')) + parseInt(d.Males.replace(',','')) == 0));
             } else if (selFilterValue == 'private') {
                 //Private prisons
                 var filtered_prisons = prisons.filter(d => (d.PublicPrivate == "Private"));
             } else if (selFilterValue == 'public') {
                 //Public prisons
                 var filtered_prisons = prisons.filter(d => (d.PublicPrivate == "Public"));
-            } else if (selFilterValue == 'unkownMgmt') {
+            } else if (selFilterValue == 'unkownmgmt') {
                 //Unknown prison management
                 var filtered_prisons = prisons.filter(d => (d.PublicPrivate == "?"));
             }
 
             var element = document.getElementById("prisoner_counter");
             element.innerHTML = "Prison Count: " + filtered_prisons.length;
+
+            displayPrisonTable(selFilter.options[selFilter.selectedIndex].text, filtered_prisons);
         
             var state = unpack(filtered_prisons, 'State'),
                 prison = unpack(filtered_prisons, 'Prison'),
