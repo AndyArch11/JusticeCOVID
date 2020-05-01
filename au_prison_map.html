@@ -2056,10 +2056,14 @@
                 
                 //Create Marker hover text
                 var currenthovertext = [];
-                var currentText = prison[i] + ". Capacity: " + prisCapStr;  
+                var currentText = prison[i];  
                 currenthovertext.push(currentText);
                 prisonMalesInt = parseInt(prisonMales[i].replace(',',''));   
-                currentText = prisonPubPriv[i] + ': ' + prisonManagedBy[i];
+                currentText = "Management: " + prisonPubPriv[i];
+                currenthovertext.push(currentText);
+                currentText = "Managed By: " + prisonManagedBy[i];
+                currenthovertext.push(currentText);
+                currentText = "Capacity: " + prisCapStr
                 currenthovertext.push(currentText);
                 currentText = "";
                 if (prisonMalesInt > 0) {
@@ -2099,7 +2103,7 @@
                 hoverinfo: 'text',
                 customdata: hoverText,
                 //text: hoverText,
-                hovertemplate: "%{customdata[0]}<br>%{customdata[1]}<br>%{customdata[2]}<extra></extra>",
+                hovertemplate: "<b>%{customdata[0]}</b><br><br>%{customdata[1]}<br>%{customdata[2]}<br><br>%{customdata[3]}<br>%{customdata[4]}<extra></extra>",
                 marker: {
                     size: prisonSize,
                     color: circleColour,
