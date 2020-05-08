@@ -1,0 +1,67 @@
+Prisoner Health - 2018
+https://www.aihw.gov.au/reports/prisoners/health-australia-prisoners-2018/data
+https://www.aihw.gov.au/getmedia/2e92f007-453d-48a1-9c6b-4c9531cf0371/aihw-phe-246.pdf.aspx?inline=true
+
+Prisoner Population - 2019
+https://www.abs.gov.au/ausstats/abs@.nsf/mf/4517.0
+
+Prisons
+https://en.wikipedia.org/wiki/List_of_prisons_in_Australia
+https://www.abs.gov.au/ausstats/abs@.nsf/mf/4517.0
+
+Australian Population 15/3/2020
+https://www.abs.gov.au/ausstats/abs@.nsf/0/1647509ef7e25faaca2568a900154b63?opendocument
+https://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/3101.0Sep%202019?OpenDocument
+https://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/3238.0.55.001June%202016?OpenDocument
+
+ABS Health Metrics
+https://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/4364.0.55.0012017-18?OpenDocument
+
+COVID-19
+https://www.worldometers.info/coronavirus/
+https://www.abc.net.au/news/2020-03-17/coronavirus-cases-data-reveals-how-covid-19-spreads-in-australia/12060704?nw=0
+https://www.health.gov.au/sites/default/files/documents/2020/03/coronavirus-covid-19-information-for-clinicians.pdf 
+
+SEIR model
+https://towardsdatascience.com/social-distancing-to-slow-the-coronavirus-768292f04296
+
+1. Age > 60, esp > 80
+15% mortality > 80 years of age
+
+2. Cardiovascular Disease
+10.5% mortality
+https://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/4338.0~2011-13~Main%20Features~Heart%20disease~10005
+5% of pop with heart disease
+
+3. Diabetes
+7.3% mortality
+https://map.ndss.com.au/#!/
+https://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/4364.0.55.001~2017-18~Main%20Features~Diabetes%20mellitus~50
+4.9% of pop with Diabetes
+
+4. Chronic Respiratory Disease
+6.3% mortality
+https://www.aihw.gov.au/reports-data/health-conditions-disability-deaths/chronic-respiratory-conditions/overview
+31% of pop with chronic respiratory conditions
+4.8% of pop over 45 with COPD
+
+https://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/4364.0.55.001~2017-18~Main%20Features~Asthma~35
+11.2% of pop with asthma
+
+5. Hypertension
+6% mortality
+https://www.heartfoundation.org.au/images/uploads/main/HeartWeek_fact_sheet_for_professionals.pdf
+33.7% of pop with Hypertension
+
+https://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/4364.0.55.001~2017-18~Main%20Features~Hypertension%20and%20measured%20high%20blood%20pressure~60
+10.6% with hypertension
+
+6. Cancer
+5.6% mortality
+https://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/4364.0.55.001~2017-18~Main%20Features~Cancer~40
+1.8% of pop with cancer
+
+7. Smoking
+https://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/4364.0.55.001~2017-18~Main%20Features~Smoking~85
+13.8% of pop smoke daily
+1.4% smoke on a less than daily basis

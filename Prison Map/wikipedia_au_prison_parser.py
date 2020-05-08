@@ -59,67 +59,67 @@ def getGeo(htmlpage):
     return prison_lat, prison_lon
 
 #retrieve the ABS count of prisoners by prison for 2019
-abs_nsw_male_prisons = pd.read_excel('./ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=7, nrows=42, index_col=None, header=None, names=['Prison', 'Prisoners'])
+abs_nsw_male_prisons = pd.read_excel('./data/ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=7, nrows=42, index_col=None, header=None, names=['Prison', 'Prisoners'])
 abs_nsw_male_prisons['Sex'] = 'Male'
 abs_nsw_male_prisons['State'] = 'New South Wales'
 abs_prison_df = pd.DataFrame(abs_nsw_male_prisons)
-abs_nsw_female_prisons = pd.read_excel('./ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=51, nrows=14, index_col=None, header=None, names=['Prison', 'Prisoners'])
+abs_nsw_female_prisons = pd.read_excel('./data/ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=51, nrows=14, index_col=None, header=None, names=['Prison', 'Prisoners'])
 abs_nsw_female_prisons['Sex'] = 'Female'
 abs_nsw_female_prisons['State'] = 'New South Wales'
 abs_prison_df = abs_prison_df.append(abs_nsw_female_prisons, ignore_index=True)
-abs_vic_male_prisons = pd.read_excel('./ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=69, nrows=13, index_col=None, header=None, names=['Prison', 'Prisoners'])
+abs_vic_male_prisons = pd.read_excel('./data/ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=69, nrows=13, index_col=None, header=None, names=['Prison', 'Prisoners'])
 abs_vic_male_prisons['Sex'] = 'Male'
 abs_vic_male_prisons['State'] = 'Victoria'
 abs_prison_df = abs_prison_df.append(abs_vic_male_prisons, ignore_index=True)
-abs_vic_female_prisons = pd.read_excel('./ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=84, nrows=2, index_col=None, header=None, names=['Prison', 'Prisoners'])
+abs_vic_female_prisons = pd.read_excel('./data/ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=84, nrows=2, index_col=None, header=None, names=['Prison', 'Prisoners'])
 abs_vic_female_prisons['Sex'] = 'Female'
 abs_vic_female_prisons['State'] = 'Victoria'
 abs_prison_df = abs_prison_df.append(abs_vic_female_prisons, ignore_index=True)
-abs_qld_male_prisons = pd.read_excel('./ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=90, nrows=13, index_col=None, header=None, names=['Prison', 'Prisoners'])
+abs_qld_male_prisons = pd.read_excel('./data/ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=90, nrows=13, index_col=None, header=None, names=['Prison', 'Prisoners'])
 abs_qld_male_prisons['Sex'] = 'Male'
 abs_qld_male_prisons['State'] = 'Queensland'
 abs_prison_df = abs_prison_df.append(abs_qld_male_prisons, ignore_index=True)
-abs_qld_female_prisons = pd.read_excel('./ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=105, nrows=6, index_col=None, header=None, names=['Prison', 'Prisoners'])
+abs_qld_female_prisons = pd.read_excel('./data/ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=105, nrows=6, index_col=None, header=None, names=['Prison', 'Prisoners'])
 abs_qld_female_prisons['Sex'] = 'Female'
 abs_qld_female_prisons['State'] = 'Queensland'
 abs_prison_df = abs_prison_df.append(abs_qld_female_prisons, ignore_index=True)
-abs_sa_male_prisons = pd.read_excel('./ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=115, nrows=9, index_col=None, header=None, names=['Prison', 'Prisoners'])
+abs_sa_male_prisons = pd.read_excel('./data/ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=115, nrows=9, index_col=None, header=None, names=['Prison', 'Prisoners'])
 abs_sa_male_prisons['Sex'] = 'Male'
 abs_sa_male_prisons['State'] = 'South Australia'
 abs_prison_df = abs_prison_df.append(abs_sa_male_prisons, ignore_index=True)
-abs_sa_female_prisons = pd.read_excel('./ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=126, nrows=3, index_col=None, header=None, names=['Prison', 'Prisoners'])
+abs_sa_female_prisons = pd.read_excel('./data/ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=126, nrows=3, index_col=None, header=None, names=['Prison', 'Prisoners'])
 abs_sa_female_prisons['Sex'] = 'Female'
 abs_sa_female_prisons['State'] = 'South Australia'
 abs_prison_df = abs_prison_df.append(abs_sa_female_prisons, ignore_index=True)
-abs_wa_male_prisons = pd.read_excel('./ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=133, nrows=13, index_col=None, header=None, names=['Prison', 'Prisoners'])
+abs_wa_male_prisons = pd.read_excel('./data/ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=133, nrows=13, index_col=None, header=None, names=['Prison', 'Prisoners'])
 abs_wa_male_prisons['Sex'] = 'Male'
 abs_wa_male_prisons['State'] = 'Western Australia'
 abs_prison_df = abs_prison_df.append(abs_wa_male_prisons, ignore_index=True)
-abs_wa_female_prisons = pd.read_excel('./ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=148, nrows=8, index_col=None, header=None, names=['Prison', 'Prisoners'])
+abs_wa_female_prisons = pd.read_excel('./data/ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=148, nrows=8, index_col=None, header=None, names=['Prison', 'Prisoners'])
 abs_wa_female_prisons['Sex'] = 'Female'
 abs_wa_female_prisons['State'] = 'Western Australia'
 abs_prison_df = abs_prison_df.append(abs_wa_female_prisons, ignore_index=True)
-abs_tas_male_prisons = pd.read_excel('./ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=160, nrows=4, index_col=None, header=None, names=['Prison', 'Prisoners'])
+abs_tas_male_prisons = pd.read_excel('./data/ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=160, nrows=4, index_col=None, header=None, names=['Prison', 'Prisoners'])
 abs_tas_male_prisons['Sex'] = 'Male'
 abs_tas_male_prisons['State'] = 'Tasmania'
 abs_prison_df = abs_prison_df.append(abs_tas_male_prisons, ignore_index=True)
-abs_tas_female_prisons = pd.read_excel('./ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=166, nrows=2, index_col=None, header=None, names=['Prison', 'Prisoners'])
+abs_tas_female_prisons = pd.read_excel('./data/ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=166, nrows=2, index_col=None, header=None, names=['Prison', 'Prisoners'])
 abs_tas_female_prisons['Sex'] = 'Female'
 abs_tas_female_prisons['State'] = 'Tasmania'
 abs_prison_df = abs_prison_df.append(abs_tas_female_prisons, ignore_index=True)
-abs_nt_male_prisons = pd.read_excel('./ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=172, nrows=4, index_col=None, header=None, names=['Prison', 'Prisoners'])
+abs_nt_male_prisons = pd.read_excel('./data/ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=172, nrows=4, index_col=None, header=None, names=['Prison', 'Prisoners'])
 abs_nt_male_prisons['Sex'] = 'Male'
 abs_nt_male_prisons['State'] = 'Northern Territory'
 abs_prison_df = abs_prison_df.append(abs_nt_male_prisons, ignore_index=True)
-abs_nt_female_prisons = pd.read_excel('./ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=178, nrows=2, index_col=None, header=None, names=['Prison', 'Prisoners'])
+abs_nt_female_prisons = pd.read_excel('./data/ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=178, nrows=2, index_col=None, header=None, names=['Prison', 'Prisoners'])
 abs_nt_female_prisons['Sex'] = 'Female'
 abs_nt_female_prisons['State'] = 'Northern Territory'
 abs_prison_df = abs_prison_df.append(abs_nt_female_prisons, ignore_index=True)
-abs_act_male_prisons = pd.read_excel('./ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=184, nrows=1, index_col=None, header=None, names=['Prison', 'Prisoners'])
+abs_act_male_prisons = pd.read_excel('./data/ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=184, nrows=1, index_col=None, header=None, names=['Prison', 'Prisoners'])
 abs_act_male_prisons['Sex'] = 'Male'
 abs_act_male_prisons['State'] = 'Australian Capital Territory'
 abs_prison_df = abs_prison_df.append(abs_act_male_prisons, ignore_index=True)
-abs_act_female_prisons = pd.read_excel('./ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=187, nrows=1, index_col=None, header=None, names=['Prison', 'Prisoners'])
+abs_act_female_prisons = pd.read_excel('./data/ABS Prisoners in Australia 2019 4517do002_2019.xls', sheet_name='Table_34', usecols='A:B', skiprows=187, nrows=1, index_col=None, header=None, names=['Prison', 'Prisoners'])
 abs_act_female_prisons['Sex'] = 'Female'
 abs_act_female_prisons['State'] = 'Australian Capital Territory'
 abs_prison_df = abs_prison_df.append(abs_act_female_prisons, ignore_index=True)
@@ -248,14 +248,14 @@ print(wiki_prison_df)
 for index, state_prison in abs_prison_df.iterrows():
     print(state_prison)
     print('State: ' + state_prison['State'] + ', Prison: ' + state_prison['Prison'] + ', Prisoners: ' + str(state_prison['Prisoners']) + ', Sex: ' + state_prison['Sex'])
-    if len(wiki_prison_df.loc[(wiki_prison_df['State'] == state_prison['State']) & (wiki_prison_df['Prison'] == state_prison['Prison'])]) > 0:
+    if len(wiki_prison_df.loc[(state_prison['State'] == wiki_prison_df['State']) & (wiki_prison_df.Prison.str.contains(state_prison['Prison']))]) > 0:
         #if match, update record with prisoners count
-        print(wiki_prison_df.loc[(wiki_prison_df['State'] == state_prison['State']) & (wiki_prison_df['Prison'] == state_prison['Prison'])])
+        print(wiki_prison_df.loc[(state_prison['State'] == wiki_prison_df['State']) & (wiki_prison_df.Prison.str.contains(state_prison['Prison']))])
         if state_prison['Sex'] == 'Male':
-            wiki_prison_df.loc[(wiki_prison_df['State'] == state_prison['State']) & (wiki_prison_df['Prison'] == state_prison['Prison']), 'Males'] = state_prison['Prisoners']
+            wiki_prison_df.loc[(state_prison['State'] == wiki_prison_df['State']) & (wiki_prison_df.Prison.str.contains(state_prison['Prison'])), 'Males'] = state_prison['Prisoners']
         elif state_prison['Sex'] == 'Female':
-            wiki_prison_df.loc[(wiki_prison_df['State'] == state_prison['State']) & (wiki_prison_df['Prison'] == state_prison['Prison']), 'Females'] = state_prison['Prisoners']        
-        print(wiki_prison_df.loc[(wiki_prison_df['State'] == state_prison['State']) & (wiki_prison_df['Prison'] == state_prison['Prison'])])
+            wiki_prison_df.loc[(state_prison['State'] == wiki_prison_df['State']) & (wiki_prison_df.Prison.str.contains(state_prison['Prison'])), 'Females'] = state_prison['Prisoners']        
+        print(wiki_prison_df.loc[(state_prison['State'] == wiki_prison_df['State']) & (wiki_prison_df.Prison.str.contains(state_prison['Prison']))])
     else:
         #if no match, add new record to the dataframe
         if state_prison['Sex'] == 'Male':
@@ -266,5 +266,5 @@ for index, state_prison in abs_prison_df.iterrows():
 #Write scraped details to file
 print(wiki_prison_df)
 
-wiki_prison_df.to_csv('prison_list.csv', index=False, header=True)
+wiki_prison_df.to_csv('./data/prison_list.csv', index=False, header=True)
 

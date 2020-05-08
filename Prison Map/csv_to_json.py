@@ -1,8 +1,8 @@
 import csv
 import json
 
-csv_prison_file = './prison_list.csv'
-json_prison_file = './prison_list.json'
+csv_prison_file = './data/prison_list.csv'
+json_prison_file = './data/prison_list.json'
 
 data = []
 with open (csv_prison_file) as csvFile:

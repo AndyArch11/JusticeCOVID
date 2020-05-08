@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Australian Prisoner Population</title>
+    <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div id="total_per1k_chart" style="width: 1200px; height: 1000px;"></div>
+    <div id="per1k_chart" style="width: 1200px; height: 1000px;"></div>
+    <div id="compare_per1k_chart" style="width: 1200px; height: 1000px;"></div>
+    <div id="pop_chart" style="width: 1200px; height: 1000px;"></div>
+    <div id="male_pop_pyramid" style="width: 1200px; height: 1000px;"></div>
+    <div id="female_pop_pyramid" style="width: 1200px; height: 1000px;"></div>
+    <div id="sex_pop_chart" style="width: 1200px; height: 1000px;"></div>
+    <div id="sex_pie_chart" style="width: 1200px; height: 1000px;"></div>
+    <div id="indigenous_pie_chart" style="width: 1200px; height: 1000px;"></div>
+    <div id="indigenous_per1K_pie_chart" style="width: 1200px; height: 1000px;"></div>
+
+    <script type="text/javascript">
+
+        const age = ["20-29", "30-39", "40-49", "50-59", "60+"];
+        const age2 = ["18-19", "20-29", "30-39", "40-49", "50-59", "60+"];
+
+        const total_per1k_prisoners = [3.72, 4.29, 2.74, 1.24, 0.41];
+        const male_per1k_prisoners = [6.71, 7.88, 5.09, 2.34, 0.84];
+        const female_per1k_prisoners = [0.66, 0.73, 0.44, 0.18, 0.02];  
+
+        const nonIndigenous_per1k_prisoners = [2.5, 3.2, 2.2, 1.1, 0.4];
+        const Indigenous_per1k_prisoners = [33.7, 43.1, 23.5, 9.5, 2.2];  
+
+        const male_nonIndigenous_per1k_prisoners = [4.54, 5.9, 4.03, 1.98, 0.8];
+        const female_nonIndigenous_per1k_prisoners = [0.42, 0.49, 0.33, 0.16, 0.02];
+        const male_Indigenous_per1k_prisoners = [59.47, 78.04, 44.36, 18.63, 4.62];  
+        const female_Indigenous_per1k_prisoners = [6.61, 9.14, 4.47, 1.24, 0.10];  
+
+        const nonIndigenous_total_prisoners = [376, 8439, 10529, 6767, 3118, 1917];
+        const Indigenous_total_prisoners = [378, 4604, 4055, 2073, 642, 123];
+        
+        const male_nonIndigenous_prisoners = [353, 7737, 9721, 6245, 2885, 1863];        
+        const female_nonIndigenous_prisoners = [23, 702, 808, 522, 233, 54];
+        const male_Indigenous_prisoners = [348, 4163, 3619, 1867, 598, 120];
+        const female_Indigenous_prisoners = [30, 441, 436, 206, 44, 3];  
+        const total_prisoners = [754, 13043, 14584, 8840, 3760, 2040];  
+
+        const male_prisoners = [701, 11900, 13340, 8112, 3483, 1983];
+        const female_prisoners = [53, 1143, 1244, 728, 277, 57];
+
+        const male_prisoner_count = male_prisoners.reduce((a,b) => a + b, 0);
+        const female_prisoner_count = female_prisoners.reduce((a,b) => a + b, 0);
+
+        const non_indigenous_count = nonIndigenous_total_prisoners.reduce((a,b) => a + b, 0);
+        const indigenous_count = Indigenous_total_prisoners.reduce((a,b) => a + b, 0);
+
+        const non_indigenous_per1K_count = 3.5;
+        const indigenous_per1K_count = 52.4;
+
+        //Male/Female Prisoners per 1,000
+        var male_per1k_trace = {
+            y: male_per1k_prisoners,
+            x: age,
+            type: "bar",
+            name: "Male Prisoners",
+            opacity: 0.5,
+            marker: {
+                color: 'blue',
+            },
+        };
+        var female_per1k_prisoners_trace = {
+            y: female_per1k_prisoners,
+            x: age,
+            type: "bar",
+            name: "Female Prisoners",
+            opacity: 0.8,
+            marker: {
+                color: 'violet',
+            },
+        };
+        var total_per1k_prisoners_trace = {
+            y: total_per1k_prisoners,
+            x: age,
+            type: "bar",
+            name: "Total Prisoners",
+            opacity: 0.6,
+            marker: {
+                color: 'grey',
+            },
+        };
+
+        var data = [male_per1k_trace, female_per1k_prisoners_trace, total_per1k_prisoners_trace];
+        var layout = {
+            title: "Prisoners per 1,000 of Population",
+            barmode: "group",
+            bargap: 0.15,
+            bargroupgap: 0.1
+        };
+
+        Plotly.newPlot('total_per1k_chart', data, layout);
+
+
+
+        //non-Indigenous/Indigenous Prisoners per 1,000
+        var nonIndigenous_per1k_trace = {
+            y: nonIndigenous_per1k_prisoners,
+            x: age,
+            type: "bar",
+            name: "non-Indigenous Prisoners",
+            opacity: 0.5,
+            marker: {
+                color: 'blue',
+            },
+        };
+        var Indigenous_per1k_prisoners_trace = {
+            y: Indigenous_per1k_prisoners,
+            x: age,
+            type: "bar",
+            name: "Indigenous Prisoners",
+            opacity: 0.6,
+            marker: {
+                color: 'red',
+            },
+        };
+
+        var data = [nonIndigenous_per1k_trace, Indigenous_per1k_prisoners_trace];
+        var layout = {
+            title: "Prisoners per 1,000 of Population",
+            barmode: "group",
+            bargap: 0.15,
+            bargroupgap: 0.1
+        };
+
+        Plotly.newPlot('per1k_chart', data, layout);
+
+
+
+        //Male/Female non-Indigenous/Indigenous per 1,000
+        var male_nonIndigenous_per1k_trace = {
+            y: male_nonIndigenous_per1k_prisoners,
+            x: age,
+            type: "bar",
+            name: "non-Indigenous Male Prisoners",
+            opacity: 0.5,
+            marker: {
+                color: 'blue',
+            },
+        };
+        var female_nonIndigenous_per1k_trace = {
+            y: female_nonIndigenous_per1k_prisoners,
+            x: age,
+            type: "bar",
+            name: "non-Indigenous Female Prisoners",
+            opacity: 0.8,
+            marker: {
+                color: 'violet',
+            },
+        };
+        var male_Indigenous_per1k_prisoners_trace = {
+            y: male_Indigenous_per1k_prisoners,
+            x: age,
+            type: "bar",
+            name: "Indigenous Male Prisoners",
+            opacity: 0.6,
+            marker: {
+                color: 'red',
+            },
+        };
+        var female_Indigenous_per1k_prisoners_trace = {
+            y: female_Indigenous_per1k_prisoners,
+            x: age,
+            type: "bar",
+            name: "Indigenous Female Prisoners",
+            opacity: 0.8,
+            marker: {
+                color: 'pink',
+            },
+        };
+        var total_per1k_prisoners_trace = {
+            y: total_per1k_prisoners,
+            x: age,
+            type: "bar",
+            name: "Total Prisoners",
+            opacity: 0.6,
+            marker: {
+                color: 'grey',
+            },
+        };
+
+        var data = [male_nonIndigenous_per1k_trace, female_nonIndigenous_per1k_trace, male_Indigenous_per1k_prisoners_trace, female_Indigenous_per1k_prisoners_trace, total_per1k_prisoners_trace];
+        var layout = {
+            title: "Prisoners per 1,000 of Population",
+            barmode: "group",
+            bargap: 0.15,
+            bargroupgap: 0.1
+        };
+
+        Plotly.newPlot('compare_per1k_chart', data, layout);
+
+
+
+        //non-Indigenous/Indigenous Prisoner count
+        var nonIndigenous_trace = {
+            y: nonIndigenous_total_prisoners,
+            x: age2,
+            type: "bar",
+            name: "non-Indigenous Prisoners",
+            opacity: 0.5,
+            marker: {
+                color: 'blue',
+            },
+        };
+        var Indigenous_prisoners_trace = {
+            y: Indigenous_total_prisoners,
+            x: age2,
+            type: "bar",
+            name: "Indigenous Prisoners",
+            opacity: 0.6,
+            marker: {
+                color: 'red',
+            },
+        };
+
+        var data = [nonIndigenous_trace, Indigenous_prisoners_trace];
+        var layout = {
+            title: "Number of Prisoners",
+            barmode: "group",
+            bargap: 0.15,
+            bargroupgap: 0.1
+        };
+
+        Plotly.newPlot('pop_chart', data, layout);
+
+
+
+        //Male/Female non-Indigenous/Indigenous Prisoner count
+        var male_nonIndigenous_trace = {
+            y: male_nonIndigenous_prisoners,
+            x: age2,
+            type: "bar",
+            name: "non-Indigenous Male Prisoners",
+            opacity: 0.5,
+            marker: {
+                color: 'blue',
+            },
+        };
+        var female_nonIndigenous_trace = {
+            y: female_nonIndigenous_prisoners,
+            x: age2,
+            type: "bar",
+            name: "non-Indigenous Female Prisoners",
+            opacity: 0.8,
+            marker: {
+                color: 'violet',
+            },
+        };
+        var male_Indigenous_prisoners_trace = {
+            y: male_Indigenous_prisoners,
+            x: age2,
+            type: "bar",
+            name: "Indigenous Male Prisoners",
+            opacity: 0.6,
+            marker: {
+                color: 'red',
+            },
+        };
+        var female_Indigenous_prisoners_trace = {
+            y: female_Indigenous_prisoners,
+            x: age2,
+            type: "bar",
+            name: "Indigenous Female Prisoners",
+            opacity: 0.8,
+            marker: {
+                color: 'pink',
+            },
+        };
+        var total_prisoners_trace = {
+            y: total_prisoners,
+            x: age2,
+            type: "bar",
+            name: "Total Prisoners",
+            opacity: 0.6,
+            marker: {
+                color: 'grey',
+            },
+        };
+
+        var data = [male_nonIndigenous_trace, female_nonIndigenous_trace, male_Indigenous_prisoners_trace, female_Indigenous_prisoners_trace, total_prisoners_trace];
+        var layout = {
+            title: "Number of Prisoners",
+            barmode: "group",
+            bargap: 0.15,
+            bargroupgap: 0.1
+        };
+
+        Plotly.newPlot('sex_pop_chart', data, layout);
+
+
+        
+        //Male Population Pyramid hack
+        neg_male_Indigenous_prisoners = male_Indigenous_prisoners.map(function(element) {return element * -1});
+        var male_nonIndigenous_trace = {
+            x: male_nonIndigenous_prisoners,
+            y: age2,
+            orientation: "h",
+            type: "bar",
+            name: "Male non-Indigenous Prisoners",
+            hoverinfo: "x",
+            opacity: 0.5,
+            marker: {
+                color: 'blue',
+            },
+        };
+        var male_Indigenous_trace = {
+            x: neg_male_Indigenous_prisoners,
+            y: age2,
+            orientation: "h",
+            type: "bar",
+            text: male_Indigenous_prisoners,  
+            hoverinfo: "text",  
+            name: "Male Indigenous Prisoners",
+            opacity: 0.6,
+            marker: {
+                color: 'red',
+            },    
+        };
+
+        var data = [male_nonIndigenous_trace, male_Indigenous_trace];
+        var layout = {
+            title: "Male Prisoner Population Pyramid",
+            barmode: "overlay",
+            bargap: 0.15
+        }
+
+        Plotly.newPlot('male_pop_pyramid', data, layout);
+
+        //Female Population Pyramid hack
+        neg_female_Indigenous_prisoners = female_Indigenous_prisoners.map(function(element) {return element * -1});
+        var female_nonIndigenous_trace = {
+            x: female_nonIndigenous_prisoners,
+            y: age2,
+            orientation: "h",
+            type: "bar",
+            name: "Female non-Indigenous Prisoners",
+            hoverinfo: "x",
+            opacity: 0.8,
+            marker: {
+                color: 'violet',
+            },
+        };
+        var female_Indigenous_trace = {
+            x: neg_female_Indigenous_prisoners,
+            y: age2,
+            orientation: "h",
+            type: "bar",
+            text: female_Indigenous_prisoners,     
+            hoverinfo: "text",   
+            name: "Female Indigenous Prisoners",
+            opacity: 0.8,
+            marker: {
+                color: 'pink',
+            },       
+        };
+
+        var data = [female_nonIndigenous_trace, female_Indigenous_trace];
+        var layout = {
+            title: "Female Prisoner Population Pyramid",
+            barmode: "overlay",
+            bargap: 0.15
+        }
+
+        Plotly.newPlot('female_pop_pyramid', data, layout);
+
+
+        //Male/Female Prisoner Pie Chart
+        var data = [{
+            values: [male_prisoner_count, female_prisoner_count],
+            labels: ["Male", "Female"],
+            opacity: 0.6,
+            marker: {
+                colors: ["blue", "purple"]
+            },
+            type: "pie"
+        }];
+
+        var layout = {
+            title: "Prisoner Sex Ratio"
+        };
+       
+        Plotly.newPlot('sex_pie_chart', data, layout);
+
+
+
+        //non-Indigenous/Indigenous Pie Chart
+        var data = [{
+            values: [non_indigenous_count, indigenous_count],
+            labels: ["non-Indigenous Prisoners", "Indigenous Prisoners"],
+            opacity: 0.6,
+            marker: {
+                colors: ["blue", "red"]
+            },
+            type: "pie"
+        }];
+
+        var layout = {
+            title: "Prisoner Indigenous to non-Indigenous ratio"
+        };
+       
+        Plotly.newPlot('indigenous_pie_chart', data, layout);
+
+
+
+        //non-Indigenous/Indigenous per 1,000 Pie Chart
+        var data = [{
+            values: [non_indigenous_per1K_count, indigenous_per1K_count],
+            labels: ["non-Indigenous Prisoners per 1,000", "Indigenous Prisoners per 1,000"],
+            opacity: 0.6,
+            marker: {
+                colors: ["blue", "red"]
+            },
+            type: "pie"
+        }];
+
+        var layout = {
+            title: "Prisoner Indigenous to non-Indigenous per 1,000 ratio"
+        };
+       
+        Plotly.newPlot('indigenous_per1K_pie_chart', data, layout);
+        
+
+    </script>
+</body>
+</html>
