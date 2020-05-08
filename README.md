@@ -50,7 +50,7 @@ Generates various graphs of the Australian Prisoner population.
 * prisoner_health.html
     * Some graphs of what is known of the Australian prison population with regard to health factors that can contribute to negative outcomes in relation to COVID-19.
 * prison_population.html
-    * Graphs of what is knowon of the Australian prison population.
+    * Graphs of what is known of the Australian prison population.
 * seir_google.html
     * A SEIR model of the spread of coronavirus through a population of a given size.  
     * Parameters are defaulted to what we have seen so far in Australia with respect to COVID-19, but can be adjusted.
