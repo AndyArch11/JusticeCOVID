@@ -7,30 +7,31 @@
 </head>
 <body>
     <h1>Chronic Illnesses in Australian Prisons</h1>
-    <p>Data derived from a <a href="https://www.aihw.gov.au/reports-data/population-groups/prisoners/overview">AIHW</a> 2018 survey of 802 Australian prisoners, excluding NSW.</p>
+    <p>Data derived from a <a href="https://www.aihw.gov.au/reports-data/population-groups/prisoners/overview">AIHW</a> 2018 survey of 802 Australian prisoners, excluding NSW, as well as broader AIHW and ABS data on Australian population health data</p>
     <p>The graphs only show adult prisoners, as they are more likely to be impacted by COVID-19, but additional stats for youth justice can also be found at <a href="https://www.aihw.gov.au/reports-data/health-welfare-services/youth-justice/overview">AIHW</a>. 
-    The survey captured additional chronic illness prevalence in the Australian prison population than what is shown here, but these graphs only show those chronic illnesses that are understood to pose additional risks of hospitalisation and death from COVID-19</p>
+    The AIHW survey captured additional chronic illness prevalence in the Australian prison population than what is shown here, but these graphs only show those chronic illnesses that are understood to pose additional risks of hospitalisation and death from COVID-19</p>
+    <p>N.B. Not able to source prevalance of Chronic Respiratory Disease or Hypertension in either Indigenous or prison populations, so only showing Australian rates.  Unable to source obesity rates in prison populations, so only showing corresponding broader population rates.</p>
     <div id="chronic_illnesses_by_sex" style="width: 1200px; height: 1000px;"></div>
     <div id="chronic_illnesses_by_indigeneity" style="width: 1200px; height: 1000px;"></div>
     <div id="chronic_illnesses_by_age" style="width: 1200px; height: 1000px;"></div>
    
 
     <script type="text/javascript">
-        const chronic_illnesses = ["Cardiovasular Disease", "Diabetes", "Asthma", "Cancer", "Smoking"]
-        const au_population_chronic_illness = [0.05, 0.049, 0.112, 0.018, 0.152];
-        const male_prisoner_chronic_illness = [0.04, 0.06, 0.13, 0.01, 0.74];
-        const female_prisoner_chronic_illness = [0.03, 0.03, 0.27, 0, 0.86];
+        const chronic_illnesses = ["Cardiovascular Disease", "Diabetes", "Chronic Respiratory Disease", "Asthma", "Hypertension", "Cancer", "Smoking", "Overweight"]
+        const au_population_chronic_illness = [0.05, 0.049, 0.31, 0.112, 0.106, 0.018, 0.152, 0.67];
+        const male_prisoner_chronic_illness = [0.04, 0.06, 0, 0.13, 0, 0.01, 0.74, 0.745];
+        const female_prisoner_chronic_illness = [0.03, 0.03, 0, 0.27, 0, 0, 0.86, 0.597];
 
-        const indigenous_prisoner_chronic_illness = [0.05, 0.09, 0.11, 0.01, 0.8];
-        const non_indigenous_prisoner_chronic_illness = [0.03, 0.04, 0.19, 0.01, 0.73];    
+        const indigenous_prisoner_chronic_illness = [0.05, 0.09, 0, 0.11, 0, 0.01, 0.8, 0.724];
+        const non_indigenous_prisoner_chronic_illness = [0.03, 0.04, 0, 0.19, 0, 0.01, 0.73, 0.626];    
 
         const age1 = ["18-24", "25-34", "35-44", "45-54", "55+"];
         const prisoner_count_by_age1 = [6048, 15522, 11886, 6123, 3468];
-        const age_18_24_prisoner_chronic_illness = [0.01, 0.01, 0.18, 0.01, 0.8];
-        const age_25_34_prisoner_chronic_illness = [0.02, 0.03, 0.15, 0.01, 0.76];
-        const age_35_44_prisoner_chronic_illness = [0.04, 0.08, 0.15, 0.0, 0.79];
-        const age_45_54_prisoner_chronic_illness = [0.04, 0.08, 0.18, 0.03, 0.66];
-        const age_55plus_prisoner_chronic_illness = [0.38, 0.29, 0.09, 0.00, 0.53];
+        const age_18_24_prisoner_chronic_illness = [0.01, 0.01, 0, 0.18, 0, 0.01, 0.8, 0.46];
+        const age_25_34_prisoner_chronic_illness = [0.02, 0.03, 0, 0.15, 0, 0.01, 0.76, 0.577];
+        const age_35_44_prisoner_chronic_illness = [0.04, 0.08, 0, 0.15, 0, 0.0, 0.79, 0.687];
+        const age_45_54_prisoner_chronic_illness = [0.04, 0.08, 0, 0.18, 0, 0.03, 0.66, 0.74];
+        const age_55plus_prisoner_chronic_illness = [0.38, 0.29, 0, 0.09, 0, 0.00, 0.53, 0.728];
 
         const male_prisoners = 39519;
         const female_prisoners = 3502;
@@ -78,7 +79,7 @@
 
         var data = [male_prisoner_chronic_illness_trace, female_prisoner_chronic_illness_trace, au_population_chronic_illness_trace];
         var layout = {
-            title: "Chronic Illnesses in Prison Population",
+            title: "Chronic Illnesses in Prison Population by Sex",
             barmode: "group",
             bargap: 0.15,
             bargroupgap: 0.1
@@ -121,7 +122,7 @@
 
         var data = [indigenous_prisoner_chronic_illness_trace, non_indigenous_prisoner_chronic_illness_trace, au_population_chronic_illness_trace];
         var layout = {
-            title: "Chronic Illnesses in Prison Population",
+            title: "Chronic Illnesses in Prison Population by Indigeneity",
             barmode: "group",
             bargap: 0.15,
             bargroupgap: 0.1
@@ -174,7 +175,7 @@
 
         var data = [age_18_24_prisoner_chronic_illness_trace, age_25_34_prisoner_chronic_illness_trace, age_35_44_prisoner_chronic_illness_trace, age_45_54_prisoner_chronic_illness_trace, age_55plus_prisoner_chronic_illness_trace, au_population_chronic_illness_trace];
         var layout = {
-            title: "Chronic Illnesses in Prison Population",
+            title: "Chronic Illnesses in Prison Population by Age",
             barmode: "group",
             bargap: 0.15,
             bargroupgap: 0.1

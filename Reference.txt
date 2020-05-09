@@ -65,3 +65,8 @@ https://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/4364.0.55.001~2017-
 https://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/4364.0.55.001~2017-18~Main%20Features~Smoking~85
 13.8% of pop smoke daily
 1.4% smoke on a less than daily basis
+
+8. Overweight
+Implicated in poorer outcomes with COVID-19, but mortality risk has not been quantified as yet
+https://www.aihw.gov.au/reports/overweight-obesity/overweight-and-obesity-an-interactive-insight/data
+67% of adults are overweight
