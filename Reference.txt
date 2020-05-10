@@ -21,6 +21,7 @@ COVID-19
 https://www.worldometers.info/coronavirus/
 https://www.abc.net.au/news/2020-03-17/coronavirus-cases-data-reveals-how-covid-19-spreads-in-australia/12060704?nw=0
 https://www.health.gov.au/sites/default/files/documents/2020/03/coronavirus-covid-19-information-for-clinicians.pdf 
+https://globalhealth5050.org/covid19/
 
 SEIR model
 https://towardsdatascience.com/social-distancing-to-slow-the-coronavirus-768292f04296

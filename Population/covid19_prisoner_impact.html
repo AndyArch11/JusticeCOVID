@@ -48,22 +48,34 @@
 
         .label {
             display: block; 
-            width: 200px;
+            width: 300px;
         }
     </style>
     <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
-<body>
+<body onload = "drawChart()">
     <h1>Potential Impact to the Australian Prison Population from COVID-19</h1>
     <p>The following values are hypothetical, but based on current pathology as seen in Australia and overseas. Some modelling predicts up to <a href="https://kjzz.org/content/1541266/correctional-model-predicts-99-covid-19-infection-rate-arizona-prisons">99%</a> infection rates in some US prisons!  
         The numbers in these graphs are not meant to be predictive but to provide some indication of the potential magnitude of COVID-19 in the Australian adult prison system.  
         As each of these graphs use generalised COVID-19 parameters from a specific perspective that do not account for all of the various contributing demographics of the Australian prison and staff population, the numbers in these graphs only serve to provide an indication of the range of potential impacts that could result from COVID-19 infections in the Australian prison system, but are not meant to be predictive.</p>
     <div class="tooltip">
         <label class="label" for="infectious_spread">Spread of Infection</label>
-        <input id="infectious_spread" type="number" min="0", max="1", step="0.05", value="0.7", name="Infectious_Spread" title="Spread of Infection"  /> 
-        <span class="tooltiptext">Extent of infected population across Australian prisons, value of between 0 to 1.  Assumes that staff and prisoners have similar rates of infection, as seen from overseas.  Currently, overseas are seeing infection rates up to 70% in individual detention centres with some modelling predicting up to 99% infection rates.</span>        
+        <input id="infectious_spread" type="number" min="0", max="1", step="0.05", value="0.7", name="Infectious_Spread" title="Spread of Infection" onchange="drawChart()" /> 
+        <span class="tooltiptext">Extent of infected population across Australian prisons, value of between 0 to 1.  Assumes that staff and prisoners have similar rates of infection, as seen from overseas.  Currently, overseas are seeing infection rates up to 70% in individual detention centres with some modelling predicting up to 99% infection rates.</span>  
     </div>
     <div><p>N.B The above value will modify all of the graphs on this page.</p></div>
+    <div class="tooltip">
+        <label  class="label" for="fatality_profile">Select Fatality Profile:</label>
+        <select id="fatality_profile" onchange="drawChart()" >
+            <option value="au_fatality_profile" selected>Australian Fatality Profile</option>
+            <option value="cn_fatality_profile">Chinese Fatality Profile</option>
+            <option value="it_fatality_profile">Italian Fatality Profile</option>
+            <option value="kr_fatality_profile">South Korean Profile</option>
+            <option value="es_fatality_profile">Spanish Fatality Profile</option>
+        </select>         
+        <span class="tooltiptext">Different countries have different fatality profiles due to their demographics, interventions, etc.  Changing this value will modify the number of fatalities across age groups.  This allows hypotheticals to see how things could play out differently if there are subsequent waves and infections follow the path of one of these countries.</span>
+    </div>
+    <div><p>N.B The above value will modify the first four graphs on this page.</p></div>
     <div id="covid19_impact" style="width: 1200px; height: 1000px;"></div>
     <div id="covid19_impact_text"></div>
     <div><p>Each of these buckets require some explanation.</p>
@@ -82,6 +94,12 @@
         <dd>The number of people who end up dying from COVID-19, irrespective of what stages they previously went through. The Case Fatality Rate (CFR) varies across countries subject to their demographics and level of testing.  The CFR used here is based on the rates in Australia at the beginning of May 2020.</dd>
     </dl></div>
     <div id="death_by_age" style="width: 1200px; height: 1000px;"></div>
+    <div class="tooltip">
+        <label class="label" for="bame_loading">Indigenous Health Debt Loading</label>
+        <input id="bame_loading" type="number" min="1", max="10", step="0.1", value="3.5", name="Indigenous Loading" title="Indigenous Loading" onchange="drawChart()" /> 
+        <span class="tooltiptext">Additional fatality risk of Aboriginal and Torres Strait Islander people as seen overseas with BAME populations in predominantly white cultures.</span>        
+    </div>
+    <div><p>There is increasing <a href="https://www.thelancet.com/journals/lanres/article/PIIS2213-2600(20)30228-9/fulltext">evidence</a> overseas of the additional <a href="https://www.cebm.net/wp-content/uploads/2020/05/BAME-COVID-Rapid-Data-Evidence-Review-Final-Hidden-in-Plain-Sight-compressed.pdf">fatality</a> risks associated with Black, Asian, Minority Ethnic (<a href="https://www.theguardian.com/world/2020/may/01/british-bame-covid-19-death-rate-more-than-twice-that-of-whites">BAME</a>) populations.  This additional risk factor can be adjusted by the above input.</p></div>
     <div id="death_by_indigeneity_and_age" style="width: 1200px; height: 1000px;"></div>
     <div id="death_by_indigeneity_and_age_per1m" style="width: 1200px; height: 1000px;"></div>
     <div id="death_by_comorbidity_by_sex" style="width: 1200px; height: 1000px;"></div>
@@ -93,7 +111,10 @@
         <p>N.B. Smoking and obesity are also risk factors for COVID-19 outcomes.  However, the risk factor for smoking has not been defined, and while overweight patients are up to 5 times more prevalent in the number of deaths according to a study out of China, the risk of being overweight accounting for other factors has not been defined.  Additionally, I have not been able to find figures on the prevalence of overweight and obesity in the Australian prison population.</p></div>
 
     <script type="text/javascript">
-        const covid19_spread = document.getElementById("infectious_spread").value; 
+        var covid19_spread = document.getElementById("infectious_spread").value;
+        var fatality_profile = document.getElementById("fatality_profile").value;  
+        var bame_loading = document.getElementById("bame_loading").value;  
+
         const chronic_illnesses = ["Cardiovascular Disease", "Diabetes", "Chronic Respiratory Disease", "Asthma", "Hypertension", "Cancer", "Smoking", "Overweight"]
         const chronic_covid19_illnesses = [chronic_illnesses[0], chronic_illnesses[1], chronic_illnesses[2], chronic_illnesses[4], chronic_illnesses[5]];
         const male_prisoner_chronic_illness = [0.04, 0.06, 0.043, 0.13, 0.36, 0.01, 0.74, 0.745];
@@ -105,6 +126,10 @@
         const age1 = ["18-24", "25-34", "35-44", "45-54", "55+"];
         const prisoner_count_by_age1 = [6048, 15522, 11886, 6123, 3468];
         const au_covid19_mortality_by_age1 = [0, 0, 0.002, 0.003, 0.05];
+        const cn_covid19_mortality_by_age1 = [0.002, 0.002, 0.004, 0.013, 0.036];
+        const it_covid19_mortality_by_age1 = [0, 0.003, 0.004, 0.01, 0.035];
+        const kr_covid19_mortality_by_age1 = [0, 0.001, 0.001, 0.005, 0.018];
+        const es_covid19_mortality_by_age1 = [0.002, 0.001, 0.003, 0.004, 0.019];
         const age_18_24_prisoner_chronic_illness = [0.01, 0.01, 0, 0.18, 0.075, 0.01, 0.8, 0.46];
         const age_25_34_prisoner_chronic_illness = [0.02, 0.03, 0, 0.15, 0.075, 0.01, 0.76, 0.577];
         const age_35_44_prisoner_chronic_illness = [0.04, 0.08, 0, 0.15, 0.159, 0.0, 0.79, 0.687];
@@ -112,7 +137,7 @@
         const age_55plus_prisoner_chronic_illness = [0.38, 0.29, 0.049, 0.09, 0.335, 0.00, 0.53, 0.728];
         const covid19_mortality_by_chronic_illness = [0.105, 0.073, 0.063, 0, 0.06, 0.056, 0, 0];  //Smoking and being overweight are known to contribute to negative outcomes, but unknown by how much.  Asthma does not appear to contribute to negative outcomes.
 
-        var prison_infection_grades = ["Uninfected", "Infected Asymptomatic", "Mild Symptomatic", "Hospitalised", "Intensive Care", "Dead"]
+        const prison_infection_grades = ["Uninfected", "Infected Asymptomatic", "Mild Symptomatic", "Hospitalised", "Intensive Care", "Dead"]
         const male_prisoners = 39519;
         const female_prisoners = 3502;
         const male_staff = 18290;
@@ -126,379 +151,415 @@
         const fatality_rate = 0.014 // The current case fatality rate in Australia is ~1.4%, but varies from country to country.
         const critical_care = 0.04 // Australia is currently running at around 3% intensive care of which only about 2% of these require ventilation, but value ranges significantly around the world.  Accepted world critical care rate is around 5%.
         const hospitalised = 0.1 // Australia is currently running at around 5% hospitalisation for identified cases, but value ranges significantly around the world.  Accepted world hospitalisation rate is around 14%.  Assume double the current Australian hospitalisation rate with the additional chronic disease loads in prisons compared to the broader community, as well as higher avg age of the prison workforce compared to the broader community - 38% of prison staff are over 50 years of age
-        const au_male_covid19_mortality = 0.017;
-        const au_female_covid19_mortality = 0.014;
+
+        //[male, female]
+        const au_sex_covid19_mortality = [0.017, 0.014];
+        const cn_sex_covid19_mortality = [0.035, 0.02];
+        const it_sex_covid19_mortality = [0.086, 0.053];
+        const kr_sex_covid19_mortality = [0.012, 0.011];
+        const es_sex_covid19_mortality = [0.068, 0.049];
 
         const age2 = ["20-29", "30-39", "40-49", "50-59", "60+"];
         const au_covid19_mortality_by_age2 = [0, 0, 0.001, 0.002, 0.05];
+        const cn_covid19_mortality_by_age2 = [0.002, 0.002, 0.004, 0.013, 0.036];
+        const it_covid19_mortality_by_age2 = [0, 0.003, 0.004, 0.01, 0.035];
+        const kr_covid19_mortality_by_age2 = [0, 0.001, 0.001, 0.005, 0.018];
+        const es_covid19_mortality_by_age2 = [0.002, 0.001, 0.003, 0.004, 0.019];
         const prisoner_count_by_age2 = [13043, 14584, 8840, 3760, 2040];
         const non_indigenous_prisoner_count_by_age2 = [8439, 10529, 6767, 3118, 1917];
         const indigenous_prisoner_count_by_age2 = [4604, 4055, 2073, 642, 123];   
 
         //Potential impact of COVID-19 infecctions on Australian Prisons
-        var prison_person_types = ["Male Prisoners", "Female Prisoners", "Male Staff", "Female Staff"];
-        let male_prisoners_infected_with_covid19 = male_prisoners * covid19_spread;
-        var male_prisoners_with_covid19 = [Math.round(male_prisoners - male_prisoners_infected_with_covid19), 
-                                            Math.round(male_prisoners_infected_with_covid19 * asymptomatic), 
-                                            Math.round(male_prisoners_infected_with_covid19 * symptomatic), 
-                                            Math.round(male_prisoners_infected_with_covid19 * hospitalised), 
-                                            Math.round(male_prisoners_infected_with_covid19 * critical_care), 
-                                            Math.round(male_prisoners_infected_with_covid19 * au_male_covid19_mortality)]
-        let female_prisoners_infected_with_covid19 = female_prisoners * covid19_spread;
-        var female_prisoners_with_covid19 = [Math.round(female_prisoners - female_prisoners_infected_with_covid19), 
-                                            Math.round(female_prisoners_infected_with_covid19 * asymptomatic), 
-                                            Math.round(female_prisoners_infected_with_covid19 * symptomatic), 
-                                            Math.round(female_prisoners_infected_with_covid19 * hospitalised), 
-                                            Math.round(female_prisoners_infected_with_covid19 * critical_care), 
-                                            Math.round(female_prisoners_infected_with_covid19 * au_female_covid19_mortality)]        
-        let male_staff_infected_with_covid19 = male_staff * covid19_spread;
-        var male_staff_with_covid19 = [Math.round(male_staff - male_staff_infected_with_covid19), 
-                                            Math.round(male_staff_infected_with_covid19 * asymptomatic), 
-                                            Math.round(male_staff_infected_with_covid19 * symptomatic), 
-                                            Math.round(male_staff_infected_with_covid19 * hospitalised), 
-                                            Math.round(male_staff_infected_with_covid19 * critical_care), 
-                                            Math.round(male_staff_infected_with_covid19 * au_male_covid19_mortality)]
-        let female_staff_infected_with_covid19 = female_staff * covid19_spread;
-        var female_staff_with_covid19 = [Math.round(female_staff - female_staff_infected_with_covid19), 
-                                            Math.round(female_staff_infected_with_covid19 * asymptomatic), 
-                                            Math.round(female_staff_infected_with_covid19 * symptomatic),                                             
-                                            Math.round(female_staff_infected_with_covid19 * hospitalised), 
-                                            Math.round(female_staff_infected_with_covid19 * critical_care), 
-                                            Math.round(female_staff_infected_with_covid19 * au_female_covid19_mortality)]
+        const prison_person_types = ["Male Prisoners", "Female Prisoners", "Male Staff", "Female Staff"];
 
-        var uninfected_trace = {
-            y: [male_prisoners_with_covid19[0], female_prisoners_with_covid19[0], male_staff_with_covid19[0], female_staff_with_covid19[0]],
-            x: prison_person_types,
-            type: "bar",
-            name: prison_infection_grades[0],
-            opacity: 0.6,
-            marker: {
-                color: 'green',
-            },
-        };
-        var asymptomatic_trace = {
-            y: [male_prisoners_with_covid19[1], female_prisoners_with_covid19[1], male_staff_with_covid19[1], female_staff_with_covid19[1]],
-            x: prison_person_types,
-            type: "bar",
-            name: prison_infection_grades[1],
-            opacity: 1,
-            marker: {
-                color: 'yellow',
-            },
-        };
-        var infected_trace = {
-            y: [male_prisoners_with_covid19[2], female_prisoners_with_covid19[2], male_staff_with_covid19[2], female_staff_with_covid19[2]],
-            x: prison_person_types,
-            type: "bar",
-            name: prison_infection_grades[2],
-            opacity: 0.8,
-            marker: {
-                color: 'orange',
-            },
-        };
-        var hospitalised_trace = {
-            y: [male_prisoners_with_covid19[3], female_prisoners_with_covid19[3], male_staff_with_covid19[3], female_staff_with_covid19[3]],
-            x: prison_person_types,
-            type: "bar",
-            name: prison_infection_grades[3],
-            opacity: 0.6,
-            marker: {
-                color: 'red',
-            },
-        };
-        var intensive_care_trace = {
-            y: [male_prisoners_with_covid19[4], female_prisoners_with_covid19[4], male_staff_with_covid19[4], female_staff_with_covid19[4]],
-            x: prison_person_types,
-            type: "bar",
-            name: prison_infection_grades[4],
-            opacity: 0.6,
-            marker: {
-                color: 'purple',
-            },
-        };
-        var dead_trace = {
-            y: [male_prisoners_with_covid19[5], female_prisoners_with_covid19[5], male_staff_with_covid19[5], female_staff_with_covid19[5]],
-            x: prison_person_types,
-            type: "bar",
-            name: prison_infection_grades[5],
-            opacity: 0.6,
-            marker: {
-                color: 'black',
-            },
-        };
+        function drawChart() {
+            covid19_spread = document.getElementById("infectious_spread").value; 
+            fatality_profile = document.getElementById("fatality_profile").value;  
+            bame_loading = document.getElementById("bame_loading").value; 
 
-        var data = [uninfected_trace, asymptomatic_trace, infected_trace, hospitalised_trace, intensive_care_trace, dead_trace];
-        var layout = {
-            title: "Potential Covid-19 Prison Impact Scenario",
-            barmode: "stack",
-            bargap: 0.15,
-            bargroupgap: 0.1
-        };
-        Plotly.newPlot('covid19_impact', data, layout);
-        document.getElementById("covid19_impact_text").innerHTML = "<p>Values used of infected cases - Infected: " +  covid19_spread * 100 + "% of population, Asymptomatic: " + Math.round(asymptomatic * 1000)/10 + "% of cases, Mild Symptomatic: " + Math.round(symptomatic * 1000)/10 + "% of cases, Hospitalised: " + Math.round(hospitalised * 1000)/10 + "% of cases, Intensive Care: " + Math.round(critical_care * 1000)/10 + "% of cases, Male Mortality: " + Math.round(au_male_covid19_mortality * 1000)/10 + "% of male cases, Female Mortality: " + Math.round(au_female_covid19_mortality * 1000)/10 + "% of female cases.</p>";
+            if (fatality_profile == "au_fatality_profile") {
+                covid19_mortality_by_age1 = au_covid19_mortality_by_age1;
+                covid19_mortality_by_age2 = au_covid19_mortality_by_age2;
+                sex_covid19_mortality = au_sex_covid19_mortality;
+            } else if (fatality_profile == "cn_fatality_profile") {
+                covid19_mortality_by_age1 = cn_covid19_mortality_by_age1;
+                covid19_mortality_by_age2 = cn_covid19_mortality_by_age2;
+                sex_covid19_mortality = cn_sex_covid19_mortality;
+            } else if (fatality_profile == "it_fatality_profile") {
+                covid19_mortality_by_age1 = it_covid19_mortality_by_age1;
+                covid19_mortality_by_age2 = it_covid19_mortality_by_age2;
+                sex_covid19_mortality = it_sex_covid19_mortality;
+            } else if (fatality_profile == "kr_fatality_profile") {
+                covid19_mortality_by_age1 = kr_covid19_mortality_by_age1;
+                covid19_mortality_by_age2 = kr_covid19_mortality_by_age2;
+                sex_covid19_mortality = kr_sex_covid19_mortality;
+            } else if (fatality_profile == "es_fatality_profile") {
+                covid19_mortality_by_age1 = es_covid19_mortality_by_age1;
+                covid19_mortality_by_age2 = es_covid19_mortality_by_age2;
+                sex_covid19_mortality = es_sex_covid19_mortality;
+            }
 
+            let male_prisoners_infected_with_covid19 = male_prisoners * covid19_spread;
+            var male_prisoners_with_covid19 = [Math.round(male_prisoners - male_prisoners_infected_with_covid19), 
+                                                Math.round(male_prisoners_infected_with_covid19 * asymptomatic), 
+                                                Math.round(male_prisoners_infected_with_covid19 * symptomatic), 
+                                                Math.round(male_prisoners_infected_with_covid19 * hospitalised), 
+                                                Math.round(male_prisoners_infected_with_covid19 * critical_care), 
+                                                Math.round(male_prisoners_infected_with_covid19 * sex_covid19_mortality[0])]
+            let female_prisoners_infected_with_covid19 = female_prisoners * covid19_spread;
+            var female_prisoners_with_covid19 = [Math.round(female_prisoners - female_prisoners_infected_with_covid19), 
+                                                Math.round(female_prisoners_infected_with_covid19 * asymptomatic), 
+                                                Math.round(female_prisoners_infected_with_covid19 * symptomatic), 
+                                                Math.round(female_prisoners_infected_with_covid19 * hospitalised), 
+                                                Math.round(female_prisoners_infected_with_covid19 * critical_care), 
+                                                Math.round(female_prisoners_infected_with_covid19 * sex_covid19_mortality[1])]        
+            let male_staff_infected_with_covid19 = male_staff * covid19_spread;
+            var male_staff_with_covid19 = [Math.round(male_staff - male_staff_infected_with_covid19), 
+                                                Math.round(male_staff_infected_with_covid19 * asymptomatic), 
+                                                Math.round(male_staff_infected_with_covid19 * symptomatic), 
+                                                Math.round(male_staff_infected_with_covid19 * hospitalised), 
+                                                Math.round(male_staff_infected_with_covid19 * critical_care), 
+                                                Math.round(male_staff_infected_with_covid19 * sex_covid19_mortality[0])]
+            let female_staff_infected_with_covid19 = female_staff * covid19_spread;
+            var female_staff_with_covid19 = [Math.round(female_staff - female_staff_infected_with_covid19), 
+                                                Math.round(female_staff_infected_with_covid19 * asymptomatic), 
+                                                Math.round(female_staff_infected_with_covid19 * symptomatic),                                             
+                                                Math.round(female_staff_infected_with_covid19 * hospitalised), 
+                                                Math.round(female_staff_infected_with_covid19 * critical_care), 
+                                                Math.round(female_staff_infected_with_covid19 * sex_covid19_mortality[1])]
 
+            var uninfected_trace = {
+                y: [male_prisoners_with_covid19[0], female_prisoners_with_covid19[0], male_staff_with_covid19[0], female_staff_with_covid19[0]],
+                x: prison_person_types,
+                type: "bar",
+                name: prison_infection_grades[0],
+                opacity: 0.6,
+                marker: {
+                    color: 'green',
+                },
+            };
+            var asymptomatic_trace = {
+                y: [male_prisoners_with_covid19[1], female_prisoners_with_covid19[1], male_staff_with_covid19[1], female_staff_with_covid19[1]],
+                x: prison_person_types,
+                type: "bar",
+                name: prison_infection_grades[1],
+                opacity: 1,
+                marker: {
+                    color: 'yellow',
+                },
+            };
+            var infected_trace = {
+                y: [male_prisoners_with_covid19[2], female_prisoners_with_covid19[2], male_staff_with_covid19[2], female_staff_with_covid19[2]],
+                x: prison_person_types,
+                type: "bar",
+                name: prison_infection_grades[2],
+                opacity: 0.8,
+                marker: {
+                    color: 'orange',
+                },
+            };
+            var hospitalised_trace = {
+                y: [male_prisoners_with_covid19[3], female_prisoners_with_covid19[3], male_staff_with_covid19[3], female_staff_with_covid19[3]],
+                x: prison_person_types,
+                type: "bar",
+                name: prison_infection_grades[3],
+                opacity: 0.6,
+                marker: {
+                    color: 'red',
+                },
+            };
+            var intensive_care_trace = {
+                y: [male_prisoners_with_covid19[4], female_prisoners_with_covid19[4], male_staff_with_covid19[4], female_staff_with_covid19[4]],
+                x: prison_person_types,
+                type: "bar",
+                name: prison_infection_grades[4],
+                opacity: 0.6,
+                marker: {
+                    color: 'purple',
+                },
+            };
+            var dead_trace = {
+                y: [male_prisoners_with_covid19[5], female_prisoners_with_covid19[5], male_staff_with_covid19[5], female_staff_with_covid19[5]],
+                x: prison_person_types,
+                type: "bar",
+                name: prison_infection_grades[5],
+                opacity: 0.6,
+                marker: {
+                    color: 'black',
+                },
+            };
 
-        //Death count of Prisoners by Age
-        prisoner_death_by_age = [Math.round(prisoner_count_by_age2[0] * au_covid19_mortality_by_age2[0] * covid19_spread), 
-                                    Math.round(prisoner_count_by_age2[1] * au_covid19_mortality_by_age2[1] * covid19_spread), 
-                                    Math.round(prisoner_count_by_age2[2] * au_covid19_mortality_by_age2[2] * covid19_spread), 
-                                    Math.round(prisoner_count_by_age2[3] * au_covid19_mortality_by_age2[3] * covid19_spread), 
-                                    Math.round(prisoner_count_by_age2[4] * au_covid19_mortality_by_age2[4] * covid19_spread)]
-        var prisoner_death_by_age_trace = {
-            y: prisoner_death_by_age,
-            x: age2,
-            type: "bar",
-            name: "Deaths",
-            opacity: 0.6,
-            marker: {
-                color: 'black',
-            },
-        };
-
-        var data = [prisoner_death_by_age_trace];
-        var layout = {
-            title: "Projected Covid-19 Death Count of Infected Prisoners by Age",
-            bargap: 0.15
-        };
-        Plotly.newPlot('death_by_age', data, layout);
-
-
-
-        //Death count by Indigeneity and Age
-        var indigenous_prisoner_death_by_age = [Math.round(indigenous_prisoner_count_by_age2[0] * au_covid19_mortality_by_age2[0] * covid19_spread), 
-                                                Math.round(indigenous_prisoner_count_by_age2[1] * au_covid19_mortality_by_age2[1] * covid19_spread), 
-                                                Math.round(indigenous_prisoner_count_by_age2[2] * au_covid19_mortality_by_age2[2] * covid19_spread), 
-                                                Math.round(indigenous_prisoner_count_by_age2[3] * au_covid19_mortality_by_age2[3] * covid19_spread), 
-                                                Math.round(indigenous_prisoner_count_by_age2[4] * au_covid19_mortality_by_age2[4] * covid19_spread)];
-        var non_indigenous_prisoner_death_by_age = [Math.round(non_indigenous_prisoner_count_by_age2[0] * au_covid19_mortality_by_age2[0] * covid19_spread), 
-                                                Math.round(non_indigenous_prisoner_count_by_age2[1] * au_covid19_mortality_by_age2[1] * covid19_spread), 
-                                                Math.round(non_indigenous_prisoner_count_by_age2[2] * au_covid19_mortality_by_age2[2] * covid19_spread), 
-                                                Math.round(non_indigenous_prisoner_count_by_age2[3] * au_covid19_mortality_by_age2[3] * covid19_spread), 
-                                                Math.round(non_indigenous_prisoner_count_by_age2[4] * au_covid19_mortality_by_age2[4] * covid19_spread)];
-        var indigenous_prisoner_death_by_age_trace = {
-            y: indigenous_prisoner_death_by_age,
-            x: age2,
-            type: "bar",
-            name: "Indigenous Prisoner Deaths",
-            opacity: 0.6,
-            marker: {
-                color: 'red',
-            },
-        };
-        var non_indigenous_prisoner_death_by_age_trace = {
-            y: non_indigenous_prisoner_death_by_age,
-            x: age2,
-            type: "bar",
-            name: "non_Indigenous Prisoner Deaths",
-            opacity: 0.5,
-            marker: {
-                color: 'blue',
-            },
-        };
-
-        var data = [indigenous_prisoner_death_by_age_trace, non_indigenous_prisoner_death_by_age_trace];
-        var layout = {
-            title: "Projected Covid-19 Death Count of Infected Prisoners by Indigeneity and Age",
-            bargap: 0.15
-        };
-        Plotly.newPlot('death_by_indigeneity_and_age', data, layout);
+            var data = [uninfected_trace, asymptomatic_trace, infected_trace, hospitalised_trace, intensive_care_trace, dead_trace];
+            var layout = {
+                title: "Potential Covid-19 Prison Impact Scenario",
+                barmode: "stack",
+                bargap: 0.15,
+                bargroupgap: 0.1
+            };
+            Plotly.newPlot('covid19_impact', data, layout);
+            document.getElementById("covid19_impact_text").innerHTML = "<p>Values used of infected cases - Infected: " +  covid19_spread * 100 + "% of population, Asymptomatic: " + Math.round(asymptomatic * 1000)/10 + "% of cases, Mild Symptomatic: " + Math.round(symptomatic * 1000)/10 + "% of cases, Hospitalised: " + Math.round(hospitalised * 1000)/10 + "% of cases, Intensive Care: " + Math.round(critical_care * 1000)/10 + "% of cases, Male Mortality: " + Math.round(sex_covid19_mortality[0] * 1000)/10 + "% of male cases, Female Mortality: " + Math.round(sex_covid19_mortality[1] * 1000)/10 + "% of female cases.</p>";
 
 
 
-        //Death count by Indigeneity and Age per 1,000
-        var indigenous_prisoner_death_per1k_by_age = [Math.round(indigenous_prisoner_count_by_age2[0] * au_covid19_mortality_by_age2[0] * covid19_spread)/(indigenous_population/1000000), 
-                                                        Math.round(indigenous_prisoner_count_by_age2[1] * au_covid19_mortality_by_age2[1] * covid19_spread)/(indigenous_population/1000000), 
-                                                        Math.round(indigenous_prisoner_count_by_age2[2] * au_covid19_mortality_by_age2[2] * covid19_spread)/(indigenous_population/1000000), 
-                                                        Math.round(indigenous_prisoner_count_by_age2[3] * au_covid19_mortality_by_age2[3] * covid19_spread)/(indigenous_population/1000000), 
-                                                        Math.round(indigenous_prisoner_count_by_age2[4] * au_covid19_mortality_by_age2[4] * covid19_spread)/(indigenous_population/1000000)];
-        var non_indigenous_prisoner_death__per1k_by_age = [Math.round(non_indigenous_prisoner_count_by_age2[0] * au_covid19_mortality_by_age2[0] * covid19_spread)/(non_indigenous_population/1000000), 
-                                                        Math.round(non_indigenous_prisoner_count_by_age2[1] * au_covid19_mortality_by_age2[1] * covid19_spread)/(non_indigenous_population/1000000), 
-                                                        Math.round(non_indigenous_prisoner_count_by_age2[2] * au_covid19_mortality_by_age2[2] * covid19_spread)/(non_indigenous_population/1000000), 
-                                                        Math.round(non_indigenous_prisoner_count_by_age2[3] * au_covid19_mortality_by_age2[3] * covid19_spread)/(non_indigenous_population/1000000), 
-                                                        Math.round(non_indigenous_prisoner_count_by_age2[4] * au_covid19_mortality_by_age2[4] * covid19_spread)/(non_indigenous_population/1000000)];
-        var indigenous_prisoner_death_per1k_by_age_trace = {
-            y: indigenous_prisoner_death_per1k_by_age,
-            x: age2,
-            type: "bar",
-            name: "Indigenous Prisoner Deaths per 1,000,000",
-            opacity: 0.6,
-            marker: {
-                color: 'red',
-            },
-        };
-        var non_indigenous_prisoner_death__per1k_by_age_trace = {
-            y: non_indigenous_prisoner_death__per1k_by_age,
-            x: age2,
-            type: "bar",
-            name: "non_Indigenous Prisoner Deaths per 1,000,000",
-            opacity: 0.5,
-            marker: {
-                color: 'blue',
-            },
-        };
+            //Death count of Prisoners by Age
+            prisoner_death_by_age = [Math.round(prisoner_count_by_age2[0] * covid19_mortality_by_age2[0] * covid19_spread), 
+                                        Math.round(prisoner_count_by_age2[1] * covid19_mortality_by_age2[1] * covid19_spread), 
+                                        Math.round(prisoner_count_by_age2[2] * covid19_mortality_by_age2[2] * covid19_spread), 
+                                        Math.round(prisoner_count_by_age2[3] * covid19_mortality_by_age2[3] * covid19_spread), 
+                                        Math.round(prisoner_count_by_age2[4] * covid19_mortality_by_age2[4] * covid19_spread)]
+            var prisoner_death_by_age_trace = {
+                y: prisoner_death_by_age,
+                x: age2,
+                type: "bar",
+                name: "Deaths",
+                opacity: 0.6,
+                marker: {
+                    color: 'black',
+                },
+            };
 
-        var data = [indigenous_prisoner_death_per1k_by_age_trace, non_indigenous_prisoner_death__per1k_by_age_trace];
-        var layout = {
-            title: "Projected Covid-19 Death Count of Infected Prisoners by Indigeneity and Age per 1,000,000",
-            bargap: 0.15
-        };
-        Plotly.newPlot('death_by_indigeneity_and_age_per1m', data, layout);
+            var data = [prisoner_death_by_age_trace];
+            var layout = {
+                title: "Projected Covid-19 Death Count of Infected Prisoners by Age",
+                bargap: 0.15
+            };
+            Plotly.newPlot('death_by_age', data, layout);
 
 
 
-        //Death by Comorbidity by Sex
-        var female_comorbidity_deaths = [Math.round(female_prisoners * female_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
-                                        Math.round(female_prisoners * female_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
-                                        Math.round(female_prisoners * female_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread), 
-                                        Math.round(female_prisoners * female_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread), 
-                                        Math.round(female_prisoners * female_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];
-        var male_comorbidity_deaths = [Math.round(male_prisoners * male_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
-                                        Math.round(male_prisoners * male_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
-                                        Math.round(male_prisoners * male_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread), 
-                                        Math.round(male_prisoners * male_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread), 
-                                        Math.round(male_prisoners * male_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];
-        var male_prisoner_comorbidity_death_trace = {
-            y: male_comorbidity_deaths,
-            x: chronic_covid19_illnesses,
-            type: "bar",
-            name: "Male Prisoner Deaths",
-            opacity: 0.5,
-            marker: {
-                color: 'blue',
-            },
-        };
-        var female_prisoner_comorbidity_death_trace = {
-            y: female_comorbidity_deaths,
-            x: chronic_covid19_illnesses,
-            type: "bar",
-            name: "Female Prisoner Deaths",
-            opacity: 0.8,
-            marker: {
-                color: 'violet',
-            },
-        };
+            //Death count by Indigeneity and Age
+            var indigenous_prisoner_death_by_age = [Math.round(indigenous_prisoner_count_by_age2[0] * covid19_mortality_by_age2[0] * covid19_spread * bame_loading), 
+                                                    Math.round(indigenous_prisoner_count_by_age2[1] * covid19_mortality_by_age2[1] * covid19_spread * bame_loading), 
+                                                    Math.round(indigenous_prisoner_count_by_age2[2] * covid19_mortality_by_age2[2] * covid19_spread * bame_loading), 
+                                                    Math.round(indigenous_prisoner_count_by_age2[3] * covid19_mortality_by_age2[3] * covid19_spread * bame_loading), 
+                                                    Math.round(indigenous_prisoner_count_by_age2[4] * covid19_mortality_by_age2[4] * covid19_spread * bame_loading)];
+            var non_indigenous_prisoner_death_by_age = [Math.round(non_indigenous_prisoner_count_by_age2[0] * covid19_mortality_by_age2[0] * covid19_spread), 
+                                                    Math.round(non_indigenous_prisoner_count_by_age2[1] * covid19_mortality_by_age2[1] * covid19_spread), 
+                                                    Math.round(non_indigenous_prisoner_count_by_age2[2] * covid19_mortality_by_age2[2] * covid19_spread), 
+                                                    Math.round(non_indigenous_prisoner_count_by_age2[3] * covid19_mortality_by_age2[3] * covid19_spread), 
+                                                    Math.round(non_indigenous_prisoner_count_by_age2[4] * covid19_mortality_by_age2[4] * covid19_spread)];
+            var indigenous_prisoner_death_by_age_trace = {
+                y: indigenous_prisoner_death_by_age,
+                x: age2,
+                type: "bar",
+                name: "Indigenous Prisoner Deaths",
+                opacity: 0.6,
+                marker: {
+                    color: 'red',
+                },
+            };
+            var non_indigenous_prisoner_death_by_age_trace = {
+                y: non_indigenous_prisoner_death_by_age,
+                x: age2,
+                type: "bar",
+                name: "non_Indigenous Prisoner Deaths",
+                opacity: 0.5,
+                marker: {
+                    color: 'blue',
+                },
+            };
 
-        var data = [male_prisoner_comorbidity_death_trace, female_prisoner_comorbidity_death_trace];
-        var layout = {
-            title: "Projected COVID-19 Deaths Associated with Prisoner Comorbidities by Sex",
-            barmode: "group",
-            bargap: 0.15,
-            bargroupgap: 0.1
-        };
-        Plotly.newPlot('death_by_comorbidity_by_sex', data, layout);
-
-
-        //Death by Comorbidity by Indigeneity
-        var indigenous_comorbidity_deaths = [Math.round(indigenous_prisoners * indigenous_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
-                                            Math.round(indigenous_prisoners * indigenous_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
-                                            Math.round(indigenous_prisoners * indigenous_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread), 
-                                            Math.round(indigenous_prisoners * indigenous_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread), 
-                                            Math.round(indigenous_prisoners * indigenous_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];
-        var non_indigenous_comorbidity_deaths = [Math.round(non_indigenous_prisoners * non_indigenous_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
-                                            Math.round(non_indigenous_prisoners * non_indigenous_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
-                                            Math.round(non_indigenous_prisoners * non_indigenous_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread), 
-                                            Math.round(non_indigenous_prisoners * non_indigenous_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread), 
-                                            Math.round(non_indigenous_prisoners * non_indigenous_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];
-        var indigenous_prisoner_comorbidity_death_trace = {
-            y: indigenous_comorbidity_deaths,
-            x: chronic_covid19_illnesses,
-            type: "bar",
-            name: "Indigenous Prisoner Deaths",
-            opacity: 0.6,
-            marker: {
-                color: 'red',
-            },
-        };
-        var non_indigenous_comorbidity_deaths_trace = {
-            y: non_indigenous_comorbidity_deaths,
-            x: chronic_covid19_illnesses,
-            type: "bar",
-            name: "non-Indigenous Prisoner Deaths",
-            opacity: 0.5,
-            marker: {
-                color: 'blue',
-            },
-        };
-
-        var data = [indigenous_prisoner_comorbidity_death_trace, non_indigenous_comorbidity_deaths_trace];
-        var layout = {
-            title: "Projected COVID-19 Deaths Associated with Prisoner Comorbidities by Indigeniety",
-            barmode: "group",
-            bargap: 0.15,
-            bargroupgap: 0.1
-        };
-        Plotly.newPlot('death_by_comormidity_by_indigeneity', data, layout);
-
-
-        //Chronic Illnesses in Prison Population by Age
-        var age_18_24_comorbidity_deaths = [Math.round(prisoner_count_by_age1[0] * age_18_24_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[0] * age_18_24_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[0] * age_18_24_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[0] * age_18_24_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[0] * age_18_24_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];        
-        var age_25_34_comorbidity_deaths = [Math.round(prisoner_count_by_age1[1] * age_25_34_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[1] * age_25_34_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[1] * age_25_34_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[1] * age_25_34_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[1] * age_25_34_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];        
-        var age_35_44_comorbidity_deaths = [Math.round(prisoner_count_by_age1[2] * age_35_44_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[2] * age_35_44_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[2] * age_35_44_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[2] * age_35_44_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[2] * age_35_44_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];        
-        var age_45_54_comorbidity_deaths = [Math.round(prisoner_count_by_age1[3] * age_45_54_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[3] * age_45_54_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[3] * age_45_54_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[3] * age_45_54_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[3] * age_45_54_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];        
-        var age_55plus_comorbidity_deaths = [Math.round(prisoner_count_by_age1[4] * age_55plus_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[4] * age_55plus_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
-                                            Math.round(prisoner_count_by_age1[4] * age_55plus_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread),
-                                            Math.round(prisoner_count_by_age1[4] * age_55plus_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread),
-                                            Math.round(prisoner_count_by_age1[4] * age_55plus_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];
-        var age_18_24_comorbidity_deaths_trace = {
-            y: age_18_24_comorbidity_deaths,
-            x: chronic_covid19_illnesses,
-            type: "bar",
-            name: age1[0],
-        };
-        var age_25_34_comorbidity_deathss_trace = {
-            y: age_25_34_comorbidity_deaths,
-            x: chronic_covid19_illnesses,
-            type: "bar",
-            name: age1[1],
-        };
-        var age_35_44_comorbidity_deaths_trace = {
-            y: age_35_44_comorbidity_deaths,
-            x: chronic_covid19_illnesses,
-            type: "bar",
-            name: age1[2],
-        };
-        var age_45_54_comorbidity_deaths_trace = {
-            y: age_45_54_comorbidity_deaths,
-            x: chronic_covid19_illnesses,
-            type: "bar",
-            name: age1[3],
-        };
-        var age_55plus_comorbidity_deaths_trace = {
-            y: age_55plus_comorbidity_deaths,
-            x: chronic_covid19_illnesses,
-            type: "bar",
-            name: age1[4],
-        };
-
-        var data = [age_18_24_comorbidity_deaths_trace, age_25_34_comorbidity_deathss_trace, age_35_44_comorbidity_deaths_trace, age_45_54_comorbidity_deaths_trace, age_55plus_comorbidity_deaths_trace];
-        var layout = {
-            title: "Projected COVID-19 Deaths Associated with Prisoner Comorbidities by Age",
-            barmode: "group",
-            bargap: 0.15,
-            bargroupgap: 0.1
-        };
-        Plotly.newPlot('death_by_comormidity_by_age', data, layout);
+            var data = [indigenous_prisoner_death_by_age_trace, non_indigenous_prisoner_death_by_age_trace];
+            var layout = {
+                title: "Projected Covid-19 Death Count of Infected Prisoners by Indigeneity and Age",
+                bargap: 0.15
+            };
+            Plotly.newPlot('death_by_indigeneity_and_age', data, layout);
 
 
 
+            //Death count by Indigeneity and Age per 1,000,000
+            var indigenous_prisoner_death_per1k_by_age = [Math.round(indigenous_prisoner_count_by_age2[0] * covid19_mortality_by_age2[0] * covid19_spread)/(indigenous_population/1000000) * bame_loading, 
+                                                            Math.round(indigenous_prisoner_count_by_age2[1] * covid19_mortality_by_age2[1] * covid19_spread)/(indigenous_population/1000000) * bame_loading, 
+                                                            Math.round(indigenous_prisoner_count_by_age2[2] * covid19_mortality_by_age2[2] * covid19_spread)/(indigenous_population/1000000) * bame_loading, 
+                                                            Math.round(indigenous_prisoner_count_by_age2[3] * covid19_mortality_by_age2[3] * covid19_spread)/(indigenous_population/1000000) * bame_loading, 
+                                                            Math.round(indigenous_prisoner_count_by_age2[4] * covid19_mortality_by_age2[4] * covid19_spread)/(indigenous_population/1000000) * bame_loading];
+            var non_indigenous_prisoner_death__per1k_by_age = [Math.round(non_indigenous_prisoner_count_by_age2[0] * covid19_mortality_by_age2[0] * covid19_spread)/(non_indigenous_population/1000000), 
+                                                            Math.round(non_indigenous_prisoner_count_by_age2[1] * covid19_mortality_by_age2[1] * covid19_spread)/(non_indigenous_population/1000000), 
+                                                            Math.round(non_indigenous_prisoner_count_by_age2[2] * covid19_mortality_by_age2[2] * covid19_spread)/(non_indigenous_population/1000000), 
+                                                            Math.round(non_indigenous_prisoner_count_by_age2[3] * covid19_mortality_by_age2[3] * covid19_spread)/(non_indigenous_population/1000000), 
+                                                            Math.round(non_indigenous_prisoner_count_by_age2[4] * covid19_mortality_by_age2[4] * covid19_spread)/(non_indigenous_population/1000000)];
+            var indigenous_prisoner_death_per1k_by_age_trace = {
+                y: indigenous_prisoner_death_per1k_by_age,
+                x: age2,
+                type: "bar",
+                name: "Indigenous Prisoner Deaths per 1,000,000",
+                opacity: 0.6,
+                marker: {
+                    color: 'red',
+                },
+            };
+            var non_indigenous_prisoner_death__per1k_by_age_trace = {
+                y: non_indigenous_prisoner_death__per1k_by_age,
+                x: age2,
+                type: "bar",
+                name: "non_Indigenous Prisoner Deaths per 1,000,000",
+                opacity: 0.5,
+                marker: {
+                    color: 'blue',
+                },
+            };
+
+            var data = [indigenous_prisoner_death_per1k_by_age_trace, non_indigenous_prisoner_death__per1k_by_age_trace];
+            var layout = {
+                title: "Projected Covid-19 Death Count of Infected Prisoners by Indigeneity and Age per 1,000,000",
+                bargap: 0.15
+            };
+            Plotly.newPlot('death_by_indigeneity_and_age_per1m', data, layout);
+
+
+
+            //Death by Comorbidity by Sex
+            var female_comorbidity_deaths = [Math.round(female_prisoners * female_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
+                                            Math.round(female_prisoners * female_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
+                                            Math.round(female_prisoners * female_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread), 
+                                            Math.round(female_prisoners * female_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread), 
+                                            Math.round(female_prisoners * female_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];
+            var male_comorbidity_deaths = [Math.round(male_prisoners * male_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
+                                            Math.round(male_prisoners * male_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
+                                            Math.round(male_prisoners * male_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread), 
+                                            Math.round(male_prisoners * male_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread), 
+                                            Math.round(male_prisoners * male_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];
+            var male_prisoner_comorbidity_death_trace = {
+                y: male_comorbidity_deaths,
+                x: chronic_covid19_illnesses,
+                type: "bar",
+                name: "Male Prisoner Deaths",
+                opacity: 0.5,
+                marker: {
+                    color: 'blue',
+                },
+            };
+            var female_prisoner_comorbidity_death_trace = {
+                y: female_comorbidity_deaths,
+                x: chronic_covid19_illnesses,
+                type: "bar",
+                name: "Female Prisoner Deaths",
+                opacity: 0.8,
+                marker: {
+                    color: 'violet',
+                },
+            };
+
+            var data = [male_prisoner_comorbidity_death_trace, female_prisoner_comorbidity_death_trace];
+            var layout = {
+                title: "Projected COVID-19 Deaths Associated with Prisoner Comorbidities by Sex",
+                barmode: "group",
+                bargap: 0.15,
+                bargroupgap: 0.1
+            };
+            Plotly.newPlot('death_by_comorbidity_by_sex', data, layout);
+
+
+            //Death by Comorbidity by Indigeneity
+            var indigenous_comorbidity_deaths = [Math.round(indigenous_prisoners * indigenous_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread * bame_loading), 
+                                                Math.round(indigenous_prisoners * indigenous_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread * bame_loading), 
+                                                Math.round(indigenous_prisoners * indigenous_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread * bame_loading), 
+                                                Math.round(indigenous_prisoners * indigenous_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread * bame_loading), 
+                                                Math.round(indigenous_prisoners * indigenous_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread * bame_loading)];
+            var non_indigenous_comorbidity_deaths = [Math.round(non_indigenous_prisoners * non_indigenous_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
+                                                Math.round(non_indigenous_prisoners * non_indigenous_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
+                                                Math.round(non_indigenous_prisoners * non_indigenous_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread), 
+                                                Math.round(non_indigenous_prisoners * non_indigenous_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread), 
+                                                Math.round(non_indigenous_prisoners * non_indigenous_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];
+            var indigenous_prisoner_comorbidity_death_trace = {
+                y: indigenous_comorbidity_deaths,
+                x: chronic_covid19_illnesses,
+                type: "bar",
+                name: "Indigenous Prisoner Deaths",
+                opacity: 0.6,
+                marker: {
+                    color: 'red',
+                },
+            };
+            var non_indigenous_comorbidity_deaths_trace = {
+                y: non_indigenous_comorbidity_deaths,
+                x: chronic_covid19_illnesses,
+                type: "bar",
+                name: "non-Indigenous Prisoner Deaths",
+                opacity: 0.5,
+                marker: {
+                    color: 'blue',
+                },
+            };
+
+            var data = [indigenous_prisoner_comorbidity_death_trace, non_indigenous_comorbidity_deaths_trace];
+            var layout = {
+                title: "Projected COVID-19 Deaths Associated with Prisoner Comorbidities by Indigeniety",
+                barmode: "group",
+                bargap: 0.15,
+                bargroupgap: 0.1
+            };
+            Plotly.newPlot('death_by_comormidity_by_indigeneity', data, layout);
+
+
+            //Chronic Illnesses in Prison Population by Age
+            var age_18_24_comorbidity_deaths = [Math.round(prisoner_count_by_age1[0] * age_18_24_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[0] * age_18_24_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[0] * age_18_24_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[0] * age_18_24_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[0] * age_18_24_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];        
+            var age_25_34_comorbidity_deaths = [Math.round(prisoner_count_by_age1[1] * age_25_34_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[1] * age_25_34_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[1] * age_25_34_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[1] * age_25_34_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[1] * age_25_34_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];        
+            var age_35_44_comorbidity_deaths = [Math.round(prisoner_count_by_age1[2] * age_35_44_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[2] * age_35_44_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[2] * age_35_44_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[2] * age_35_44_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[2] * age_35_44_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];        
+            var age_45_54_comorbidity_deaths = [Math.round(prisoner_count_by_age1[3] * age_45_54_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[3] * age_45_54_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[3] * age_45_54_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[3] * age_45_54_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[3] * age_45_54_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];        
+            var age_55plus_comorbidity_deaths = [Math.round(prisoner_count_by_age1[4] * age_55plus_prisoner_chronic_illness[0] * covid19_mortality_by_chronic_illness[0] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[4] * age_55plus_prisoner_chronic_illness[1] * covid19_mortality_by_chronic_illness[1] * covid19_spread), 
+                                                Math.round(prisoner_count_by_age1[4] * age_55plus_prisoner_chronic_illness[2] * covid19_mortality_by_chronic_illness[2] * covid19_spread),
+                                                Math.round(prisoner_count_by_age1[4] * age_55plus_prisoner_chronic_illness[4] * covid19_mortality_by_chronic_illness[4] * covid19_spread),
+                                                Math.round(prisoner_count_by_age1[4] * age_55plus_prisoner_chronic_illness[5] * covid19_mortality_by_chronic_illness[5] * covid19_spread)];
+            var age_18_24_comorbidity_deaths_trace = {
+                y: age_18_24_comorbidity_deaths,
+                x: chronic_covid19_illnesses,
+                type: "bar",
+                name: age1[0],
+            };
+            var age_25_34_comorbidity_deathss_trace = {
+                y: age_25_34_comorbidity_deaths,
+                x: chronic_covid19_illnesses,
+                type: "bar",
+                name: age1[1],
+            };
+            var age_35_44_comorbidity_deaths_trace = {
+                y: age_35_44_comorbidity_deaths,
+                x: chronic_covid19_illnesses,
+                type: "bar",
+                name: age1[2],
+            };
+            var age_45_54_comorbidity_deaths_trace = {
+                y: age_45_54_comorbidity_deaths,
+                x: chronic_covid19_illnesses,
+                type: "bar",
+                name: age1[3],
+            };
+            var age_55plus_comorbidity_deaths_trace = {
+                y: age_55plus_comorbidity_deaths,
+                x: chronic_covid19_illnesses,
+                type: "bar",
+                name: age1[4],
+            };
+
+            var data = [age_18_24_comorbidity_deaths_trace, age_25_34_comorbidity_deathss_trace, age_35_44_comorbidity_deaths_trace, age_45_54_comorbidity_deaths_trace, age_55plus_comorbidity_deaths_trace];
+            var layout = {
+                title: "Projected COVID-19 Deaths Associated with Prisoner Comorbidities by Age",
+                barmode: "group",
+                bargap: 0.15,
+                bargroupgap: 0.1
+            };
+            Plotly.newPlot('death_by_comormidity_by_age', data, layout);
+
+        }
     </script>
 </body>
 </html>

@@ -17,8 +17,9 @@
    
 
     <script type="text/javascript">
-        const chronic_illnesses = ["Cardiovascular Disease", "Diabetes", "Chronic Respiratory Disease", "Asthma", "Hypertension", "Cancer", "Smoking", "Overweight"]
-        const au_population_chronic_illness = [0.05, 0.049, 0.31, 0.112, 0.106, 0.018, 0.152, 0.67];
+        const chronic_illnesses = ["Cardiovascular Disease", "Diabetes", "Chronic Respiratory Disease", "Asthma", "Hypertension", "Cancer", "Smoking", "Overweight"];
+        //N.B. Chronic Respiratory Diseases affect some 31% of the population, but this includes asthmatics who do not seem to be adversely affected by Covid-19 infections. Value modified to just cover COPD prevalance, which is an identified comorbidity.
+        const au_population_chronic_illness = [0.05, 0.049, 0.043, 0.112, 0.106, 0.018, 0.152, 0.67];
         const male_prisoner_chronic_illness = [0.04, 0.06, 0, 0.13, 0, 0.01, 0.74, 0.745];
         const female_prisoner_chronic_illness = [0.03, 0.03, 0, 0.27, 0, 0, 0.86, 0.597];
 

@@ -67,7 +67,6 @@
 
     <hr/>
 
-    <!-- TODO call JS on change of input component, currently not firing -->
     <div class="vcontainer">
     <div class="tooltip">
         <div class="table_cell">
@@ -97,7 +96,7 @@
         <div class="table_cell">
             <label class="label" for="social_distancing_factor">Social Distancing Factor</label>
             <input id="social_distancing_factor" type="number" min="0", max="1", step="0.1", value="0.8", name="Social_Distancing_Factor" title="Social Distancing Factor" onchange="drawChart()" /> 
-            <span class="tooltiptext">The effect of social distancing and hygiene measures: 0 - everyone is in lockdown, handwashing and performing hygiene measures including frequent decontamination of surfaces, 1 - free movement within the population, limited access to soap, etc</span>
+            <span class="tooltiptext">The effect of social distancing and hygiene measures: 0 - everyone is in lockdown, handwashing and performing hygiene measures including frequent decontamination of surfaces, 1 - free movement within the population, limited access to soap, etc.</span>
         </div>
     </div>
     
@@ -188,10 +187,11 @@
         <li>While the general public may be able to exercise social distancing, the ability to do so in institutional settings, such as crowded prisons and nursing homes is not as realistic, so isolation and social distancing is not as much of a control option in these settings</li>
         <li>When modelling a prison or nursing home setting, while some prisoners or patients may be able to be provided some isolation, staff also need to be included in the population numbers.  Even with PPE and hygiene measures, the staff movement among the population pose a significant vector in the spread of any infections through a captive population, and subsequently to the community at large</li>
         <li>At this stage it is unknown if an infection of COVID-19 protects you from re-infection, or for how long the protection lasts.  This model assumes all infected move to a "recovered" container, but there may be a small percentage that should move back into the susceptible container after "recovery".</li>
+        <li>With respect to the Social Distancing Factor, within a specific prison this number will likely be close to 1 due to limited measures that can be implemented. Across all prisons, with the movement of prisoners between prisons, introduction of new prisoners from the broader community, staff movements in the broader community and between prisons and between prisoners in quarantine and the broader prison population and other prison staff, this number is not likely to be able to be reduced by any significant amount once the infection takes off in the broader prison system.</li>
     </ul>
     
     <script type="text/javascript">
-        
+            
         //set global params
         //https://www.health.gov.au/sites/default/files/documents/2020/03/coronavirus-covid-19-information-for-clinicians.pdf
         var t_incubation_period = document.getElementById("incubation_period").value; 
@@ -207,8 +207,22 @@
         var dt = document.getElementById("step_granularity").value; //step granularity for graphing
         var hospitalisation_rate =  document.getElementById("hospitalisation_rate").value; 
         var icu_rate = document.getElementById("icu_rate").value;
-    
+
         function drawChart() {
+                    
+            t_incubation_period = document.getElementById("incubation_period").value; 
+            R0 = document.getElementById("R0_value").value; 
+            t_infectious_period = document.getElementById("infectious_period").value;
+            distancing_rho = document.getElementById("social_distancing_factor").value; 
+            susceptible_population = document.getElementById("population").value;
+            exposed_people = document.getElementById("exposed_people").value;
+            infected_people = document.getElementById("infected_people").value;
+            recovered_people = document.getElementById("recovered_people").value;
+            case_fatality_rate = document.getElementById("fatality_rate").value;
+            t_max = document.getElementById("days").value; 
+            dt = document.getElementById("step_granularity").value; //step granularity for graphing
+            hospitalisation_rate =  document.getElementById("hospitalisation_rate").value; 
+            icu_rate = document.getElementById("icu_rate").value;
             
             var data_array = init();
             

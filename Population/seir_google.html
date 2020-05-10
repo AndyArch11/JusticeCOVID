@@ -67,12 +67,11 @@
 
     <hr/>
 
-    <!-- TODO call JS on change of input component, currently not firing -->
     <div class="vcontainer">
     <div class="tooltip">
         <div class="table_cell">
             <label class="label" for="incubation_period">Incubation Period</label>
-            <input id="incubation_period" type="number" min="0", max="25", step="0.1", value="3.5", name="Incubation_Period" title="Incubation Period" onchange="drawChart" /> 
+            <input id="incubation_period" type="number" min="0", max="25", step="0.1", value="3.5", name="Incubation_Period" title="Incubation Period" onchange="drawChart()" /> 
             <span class="tooltiptext">The World Health Organization (WHO) currently estimates that the incubation period ranges from 1 to 14 days with reports of up to 24 days, with a median incubation period of 5 to 6 days.  With the infectious period starting 1-3 days before symptoms, incubation period reduced by 2</span>
         </div>
     </div>    
@@ -80,7 +79,7 @@
     <div class="tooltip">
         <div class="table_cell">
             <label class="label" for="R0_value">R0 value</label>
-            <input id="R0_value" type="number" min="0", max="5", step="0.01", value="2.79", name="R0_Value" title="R0" onchange="drawChart" /> 
+            <input id="R0_value" type="number" min="0", max="5", step="0.01", value="2.79", name="R0_Value" title="R0" onchange="drawChart()" /> 
             <span class="tooltiptext">Number of additional people likely to be infected by someone who is infected.  The WHO initially estimated the R0 to be 1.4-2.5 (average 1.95), however a recent review of 12 studies estimated the basic R0 to be 3.28 and the median R0 to be 2.79</span>
         </div>
     </div>
@@ -88,7 +87,7 @@
     <div class="tooltip">
         <div class="table_cell">
             <label class="label" for="infectious_period">Infectious Period</label>
-            <input id="infectious_period" type="number" min="0", max="45", step="0.1", value="11.5", name="Infectious_Period" title="Infectious Period" onchange="drawChart" /> 
+            <input id="infectious_period" type="number" min="0", max="45", step="0.1", value="11.5", name="Infectious_Period" title="Infectious Period" onchange="drawChart()" /> 
             <span class="tooltiptext">Mean infectious period. Infectious period is thought to start 1 - 3 days before symptoms start, and continue through the first 7 days after symptoms begin, with an average infectious period of approximately 9.5 days after symptoms first appear, but can be longer.  Symptoms often continue beyond the infectious period.</span>
         </div>
     </div>
@@ -96,7 +95,7 @@
     <div class="tooltip">
         <div class="table_cell">
             <label class="label" for="social_distancing_factor">Social Distancing Factor</label>
-            <input id="social_distancing_factor" type="number" min="0", max="1", step="0.1", value="0.8", name="Social_Distancing_Factor" title="Social Distancing Factor" onchange="drawChart" /> 
+            <input id="social_distancing_factor" type="number" min="0", max="1", step="0.1", value="0.8", name="Social_Distancing_Factor" title="Social Distancing Factor" onchange="drawChart()" /> 
             <span class="tooltiptext">The effect of social distancing and hygiene measures: 0 - everyone is in lockdown, handwashing and performing hygiene measures including frequent decontamination of surfaces, 1 - free movement within the population, limited access to soap, etc</span>
         </div>
     </div>
@@ -104,7 +103,7 @@
     <div class="tooltip">
         <div class="table_cell">
             <label class="label" for="population">Population</label>
-            <input id="population" type="number" min="0", max="8000000000", step="100", value="74000", name="Population" title="Population" onchange="drawChart" /> 
+            <input id="population" type="number" min="0", max="8000000000", step="100", value="74000", name="Population" title="Population" onchange="drawChart()" /> 
             <span class="tooltiptext">Susceptible Population. Australian prisons have a population of ~43,000 prisoners and 31,000 staff, not including juveniles or immigration</span>
         </div>
     </div>
@@ -112,7 +111,7 @@
     <div class="tooltip">
         <div class="table_cell">
             <label class="label" for="exposed_people">Exposed People</label>
-            <input id="exposed_people" type="number" min="0", max="100", step="1", value="1", name="Exposed_People" title="Exposed People" onchange="drawChart" /> 
+            <input id="exposed_people" type="number" min="0", max="100", step="1", value="1", name="Exposed_People" title="Exposed People" onchange="drawChart()" /> 
             <span class="tooltiptext">Number of people in the population exposed to the infection at the start of the simulation</span>
         </div>
     </div>    
@@ -120,7 +119,7 @@
     <div class="tooltip">
         <div class="table_cell">
             <label class="label" for="infected_people">Infected People</label>
-            <input id="infected_people" type="number" min="0", max="100", step="0", value="0", name="Infected_People" title="Infected People" onchange="drawChart" /> 
+            <input id="infected_people" type="number" min="0", max="100", step="0", value="0", name="Infected_People" title="Infected People" onchange="drawChart()" /> 
             <span class="tooltiptext">Number of people in the population infected at the start of the simulation</span>
         </div>
     </div>
@@ -128,7 +127,7 @@
     <div class="tooltip">
         <div class="table_cell">
             <label class="label" for="recovered_people">Recovered People</label>
-            <input id="recovered_people" type="number" min="0", max="100", step="0", value="0", name="Recovered_People" title="Recovered People" onchange="drawChart" /> 
+            <input id="recovered_people" type="number" min="0", max="100", step="0", value="0", name="Recovered_People" title="Recovered People" onchange="drawChart()" /> 
             <span class="tooltiptext">Number of people in the population who were infected and recovered or died at the start of the simulation</span>
         </div>
     </div>    
@@ -136,7 +135,7 @@
     <div class="tooltip">
         <div class="table_cell">
             <label class="label" for="fatality_rate">Case Fatality Rate (%)</label>
-            <input id="fatality_rate" type="number" min="0", max="10", step="0.1", value="1.4", name="Case_Fatality_Rate" title="Case Fatality Rate" onchange="drawChart" /> 
+            <input id="fatality_rate" type="number" min="0", max="10", step="0.1", value="1.4", name="Case_Fatality_Rate" title="Case Fatality Rate" onchange="drawChart()" /> 
             <span class="tooltiptext">Percentage of deaths per case, situation specific.  Influenced by age, vulnerabilities, testing and medical interventions of the population. Current range across countries is from 0.1% to 15%</span>
         </div>
     </div>
@@ -144,7 +143,7 @@
     <div class="tooltip">
         <div class="table_cell">
             <label class="label" for="days">Number of Days</label>
-            <input id="days" type="number" min="1", max="365", step="1", value="300", name="Days" title="Days" onchange="drawChart" /> 
+            <input id="days" type="number" min="1", max="365", step="1", value="300", name="Days" title="Days" onchange="drawChart()" /> 
             <span class="tooltiptext">Number of days to run the simulation over</span>
         </div>
     </div>
@@ -152,7 +151,7 @@
     <div class="tooltip">
         <div class="table_cell">
             <label class="label" for="step_granularity">Step Granularity</label>
-            <input id="step_granularity" type="number" min="0.1", max="1", step="0.1", value="0.1", name="Step_Granularity" title="Step Granularity" onchange="drawChart" /> 
+            <input id="step_granularity" type="number" min="0.1", max="1", step="0.1", value="0.1", name="Step_Granularity" title="Step Granularity" onchange="drawChart()" /> 
             <span class="tooltiptext">Graphing granularity</span>
         </div>
     </div>
@@ -160,7 +159,7 @@
     <div class="tooltip">
         <div class="table_cell">
             <label class="label" for="hospitalisation_rate">Hospitalisation Rate (%)</label>
-            <input id="hospitalisation_rate" type="number" min="0", max="100", step="0.1", value="20", name="Hospitalisation_Rate" title="Hospitalisation Rate" onchange="drawChart" /> 
+            <input id="hospitalisation_rate" type="number" min="0", max="100", step="0.1", value="20", name="Hospitalisation_Rate" title="Hospitalisation Rate" onchange="drawChart()" /> 
             <span class="tooltiptext">It is estimated that approximately 20% of cases will require hospitalisation</span>
         </div>
     </div>
@@ -168,7 +167,7 @@
     <div class="tooltip">
         <div class="table_cell">
             <label class="label" for="icu_rate">ICU Rate (%)</label>
-            <input id="icu_rate" type="number" min="0", max="100", step="0.1", value="4", name="ICU_Rate" title="ICU Rate" onchange="drawChart" /> 
+            <input id="icu_rate" type="number" min="0", max="100", step="0.1", value="4", name="ICU_Rate" title="ICU Rate" onchange="drawChart()" /> 
             <span class="tooltiptext">It is estimated that approximately 3-5% of cases will require ICU admission</span>
         </div>
     </div>
@@ -188,6 +187,7 @@
         <li>While the general public may be able to exercise social distancing, the ability to do so in institutional settings, such as crowded prisons and nursing homes is not as realistic, so isolation and social distancing is not as much of a control option in these settings</li>
         <li>When modelling a prison or nursing home setting, while some prisoners or patients may be able to be provided some isolation, staff also need to be included in the population numbers.  Even with PPE and hygiene measures, the staff movement among the population pose a significant vector in the spread of any infections through a captive population, and subsequently to the community at large</li>
         <li>At this stage it is unknown if an infection of COVID-19 protects you from re-infection, or for how long the protection lasts.  This model assumes all infected move to a "recovered" container, but there may be a small percentage that should move back into the susceptible container after "recovery".</li>
+        <li>With respect to the Social Distancing Factor, within a specific prison this number will likely be close to 1 due to limited measures that can be implemented. Across all prisons, with the movement of prisoners between prisons, introduction of new prisoners from the broader community, staff movements in the broader community and between prisons and between prisoners in quarantine and the broader prison population and other prison staff, this number is not likely to be able to be reduced by any significant amount once the infection takes off in the broader prison system.</li>
     </ul>
     
     <script type="text/javascript">
@@ -211,6 +211,21 @@
         var icu_rate = document.getElementById("icu_rate").value;
     
         function drawChart() {
+            
+            t_incubation_period = document.getElementById("incubation_period").value; 
+            R0 = document.getElementById("R0_value").value; 
+            t_infectious_period = document.getElementById("infectious_period").value;
+            distancing_rho = document.getElementById("social_distancing_factor").value; 
+            susceptible_population = document.getElementById("population").value;
+            exposed_people = document.getElementById("exposed_people").value;
+            infected_people = document.getElementById("infected_people").value;
+            recovered_people = document.getElementById("recovered_people").value;
+            case_fatality_rate = document.getElementById("fatality_rate").value;
+            t_max = document.getElementById("days").value; 
+            dt = document.getElementById("step_granularity").value; //step granularity for graphing
+            hospitalisation_rate =  document.getElementById("hospitalisation_rate").value; 
+            icu_rate = document.getElementById("icu_rate").value;
+
             var options = {
                 title: "COVID-19 SEIR Graph",
                 curveType: "function",
