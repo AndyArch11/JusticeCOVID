@@ -10,8 +10,12 @@
     <div id="per1k_chart" style="width: 1200px; height: 1000px;"></div>
     <div id="compare_per1k_chart" style="width: 1200px; height: 1000px;"></div>
     <div id="pop_chart" style="width: 1200px; height: 1000px;"></div>
+    <div id="male_prisoner_pop_pyramid" style="width: 1200px; height: 1000px;"></div>
     <div id="male_pop_pyramid" style="width: 1200px; height: 1000px;"></div>
+    <div id="male_pop_perc_pyramid" style="width: 1200px; height: 1000px;"></div>
+    <div id="female_prisoner_pop_pyramid" style="width: 1200px; height: 1000px;"></div>
     <div id="female_pop_pyramid" style="width: 1200px; height: 1000px;"></div>
+    <div id="female_pop_perc_pyramid" style="width: 1200px; height: 1000px;"></div>
     <div id="sex_pop_chart" style="width: 1200px; height: 1000px;"></div>
     <div id="sex_pie_chart" style="width: 1200px; height: 1000px;"></div>
     <div id="indigenous_pie_chart" style="width: 1200px; height: 1000px;"></div>
@@ -21,6 +25,7 @@
 
         const age = ["20-29", "30-39", "40-49", "50-59", "60+"];
         const age2 = ["18-19", "20-29", "30-39", "40-49", "50-59", "60+"];
+        const age3 = ["0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60+"]
 
         const total_per1k_prisoners = [3.72, 4.29, 2.74, 1.24, 0.41];
         const male_per1k_prisoners = [6.71, 7.88, 5.09, 2.34, 0.84];
@@ -32,7 +37,7 @@
         const male_nonIndigenous_per1k_prisoners = [4.54, 5.9, 4.03, 1.98, 0.8];
         const female_nonIndigenous_per1k_prisoners = [0.42, 0.49, 0.33, 0.16, 0.02];
         const male_Indigenous_per1k_prisoners = [59.47, 78.04, 44.36, 18.63, 4.62];  
-        const female_Indigenous_per1k_prisoners = [6.61, 9.14, 4.47, 1.24, 0.10];  
+        const female_Indigenous_per1k_prisoners = [6.61, 9.14, 4.47, 1.24, 0.10];          
 
         const nonIndigenous_total_prisoners = [376, 8439, 10529, 6767, 3118, 1917];
         const Indigenous_total_prisoners = [378, 4604, 4055, 2073, 642, 123];
@@ -42,6 +47,16 @@
         const male_Indigenous_prisoners = [348, 4163, 3619, 1867, 598, 120];
         const female_Indigenous_prisoners = [30, 441, 436, 206, 44, 3];  
         const total_prisoners = [754, 13043, 14584, 8840, 3760, 2040];  
+
+        const male_nonIndigenous_population = [1702705, 1647555, 1551221, 1454427, 2327464];       
+        const female_nonIndigenous_population = [1668970, 1659922, 1592347, 1502388, 2593242];
+        const male_Indigenous_population = [70004, 46374, 42087, 32099, 25968];
+        const female_Indigenous_population = [66691, 47696, 46051, 35477, 30468];  
+
+        const male_nonIndigenous_population_perc = [0.131, 0.121, 0.147, 0.142, 0.134, 0.125, 0.201];  
+        const female_nonIndigenous_population_perc = [0.122, 0.113, 0.142, 0.141, 0.135, 0.127, 0.22];
+        const male_Indigenous_population_perc = [0.241, 0.215, 0.176, 0.116, 0.106, 0.081, 0.065];
+        const female_Indigenous_population_perc = [0.229, 0.205, 0.167, 0.119, 0.115, 0.089, 0.076];  
 
         const male_prisoners = [701, 11900, 13340, 8112, 3483, 1983];
         const female_prisoners = [53, 1143, 1244, 728, 277, 57];
@@ -295,8 +310,8 @@
 
 
         
-        //Male Population Pyramid hack
-        neg_male_Indigenous_prisoners = male_Indigenous_prisoners.map(function(element) {return element * -1});
+        //Male Prisoner Population Pyramid hack
+        var neg_male_Indigenous_prisoners = male_Indigenous_prisoners.map(function(element) {return element * -1});
         var male_nonIndigenous_trace = {
             x: male_nonIndigenous_prisoners,
             y: age2,
@@ -330,10 +345,90 @@
             bargap: 0.15
         }
 
+        Plotly.newPlot('male_prisoner_pop_pyramid', data, layout);
+
+
+
+        //Male Population Pyramid hack
+        var neg_male_Indigenous_population = male_Indigenous_population.map(function(element) {return element * -1});
+        var male_nonIndigenous_pop_trace = {
+            x: male_nonIndigenous_population,
+            y: age,
+            orientation: "h",
+            type: "bar",
+            name: "Male non-Indigenous Population",
+            hoverinfo: "x",
+            opacity: 0.5,
+            marker: {
+                color: 'blue',
+            },
+        };
+        var male_Indigenous_pop_trace = {
+            x: neg_male_Indigenous_population,
+            y: age,
+            orientation: "h",
+            type: "bar",
+            text: male_Indigenous_population,  
+            hoverinfo: "text",  
+            name: "Male Indigenous Population",
+            opacity: 0.6,
+            marker: {
+                color: 'red',
+            },    
+        };
+
+        var data = [male_nonIndigenous_pop_trace, male_Indigenous_pop_trace];
+        var layout = {
+            title: "Male Population Pyramid",
+            barmode: "overlay",
+            bargap: 0.15
+        }
+
         Plotly.newPlot('male_pop_pyramid', data, layout);
 
-        //Female Population Pyramid hack
-        neg_female_Indigenous_prisoners = female_Indigenous_prisoners.map(function(element) {return element * -1});
+
+
+        //Male Population % Pyramid hack
+        var neg_male_Indigenous_population_perc = male_Indigenous_population_perc.map(function(element) {return element * -1});
+        var male_nonIndigenous_pop_perc_trace = {
+            x: male_nonIndigenous_population_perc,
+            y: age3,
+            orientation: "h",
+            type: "bar",
+            name: "Male non-Indigenous Population %",
+            hoverinfo: "x",
+            opacity: 0.5,
+            marker: {
+                color: 'blue',
+            },
+        };
+        var male_Indigenous_pop_perc_trace = {
+            x: neg_male_Indigenous_population_perc,
+            y: age3,
+            orientation: "h",
+            type: "bar",
+            text: male_Indigenous_population_perc,  
+            hoverinfo: "text",  
+            name: "Male Indigenous Population %",
+            opacity: 0.6,
+            marker: {
+                color: 'red',
+            },    
+        };
+
+        var data = [male_nonIndigenous_pop_perc_trace, male_Indigenous_pop_perc_trace];
+        var layout = {
+            title: "Male Population Percentage Pyramid",
+            barmode: "overlay",
+            bargap: 0.15
+        }
+
+        Plotly.newPlot('male_pop_perc_pyramid', data, layout);
+
+
+
+        //Female Prisoner Population Pyramid hack
+        var neg_female_Indigenous_prisoners = female_Indigenous_prisoners.map(function(element) {return element * -1});
         var female_nonIndigenous_trace = {
             x: female_nonIndigenous_prisoners,
             y: age2,
@@ -367,7 +462,86 @@
             bargap: 0.15
         }
 
+        Plotly.newPlot('female_prisoner_pop_pyramid', data, layout);
+
+
+
+        //Female Population Pyramid hack
+        var neg_female_Indigenous_population = female_Indigenous_population.map(function(element) {return element * -1});
+        var female_nonIndigenous_pop_trace = {
+            x: female_nonIndigenous_population,
+            y: age,
+            orientation: "h",
+            type: "bar",
+            name: "Female non-Indigenous Population",
+            hoverinfo: "x",
+            opacity: 0.8,
+            marker: {
+                color: 'violet',
+            },
+        };
+        var female_Indigenous_pop_trace = {
+            x: neg_female_Indigenous_population,
+            y: age,
+            orientation: "h",
+            type: "bar",
+            text: female_Indigenous_population,     
+            hoverinfo: "text",   
+            name: "Female Indigenous Population",
+            opacity: 0.8,
+            marker: {
+                color: 'pink',
+            },       
+        };
+
+        var data = [female_nonIndigenous_pop_trace, female_Indigenous_pop_trace];
+        var layout = {
+            title: "Female Population Pyramid",
+            barmode: "overlay",
+            bargap: 0.15
+        }
+
         Plotly.newPlot('female_pop_pyramid', data, layout);
+
+
+
+        //Female Population % Pyramid hack
+        var neg_female_Indigenous_population_perc = female_Indigenous_population_perc.map(function(element) {return element * -1});
+        var female_nonIndigenous_pop_perc_trace = {
+            x: female_nonIndigenous_population_perc,
+            y: age3,
+            orientation: "h",
+            type: "bar",
+            name: "Female non-Indigenous Population %",
+            hoverinfo: "x",
+            opacity: 0.8,
+            marker: {
+                color: 'violet',
+            },
+        };
+        var female_Indigenous_pop_perc_trace = {
+            x: neg_female_Indigenous_population_perc,
+            y: age3,
+            orientation: "h",
+            type: "bar",
+            text: female_Indigenous_population_perc,     
+            hoverinfo: "text",   
+            name: "Female Indigenous Population %",
+            opacity: 0.8,
+            marker: {
+                color: 'pink',
+            },       
+        };
+
+        var data = [female_nonIndigenous_pop_perc_trace, female_Indigenous_pop_perc_trace];
+        var layout = {
+            title: "Female Population Percentage Pyramid",
+            barmode: "overlay",
+            bargap: 0.15
+        }
+
+        Plotly.newPlot('female_pop_perc_pyramid', data, layout);
+
 
 
         //Male/Female Prisoner Pie Chart
