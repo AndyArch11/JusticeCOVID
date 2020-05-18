@@ -6,30 +6,50 @@
     <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
+    <h1>Australian Prisoner Population</h1>
+    <h2>Prisoner Populations per 1,000</h2>
     <div id="total_per1k_chart" style="width: 1200px; height: 1000px;"></div>
+    <p>ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/4517.0">Prisoners in Australia, 2019</a>.  Each bar represents the number of prisoners per 1,000 for that age group and sex from the corresponding ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/3238.0.55.001">Estimates of Aboriginal and Torres Strait Islander Australians, June 2016</a>.</p>
     <div id="per1k_chart" style="width: 1200px; height: 1000px;"></div>
-    <div id="compare_per1k_chart" style="width: 1200px; height: 1000px;"></div>
+    <p>ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/4517.0">Prisoners in Australia, 2019</a>.  Each bar represents the number of prisoners per 1,000 for that age group and Indigeneity from the corresponding ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/3238.0.55.001">Estimates of Aboriginal and Torres Strait Islander Australians, June 2016</a>.</p>
+    <div id="compare_per1k_chart" style="width: 1200px; height: 1000px;"></div> 
+    <p>ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/4517.0">Prisoners in Australia, 2019</a>.  Each bar represents the number of prisoners per 1,000 for that age group, sex, and Indigeneity from the corresponding ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/3238.0.55.001">Estimates of Aboriginal and Torres Strait Islander Australians, June 2016</a>.</p>
+    <h2>Prisoner Indigeneity Population</h2>
     <div id="pop_chart" style="width: 1200px; height: 1000px;"></div>
-    <div id="male_adult_prisoner_pop_pyramid" style="width: 1200px; height: 1000px;"></div>
-    <div id="male_adult_pop_pyramid" style="width: 1200px; height: 1000px;"></div>
-    <div id="male_pop_perc_pyramid" style="width: 1200px; height: 1000px;"></div>
-    <div id="female_adult_prisoner_pop_pyramid" style="width: 1200px; height: 1000px;"></div>
-    <div id="female_adult_pop_pyramid" style="width: 1200px; height: 1000px;"></div>
-    <div id="female_pop_perc_pyramid" style="width: 1200px; height: 1000px;"></div>
-    <div id="pop_pyramid">
-        <span id="nonIndigenous_pop_pyramid"  style="width: 1200px; height: 1000px;"></span>        
-        <span id="Indigenous_pop_pyramid"  style="width: 1200px; height: 1000px;"></span>
-    </div>
+    <p>ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/4517.0">Prisoners in Australia, 2019</a>.  Provides an indication of the difference by age and Indigeneity of the Australian prison population.</p>
     <div id="sex_pop_chart" style="width: 1200px; height: 1000px;"></div>
+    <p>ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/4517.0">Prisoners in Australia, 2019</a>.  Provides an indication of the difference by age, sex and Indigeneity of the Australian prison population.</p>
+    <h2>Population Pyramids</h2>
+    <p><i>N.B. Neither Plotly or Google Charts offer a population pyramid chart, the following are poor emulations of Population Pyramid charts.</i></p>
+    <div id="male_adult_prisoner_pop_pyramid" style="width: 1200px; height: 1000px;"></div>
+    <p>ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/4517.0">Prisoners in Australia, 2019</a>.  Provides an indication of the difference by age of the Indigeneity of the Australian male prison population.</p>
+    <div id="male_adult_pop_pyramid" style="width: 1200px; height: 1000px;"></div>
+    <p>ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/3238.0.55.001">Estimates of Aboriginal and Torres Strait Islander Australians, June 2016</a>.  Provides an indication of the difference by age of the Indigeneity of the Australian male population.</p>
+    <div id="male_pop_perc_pyramid" style="width: 1200px; height: 1000px;"></div>
+    <p>ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/3238.0.55.001">Estimates of Aboriginal and Torres Strait Islander Australians, June 2016</a>.  Bars represents the percentage of that age against the total population of the respective Indigenous or non-Indigenous male population.</p>
+    <div id="female_adult_prisoner_pop_pyramid" style="width: 1200px; height: 1000px;"></div>
+    <p>ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/4517.0">Prisoners in Australia, 2019</a>.  Provides an indication of the difference by age of the Indigeneity of the Australian female prison population.</p>
+    <div id="female_adult_pop_pyramid" style="width: 1200px; height: 1000px;"></div>
+    <p>ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/3238.0.55.001">Estimates of Aboriginal and Torres Strait Islander Australians, June 2016</a>.  Provides an indication of the difference by age of the Indigeneity of the Australian female population.</p>
+    <div id="female_pop_perc_pyramid" style="width: 1200px; height: 1000px;"></div>
+    <p>ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/3238.0.55.001">Estimates of Aboriginal and Torres Strait Islander Australians, June 2016</a>.  Bars represents the percentage of that age against the total population of the respective Indigenous or non-Indigenous female population.</p>
+    <div id="nonIndigenous_pop_pyramid"  style="width: 1200px; height: 1000px;"></div>    
+    <p>ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/3238.0.55.001">Estimates of Aboriginal and Torres Strait Islander Australians, June 2016</a>.  Non-Indigenous Population.</p>
+    <div id="Indigenous_pop_pyramid"  style="width: 1200px; height: 1000px;"></div>
+    <p>ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/3238.0.55.001">Estimates of Aboriginal and Torres Strait Islander Australians, June 2016</a>.  Indigenous Population.</p>
+    <h2>Pie Charts</h2>
     <div id="sex_pie_chart" style="width: 1200px; height: 1000px;"></div>
+    <p>ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/4517.0">Prisoners in Australia, 2019</a>.  Ratio of male to female prisoners.</p>
     <div id="indigenous_pie_chart" style="width: 1200px; height: 1000px;"></div>
+    <p>ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/4517.0">Prisoners in Australia, 2019</a>.  Ratio of non_Indigenous to Indigenous prisoners.</p>
     <div id="indigenous_per1K_pie_chart" style="width: 1200px; height: 1000px;"></div>
+    <p>ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/4517.0">Prisoners in Australia, 2019</a>.  Ratio of non_Indigenous to Indigenous prisoners per 1,000 from the corresponding ABS <a href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/3238.0.55.001">Estimates of Aboriginal and Torres Strait Islander Australians, June 2016</a>.</p>
 
     <script type="text/javascript">
 
         const age = ["20-29", "30-39", "40-49", "50-59", "60+"];
         const age2 = ["18-19", "20-29", "30-39", "40-49", "50-59", "60+"];
-        const age3 = ["0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60+"]
+        const age_full = ["0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-70", "70+"]
 
         const total_per1k_prisoners = [3.72, 4.29, 2.74, 1.24, 0.41];
         const male_per1k_prisoners = [6.71, 7.88, 5.09, 2.34, 0.84];
@@ -52,20 +72,15 @@
         const female_adult_Indigenous_prisoners = [30, 441, 436, 206, 44, 3];  
         const total_adult_prisoners = [754, 13043, 14584, 8840, 3760, 2040];  
 
-        const male_adult_nonIndigenous_population = [1702705, 1647555, 1551221, 1454427, 2327464];       
-        const female_adult_nonIndigenous_population = [1668970, 1659922, 1592347, 1502388, 2593242];
-        const male_adult_Indigenous_population = [70004, 46374, 42087, 32099, 25968];
-        const female_adult_Indigenous_population = [66691, 47696, 46051, 35477, 30468];  
+        const male_nonIndigenous_population_perc = [0.131, 0.121, 0.147, 0.142, 0.134, 0.125, 0.104, 0.096];  
+        const female_nonIndigenous_population_perc = [0.122, 0.113, 0.142, 0.141, 0.135, 0.127, 0.106, 0.114];
+        const male_Indigenous_population_perc = [0.241, 0.215, 0.176, 0.116, 0.106, 0.081, 0.045, 0.02];
+        const female_Indigenous_population_perc = [0.229, 0.205, 0.167, 0.119, 0.115, 0.089, 0.05, 0.027];
 
-        const male_nonIndigenous_population_perc = [0.131, 0.121, 0.147, 0.142, 0.134, 0.125, 0.201];  
-        const female_nonIndigenous_population_perc = [0.122, 0.113, 0.142, 0.141, 0.135, 0.127, 0.22];
-        const male_Indigenous_population_perc = [0.241, 0.215, 0.176, 0.116, 0.106, 0.081, 0.065];
-        const female_Indigenous_population_perc = [0.229, 0.205, 0.167, 0.119, 0.115, 0.089, 0.076];
-
-        const male_nonIndigenous_population_all = [1516001, 1405253, 1702705, 1647555, 1551221, 1454427, 2327464]; 
-        const female_nonIndigenous_population_all = [1437218, 1333829, 1668970, 1659922, 1592347, 1502388, 2593242];
-        const male_Indigenous_population_all = [96111, 85770, 70004, 46374, 42087, 32099, 25968];
-        const female_Indigenous_population_all = [91577, 81992, 66691, 47696, 46051, 35477, 30468];  
+        const male_nonIndigenous_population_all = [1516001, 1405253, 1702705, 1647555, 1551221, 1454427, 1208712, 1118752]; 
+        const female_nonIndigenous_population_all = [1437218, 1333829, 1668970, 1659922, 1592347, 1502388, 1251412, 1341830];
+        const male_Indigenous_population_all = [96111, 85770, 70004, 46374, 42087, 32099, 17984, 7984];
+        const female_Indigenous_population_all = [91577, 81992, 66691, 47696, 46051, 35477, 19856, 10612];  
 
         const male_prisoners = [701, 11900, 13340, 8112, 3483, 1983];
         const female_prisoners = [53, 1143, 1244, 728, 277, 57];
@@ -297,13 +312,13 @@
 
 
         //Male Population Pyramid hack
-        var neg_male_adult_Indigenous_population = male_adult_Indigenous_population.map(function(element) {return element * -1});
+        var neg_male_Indigenous_population_all = male_Indigenous_population_all.map(function(element) {return element * -1});
         var male_adult_nonIndigenous_pop_trace = {
-            x: male_adult_nonIndigenous_population,
-            y: age,
+            x: male_nonIndigenous_population_all,
+            y: age_full,
             orientation: "h",
             type: "bar",
-            text: male_adult_nonIndigenous_population,  
+            text: male_nonIndigenous_population_all,  
             hoverinfo: "text", 
             name: "Male non-Indigenous Population",
             hoverinfo: "x",
@@ -313,11 +328,11 @@
             },
         };
         var male_adult_Indigenous_pop_trace = {
-            x: neg_male_adult_Indigenous_population,
-            y: age,
+            x: neg_male_Indigenous_population_all,
+            y: age_full,
             orientation: "h",
             type: "bar",
-            text: male_adult_Indigenous_population,  
+            text: male_Indigenous_population_all,  
             hoverinfo: "text",  
             name: "Male Indigenous Population",
             opacity: 0.6,
@@ -341,7 +356,7 @@
         var neg_male_Indigenous_population_perc = male_Indigenous_population_perc.map(function(element) {return element * -1});
         var male_nonIndigenous_pop_perc_trace = {
             x: male_nonIndigenous_population_perc,
-            y: age3,
+            y: age_full,
             orientation: "h",
             type: "bar",
             text: male_nonIndigenous_population_perc,  
@@ -355,7 +370,7 @@
         };
         var male_Indigenous_pop_perc_trace = {
             x: neg_male_Indigenous_population_perc,
-            y: age3,
+            y: age_full,
             orientation: "h",
             type: "bar",
             text: male_Indigenous_population_perc,  
@@ -419,13 +434,13 @@
 
 
         //Female Population Pyramid hack
-        var neg_female_adult_Indigenous_population = female_adult_Indigenous_population.map(function(element) {return element * -1});
+        var neg_female_Indigenous_population_all = female_Indigenous_population_all.map(function(element) {return element * -1});
         var female_adult_nonIndigenous_pop_trace = {
-            x: female_adult_nonIndigenous_population,
-            y: age,
+            x: female_nonIndigenous_population_all,
+            y: age_full,
             orientation: "h",
             type: "bar",
-            text: female_adult_nonIndigenous_population,     
+            text: female_nonIndigenous_population_all,     
             hoverinfo: "text", 
             name: "Female non-Indigenous Population",
             hoverinfo: "x",
@@ -435,11 +450,11 @@
             },
         };
         var female_adult_Indigenous_pop_trace = {
-            x: neg_female_adult_Indigenous_population,
-            y: age,
+            x: neg_female_Indigenous_population_all,
+            y: age_full,
             orientation: "h",
             type: "bar",
-            text: female_adult_Indigenous_population,     
+            text: female_Indigenous_population_all,     
             hoverinfo: "text",   
             name: "Female Indigenous Population",
             opacity: 0.8,
@@ -463,7 +478,7 @@
         var neg_female_Indigenous_population_perc = female_Indigenous_population_perc.map(function(element) {return element * -1});
         var female_nonIndigenous_pop_perc_trace = {
             x: female_nonIndigenous_population_perc,
-            y: age3,
+            y: age_full,
             orientation: "h",
             type: "bar",
             text: female_nonIndigenous_population_perc,     
@@ -477,7 +492,7 @@
         };
         var female_Indigenous_pop_perc_trace = {
             x: neg_female_Indigenous_population_perc,
-            y: age3,
+            y: age_full,
             orientation: "h",
             type: "bar",
             text: female_Indigenous_population_perc,     
@@ -505,7 +520,7 @@
         var neg_female_nonIndigenous_population_all = female_nonIndigenous_population_all.map(function(element) {return element * -1});
         var male_nonIndigenous_pop_trace = {
             x: male_nonIndigenous_population_all,
-            y: age3,
+            y: age_full,
             orientation: "h",
             type: "bar",
             text: male_nonIndigenous_population_all,     
@@ -519,7 +534,7 @@
         };
         var female_nonIndigenous_pop_trace = {
             x: neg_female_nonIndigenous_population_all,
-            y: age3,
+            y: age_full,
             orientation: "h",
             type: "bar",
             text: female_nonIndigenous_population_all,     
@@ -543,10 +558,10 @@
 
 
         //Indigenous Population Pyramid hack
-        var neg_female_Indigenous_population_all_perc = female_Indigenous_population_all.map(function(element) {return element * -1});
+        var neg_female_Indigenous_population_all = female_Indigenous_population_all.map(function(element) {return element * -1});
         var male_Indigenous_pop_trace = {
             x: male_Indigenous_population_all,
-            y: age3,
+            y: age_full,
             orientation: "h",
             type: "bar",
             text: male_Indigenous_population_all,     
@@ -559,8 +574,8 @@
             },
         };
         var female_Indigenous_pop_trace = {
-            x: neg_female_Indigenous_population_all_perc,
-            y: age3,
+            x: neg_female_Indigenous_population_all,
+            y: age_full,
             orientation: "h",
             type: "bar",
             text: female_Indigenous_population_all,     
