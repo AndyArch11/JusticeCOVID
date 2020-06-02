@@ -2,6 +2,8 @@
 
 See Reference.txt for sources used to generate the maps and graphs.
 
+N.B. Each html file is standalone.  They can be downloaded and run from a local computer, but do require Internet access for Javascript libraries. The html files include inline Javascript. If these were to be executed from a webserver, it would be more efficient to extract the inline javascript into its own standalone file(s) and minimize the content.  
+
 ## Prison Map 
 * au_prison_map.html
     * Shows a map of prisons across Australia
@@ -45,6 +47,9 @@ View au_prison_map.html in browser.
 
 Generates various graphs of the Australian Prisoner population.
 
+* au_prison_seir.html
+    * Similar to seir_google.html and seir_plotly.html, more customisable with parameters available to model a coronavirus infection within an Australian prison - with prisons available via drop down.
+    * Uses the same prison list as au_prison_map.html
 * covid19_prisoner_impact.hml
     * Applies what is known of COVID-19 against what is known of the Australian prison population to provide some insights on the extent of the potential impact of COVID-19 on the Australian prison population.
 * prisoner_health.html
