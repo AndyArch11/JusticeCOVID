@@ -1,0 +1,2621 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Australian Prison SEIR Model</title>
+	<style>
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted black; 
+        }
+        
+        .tooltip .tooltiptext {
+            opacity: 0;
+            transition: opacity 1s;
+
+            visibility: hidden;
+            width: 350px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            padding: 5px 0;
+            border-radius: 6px;
+                    
+            position: absolute;
+            z-index: 1;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: " ";
+            position: absolute;
+            top: 50%;
+            right: 100%; /* To the left of the tooltip */
+            margin-top: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent black transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .vcontainer {
+            display: table;
+            height: 500px;
+            width: 1200px;
+            text-align: left;
+        }
+
+        .table_cell {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .label {
+            display: block; 
+            width: 200px;
+        }
+    </style>
+    <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body onload = "drawChart()">
+
+
+    <div id="chart" style="width: 1200px; height: 1000px;"></div>
+
+    <hr/>
+    
+    <div class="vcontainer">
+    <div class="tooltip">
+        <div class="table_cell">
+            <label for="sel_state">Select State:</label>
+            <select id="sel_state" onchange = "changePrisonList()">
+            <option value="All" selected>All</option>
+            <option value="Custom">Custom</option>
+            <option value="Australian Capital Territory">Australian Capital Territory</option>
+            <option value="New South Wales">New South Wales</option>
+            <option value="Northern Territory">Northern Territory</option>
+            <option value="Queensland">Queensland</option>
+            <option value="South Australia">South Australia</option>
+            <option value="Tasmania">Tasmania</option>  
+            <option value="Victoria">Victoria</option>
+            <option value="Western Australia">Western Australia</option>   
+            </select> 
+        </div>
+    </div> 
+
+    <div class="tooltip">
+        <div class="table_cell">
+            <span id="sel_prison_span">
+                <label for="sel_prison">Select Prison:</label>
+                <select id="sel_prison" onchange = "changePrisonSelection()"></select>
+            </span>
+        </div>
+    </div> <br/> 
+    
+    <hr/>
+
+    <div class="tooltip">
+        <div class="table_cell">
+            <b>Chart Selection: </b><br/>
+            <label class="radio-inline">
+                <input id="sel_combined_chart" type="radio" name="chart_selection" value="combined" checked onchange="drawChart()" />Combined
+            </label>
+            <label class="radio-inline">
+                <input id="sel_prisoners_chart" type="radio" name="chart_selection" value="prisoners" onchange="drawChart()" />Prisoners
+            </label>
+            <label class="radio-inline">
+                <input id="sel_staff_chart" type="radio" name="chart_selection" value="staff" onchange="drawChart()" />Staff
+            </label>
+            <span class="tooltiptext">Choose which population set to model</span>
+        </div>
+    </div> <br/>
+
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="prisoner_staff_ratio">Number of Prisoners to Staff</label>
+            <input id="prisoner_staff_ratio" type="number" min="0" max="100" step="0.1" value="1.4" name="Prisoner_Staff_Ratio" title="Prisoner Staff Ratio" onchange="changePrisonerStaffRatio()" /> 
+            <span class="tooltiptext">The number of prisoners per staff for the prison.  Default value used is based on ~43,000 prisoners and ~31,000 staff.  This value will differ subject to security level of the prison</span>
+        </div>
+    </div> 
+    
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="prison_churn">Churn per Year (%)</label>
+            <input id="prison_churn" type="number" min="0" max="100" step="0.01" value="10" name="Prison_Churn" title="Prison_Churn" onchange="drawChart()" /> 
+            <span class="tooltiptext">The percentage of the combined population that changes per year.  The higher the security level of the institution, the smaller the churn due to the longer sentences.</span>
+        </div>
+    </div><br/>
+
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="prisoner_count">Number of Prisoners</label>
+            <input id="prisoner_count" type="number" min="0" max="100000" step="1" value="43000" name="Prisoner_Count" title="Prisoner Count" onchange="changePrisonerStaffRatio()" /> 
+            <span class="tooltiptext">The number of prisoners</span>
+        </div>
+    </div> 
+
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="staff_count">Number of Staff</label>
+            <input id="staff_count" type="number" min="0" max="100000" step="1" value="31000" name="Staff_Count" title="Staff Count" onchange="drawChart()" /> 
+            <span class="tooltiptext">The number of staff, calculated from the Prisoner/Staff Ratio and number of prisoners</span>
+        </div>
+    </div> <br/>
+
+    <hr/>
+
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="R0_value">R0 value</label>
+            <input id="R0_value" type="number" min="0" max="10" step="0.01" value="7.5" name="R0_Value" title="R0" onchange="drawChart()" /> 
+            <span class="tooltiptext">Number of additional people likely to be infected by someone who is infected.  The WHO initially estimated the R0 to be 1.4-2.5 (average 1.95). However, a recent review of 12 studies estimated the basic R0 to be 3.28 and the median R0 to be 2.79. In some US prisons, rate of infections imply an R0 of between 5 - 10</span>
+        </div>
+    </div>
+
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="social_distancing_factor">Social Distancing Factor</label>
+            <input id="social_distancing_factor" type="number" min="0" max="1" step="0.1" value="0.8" name="Social_Distancing_Factor" title="Social Distancing Factor" onchange="drawChart()" /> 
+            <span class="tooltiptext">The effect of social distancing and hygiene measures: 0 - everyone is in lockdown, handwashing and performing hygiene measures including frequent decontamination of surfaces, 1 - free movement within the population, limited access to soap, etc.</span>
+        </div>
+    </div>
+    
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="exposed_people">Exposed People</label>
+            <input id="exposed_people" type="number" min="0" max="100" step="1" value="1" name="Exposed_People" title="Exposed People" onchange="drawChart()" /> 
+            <span class="tooltiptext">Number of people in the population exposed to the infection at the start of the simulation</span>
+        </div>
+    </div>    
+ 
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="incubation_period">Incubation Period (Days)</label>
+            <input id="incubation_period" type="number" min="0" max="25" step="0.1" value="3.5" name="Incubation_Period" title="Incubation Period" onchange="drawChart()" /> 
+            <span class="tooltiptext">The World Health Organization (WHO) currently estimates that the incubation period ranges from 1 to 14 days with reports of up to 24 days, with a median incubation period of 5 to 6 days.  With the infectious period starting 1-3 days before symptoms, incubation period reduced by 2</span>
+        </div>
+    </div>    
+    
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="infectious_period">Infectious Period (Days)</label>
+            <input id="infectious_period" type="number" min="0" max="45" step="0.1" value="11.5" name="Infectious_Period" title="Infectious Period" onchange="drawChart()" /> 
+            <span class="tooltiptext">Mean infectious period. Infectious period is thought to start 1-3 days before symptoms start, and continue through the first 7 days after symptoms begin, with an average infectious period of approximately 9.5 days after symptoms first appear, but can be longer.  Symptoms often continue beyond the infectious period.</span>
+        </div>
+    </div>
+    
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="infected_people">Infected People</label>
+            <input id="infected_people" type="number" min="0" max="100" step="0" value="0" name="Infected_People" title="Infected People" onchange="drawChart()" /> 
+            <span class="tooltiptext">Number of people in the population infected at the start of the simulation</span>
+        </div>
+    </div>
+    
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="symptoms_period">Symptoms Period (Days)</label>
+            <input id="symptoms_period" type="number" min="0" max="90" step="0.1" value="22.4" name="Symptoms_Period" title="Symptoms Period" onchange="drawChart()" /> 
+            <span class="tooltiptext">People infected with COVID-19 do not appear to be infectious beyond 9 days after symptoms appear, but symptoms can continue long after no longer infectious, with an average period of symptoms lasting for 22.4 days</span>
+        </div>
+    </div>
+    
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="recovered_people">Recovered People</label>
+            <input id="recovered_people" type="number" min="0" max="100" step="0" value="0" name="Recovered_People" title="Recovered People" onchange="drawChart()" /> 
+            <span class="tooltiptext">Number of people in the population who were infected and recovered or died at the start of the simulation</span>
+        </div>
+    </div>  <br/>
+    
+    <hr/>
+    
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="days">Number of Days</label>
+            <input id="days" type="number" min="1" max="1000" step="1" value="250" name="Days" title="Days" onchange="drawChart()" /> 
+            <span class="tooltiptext">Number of days to run the simulation over</span>
+        </div>
+    </div>
+    
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="step_granularity">Step Granularity</label>
+            <input id="step_granularity" type="number" min="0.1" max="1" step="0.1" value="0.1" name="Step_Granularity" title="Step Granularity" onchange="drawChart()" /> 
+            <span class="tooltiptext">Graphing granularity</span>
+        </div>
+    </div> <br/>
+    
+    <hr/>
+
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="asymptomatic_rate">Asymptomatic Rate (%)</label>
+            <input id="asymptomatic_rate" type="number" min="0" max="100" step="0.1" value="50" name="Asymptomatic_Rate" title="Asymptomatic Rate" onchange="drawChart()" /> 
+            <span class="tooltiptext">Depending on the study, anywhere from 5% to 90% of cases are asymptomatic for the life of their infections, but this figure appears to be converging to around 50%.</span>
+        </div>
+    </div>
+
+    <br/>
+    
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="hospitalisation_rate">Hospitalisation Rate (%)</label>
+            <input id="hospitalisation_rate" type="number" min="0" max="100" step="0.1" value="20" name="Hospitalisation_Rate" title="Hospitalisation Rate" onchange="drawChart()" /> 
+            <span class="tooltiptext">It is estimated that approximately 20% of cases will require hospitalisation</span>
+        </div>
+    </div>
+    
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="hospitalisation_onset">Hospitalisation Onset (Days)</label>
+            <input id="hospitalisation_onset" type="number" min="0" max="100" step="0.1" value="10" name="Hospitalisation_Onset" title="Hospitalisation Onset" onchange="drawChart()" /> 
+            <span class="tooltiptext">Time from first exposure to being admitted to hospital</span>
+        </div>
+    </div>
+
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="hospitalisation_duration">Hospitalisation Duration</label>
+            <input id="hospitalisation_duration" type="number" min="0" max="100" step="0.1" value="10.4" name="Hospitalisation_Duration" title="Hospitalisation Duration" onchange="drawChart()" /> 
+            <span class="tooltiptext">Mean duration of hospitalisation 10.4 (subject to the study used), average 8 days (no critical care), or 16 days with 10 in ICU</span>
+        </div>
+    </div>
+
+    <br/>
+
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="icu_rate">Critical Care Rate (%)</label>
+            <input id="icu_rate" type="number" min="0" max="100" step="0.1" value="4" name="ICU_Rate" title="ICU Rate" onchange="drawChart()" /> 
+            <span class="tooltiptext">It is estimated that approximately 3% to 5% of cases will require ICU admission</span>
+        </div>
+    </div>  
+     
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="icu_onset">Critical Care Onset (Days)</label>
+            <input id="icu_onset" type="number" min="0" max="100" step="0.1" value="14" name="Hospitalisation_Onset" title="Hospitalisation Onset" onchange="drawChart()" /> 
+            <span class="tooltiptext">Time from first exposure to being admitted to ICU</span>
+        </div>
+    </div>
+
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="icu_duration">Critical Care Duration</label>
+            <input id="icu_duration" type="number" min="0" max="100" step="0.1" value="10" name="ICU_Duration" title="ICU Duration" onchange="drawChart()" /> 
+            <span class="tooltiptext">Mean duration of critical care, average 10 days in ICU</span>
+        </div>
+    </div>
+
+    <br/>
+
+    <div class="tooltip">
+        <div class="table_cell">
+            <label class="label" for="fatality_rate">Case Fatality Rate (%)</label>
+            <input id="fatality_rate" type="number" min="0" max="10" step="0.1" value="1.4" name="Case_Fatality_Rate" title="Case Fatality Rate" onchange="drawChart()" /> 
+            <span class="tooltiptext">Percentage of deaths per case, situation specific.  Influenced by age, vulnerabilities, testing and medical interventions of the population. Current range across countries is from 0.1% to 15%</span>
+        </div>
+    </div> 
+
+    </div>
+
+    <hr/>
+
+    <h2>Chart Explanation</h2>
+    <dl>
+        <dt>Susceptible</dt>
+        <dd>The population that has not yet been infected, but is susceptible to infection.</dd>
+        <dt>Exposed</dt>
+        <dd>Those in the population who have been exposed to the infection and incubating the disease, but not yet infectious.</dd>
+        <dt>Infectious</dt>
+        <dd>Those in the population who have been infected and are able to pass the infection on to others.</dd>
+        <dt>Asymptomatic</dt>
+        <dd>Those who are infectious and will not show any symptoms for the life of the infectio.</dd>
+        <dt>Symptomatic</dt>
+        <dd>Those who have been infected and showing symptoms.  Symptoms last beyond the infectious stage.</dd>
+        <dt>Hospitalised</dt>
+        <dd>Symptomatic cases that are hospitalised.</dd>
+        <dt>Intensive Care</dt>
+        <dd>Hospitalised cases that require ICU.</dd>
+        <dt>Recovered</dt>
+        <dd>The population who have been exposed to the infection and no longer infectious.</dd>
+        <dt>Deceased</dt>
+        <dd>The population who have been exposed to the infection and died as a result.</dd>
+    </dl></div>
+
+    <h2>Considerations and Limitations</h2>
+    <ul>
+        <li>This is a simple <a href="https://towardsdatascience.com/social-distancing-to-slow-the-coronavirus-768292f04296">SEIR</a> deterministic container model which can provide a general guide to inform how an infection may impact a particular population, but many real world factors may cause outcomes to significantly differ from the model</li>
+        <li>This model does not remove identified cases that have been quarantined or hospitalised cases from the infectious pool, which for a more realistic model should at least remove the hospitalised cases.  However, as many prisons have self contained infirmaries and limited ability to quarantine, not modelling this may be more realistic of an actual outbreak in a prison.</li>
+        <li>All models have limitations, this model is meant to inform of potential timelines and numbers but is not necessarily reflective of what would actually occur</li>
+        <li>Many of the input parameters needed to model COVID-19 are still being identified as new studies are published.  The default values used in this model are what is currently understood of the pandemic.</li>
+        <li>This is a closed population model, and does not account for additions to or removals from the population.  In the real world, there are ongoing new prisoners to prisons, staff churn, transfers, etc</li>
+        <li>The spread of the infection does not appear to be influenced by the age, gender or comorbidities of adults, only the severity of the illness appears to be influenced by these factors</li>
+        <li>The behaviour of the infection spread on a population can vary considerably subject to degree of preventative measures implemented</li>
+        <li>While social distancing measures are known to modify the spread of an infection, what specific measures affect the spread to what degree is still unknown</li>
+        <li>While the general public may be able to exercise social distancing, the ability to do so in institutional settings, such as crowded prisons and nursing homes is not as realistic, so isolation and social distancing is not as much of a control option in these settings</li>
+        <li>When modelling a prison or nursing home setting, while some prisoners or patients may be able to be provided some isolation, staff also need to be included in the population numbers.  Even with PPE and hygiene measures, the staff movement among the population pose a significant vector in the spread of any infections through a captive population, and subsequently to the community at large</li>
+        <li>At this stage it is unknown if an infection of COVID-19 protects you from re-infection, or for how long the protection lasts.  This model assumes all infected move to a "removed" container, but there may be a small percentage that should move back into the susceptible container after "recovery".</li>
+        <li>With respect to the Social Distancing Factor, within a specific prison this number will likely be close to 1 due to limited measures that can be implemented. Across all prisons, with the movement of prisoners between prisons, introduction of new prisoners from the broader community, staff movements in the broader community and between prisons and between prisoners in quarantine and the broader prison population and other prison staff, this number is not likely to be able to be reduced by any significant amount once the infection takes off in the broader prison system.</li>
+    </ul>
+
+    <script type="text/javascript">
+
+        //screenscraped from https://en.wikipedia.org/wiki/List_of_prisons_in_Australia
+        //expanded from https://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/4517.02019?OpenDocument
+        const prisons = [
+        {
+            "State": "Australian Capital Territory",
+            "Prison": "Alexander Maconochie Centre",
+            "Status": "Operational",
+            "Managed": "ACT Corrective Services",
+            "PublicPrivate": "Public",
+            "Capacity": "300",
+            "Males": "444",
+            "Females": "33",
+            "Max": "477",
+            "Latitude": "-35.370943",
+            "Longitude": "149.171805"
+        },
+        {
+            "State": "Australian Capital Territory",
+            "Prison": "Bimberi Youth Justice Centre",
+            "Status": "Operational",
+            "Managed": "ACT Department of Disability, Housing and Community Services",
+            "PublicPrivate": "Public",
+            "Capacity": "40",
+            "Males": "0",
+            "Females": "0",
+            "Max": "40",
+            "Latitude": "-35.2192874",
+            "Longitude": "149.134957"
+        },
+        {
+            "State": "Australian Capital Territory",
+            "Prison": "Periodic Detention Centre",
+            "Status": "Operational",
+            "Managed": "ACT Corrective Services",
+            "PublicPrivate": "Public",
+            "Capacity": "49",
+            "Males": "0",
+            "Females": "0",
+            "Max": "49",
+            "Latitude": "-35.34639",
+            "Longitude": "149.17778"
+        },
+        {
+            "State": "Australian Capital Territory",
+            "Prison": "Symonston Correctional Centre",
+            "Status": "Operational",
+            "Managed": "ACT Corrective Services",
+            "PublicPrivate": "Public",
+            "Capacity": "22",
+            "Males": "0",
+            "Females": "0",
+            "Max": "22",
+            "Latitude": "-35.34639",
+            "Longitude": "149.17778"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Acmena Juvenile Justice Centre",
+            "Status": "Operational",
+            "Managed": "Juvenile Justice NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "?",
+            "Males": "0",
+            "Females": "0",
+            "Max": "0",
+            "Latitude": "-29.68333",
+            "Longitude": "152.93333"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Amber Laurel Correctional Centre",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "17",
+            "Females": "0",
+            "Max": "17",
+            "Latitude": "-33.7440146",
+            "Longitude": "150.6693439"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Batemans Bay Police/Court Cells",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "3",
+            "Females": "0",
+            "Max": "3",
+            "Latitude": "-35.707662",
+            "Longitude": "150.1752743"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Bathurst Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "650",
+            "Males": "615",
+            "Females": "10",
+            "Max": "650",
+            "Latitude": "-33.41778",
+            "Longitude": "149.55833"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Berrima Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "75",
+            "Males": "0",
+            "Females": "51",
+            "Max": "75",
+            "Latitude": "-34.48748",
+            "Longitude": "150.33545"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Bolwara House Transitional Centre",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "0",
+            "Females": "14",
+            "Max": "14",
+            "Latitude": "-32.7107955",
+            "Longitude": "151.5686517"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Brewarrina (Yetta Dhinnakkal) Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "70",
+            "Males": "21",
+            "Females": "0",
+            "Max": "70",
+            "Latitude": "-30.350835",
+            "Longitude": "146.891024"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Broken Hill Correctional Centre (initially as Silverton Gaol)",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "89",
+            "Males": "66",
+            "Females": "9",
+            "Max": "89",
+            "Latitude": "-31.9651528",
+            "Longitude": "141.4564861"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Broken Hill Juvenile Justice Centre",
+            "Status": "Operational",
+            "Managed": "Juvenile Justice NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "?",
+            "Males": "0",
+            "Females": "0",
+            "Max": "0",
+            "Latitude": "-31.95667",
+            "Longitude": "141.46778"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Cessnock Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Correctional Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "750",
+            "Males": "524",
+            "Females": "0",
+            "Max": "750",
+            "Latitude": "-32.81694",
+            "Longitude": "151.33917"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Cobham Juvenile Justice Centre",
+            "Status": "Operational",
+            "Managed": "Juvenile Justice NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "?",
+            "Males": "0",
+            "Females": "0",
+            "Max": "0",
+            "Latitude": "-33.7607",
+            "Longitude": "150.7774"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Compulsory Drug Treatment Correctional Centre",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "52",
+            "Females": "0",
+            "Max": "52",
+            "Latitude": "-33.720558",
+            "Longitude": "150.9096353"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Cooma Correctional Centre",
+            "Status": "Operational+ museum",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "160",
+            "Males": "199",
+            "Females": "0",
+            "Max": "199",
+            "Latitude": "-36.232967",
+            "Longitude": "149.122833"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Dawn de Loas Correctional Centre",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "478",
+            "Females": "0",
+            "Max": "478",
+            "Latitude": "-33.8308128",
+            "Longitude": "151.0532726"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Defence Force Correctional Establishment",
+            "Status": "Operational",
+            "Managed": "Australian Defence Force",
+            "PublicPrivate": "Public",
+            "Capacity": "22",
+            "Males": "0",
+            "Females": "0",
+            "Max": "22",
+            "Latitude": "-33.995",
+            "Longitude": "150.95167"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Dillwynia Women's Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "200",
+            "Males": "0",
+            "Females": "210",
+            "Max": "210",
+            "Latitude": "-33.6471424",
+            "Longitude": "150.7803607"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Dubbo Police/Court Cells",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "3",
+            "Females": "0",
+            "Max": "3",
+            "Latitude": "-32.2476988",
+            "Longitude": "148.6012436"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Emu Plains Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "190",
+            "Males": "0",
+            "Females": "136",
+            "Max": "190",
+            "Latitude": "-33.7379",
+            "Longitude": "150.6679"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Frank Baxter Juvenile Justice Centre",
+            "Status": "Operational",
+            "Managed": "Juvenile Justice NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "120",
+            "Males": "0",
+            "Females": "0",
+            "Max": "120",
+            "Latitude": "-33.44",
+            "Longitude": "151.301"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Glen Innes Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "95",
+            "Males": "168",
+            "Females": "0",
+            "Max": "168",
+            "Latitude": "-29.641667",
+            "Longitude": "152.09999"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Goulburn Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "650",
+            "Males": "524",
+            "Females": "0",
+            "Max": "650",
+            "Latitude": "-34.74139",
+            "Longitude": "149.74056"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Grafton Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "270",
+            "Males": "244",
+            "Females": "21",
+            "Max": "270",
+            "Latitude": "-29.676647",
+            "Longitude": "152.940196"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "High Risk Management Correctional Centre (Goulburn Correctional Centre)",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "58",
+            "Females": "0",
+            "Max": "58",
+            "Latitude": "-34.741389",
+            "Longitude": "149.740556"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Hunter Correctional Centre",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "396",
+            "Females": "0",
+            "Max": "396",
+            "Latitude": "-32.817123",
+            "Longitude": "151.334153"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Illawarra Reintegration Centre",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "58",
+            "Females": "0",
+            "Max": "58",
+            "Latitude": "-34.46201",
+            "Longitude": "150.8452372"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Ivanhoe (Warakirri) Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "50",
+            "Males": "27",
+            "Females": "0",
+            "Max": "50",
+            "Latitude": "-32.91528",
+            "Longitude": "144.31083"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "John Morony Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "400",
+            "Males": "426",
+            "Females": "0",
+            "Max": "426",
+            "Latitude": "-33.6518556",
+            "Longitude": "150.7840917"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Junee Correctional Centre",
+            "Status": "Operational",
+            "Managed": "GEO Group Australia",
+            "PublicPrivate": "Private",
+            "Capacity": "790",
+            "Males": "834",
+            "Females": "0",
+            "Max": "834",
+            "Latitude": "-34.86083",
+            "Longitude": "147.55639"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Juniperina Juvenile Justice Centre",
+            "Status": "Operational",
+            "Managed": "Juvenile Justice NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "?",
+            "Males": "0",
+            "Females": "0",
+            "Max": "0",
+            "Latitude": "-33.86462",
+            "Longitude": "151.04563"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Kariong Youth Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "100",
+            "Males": "98",
+            "Females": "0",
+            "Max": "100",
+            "Latitude": "-33.44",
+            "Longitude": "151.301"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Kirkconnell Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "250",
+            "Males": "259",
+            "Females": "0",
+            "Max": "259",
+            "Latitude": "-33.4171859",
+            "Longitude": "149.8417139"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Lismore Police/Court Cells",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "7",
+            "Females": "0",
+            "Max": "7",
+            "Latitude": "-28.8055336",
+            "Longitude": "153.2770778"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Lithgow Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "460",
+            "Males": "421",
+            "Females": "0",
+            "Max": "460",
+            "Latitude": "-33.42972",
+            "Longitude": "150.11639"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Long Bay Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "1,100",
+            "Males": "469",
+            "Females": "0",
+            "Max": "1100",
+            "Latitude": "-33.96944",
+            "Longitude": "151.24583"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Macquarie Correctional Centre",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "359",
+            "Females": "0",
+            "Max": "359",
+            "Latitude": "-32.5078025",
+            "Longitude": "148.978781"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Mannus Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "164",
+            "Males": "153",
+            "Females": "0",
+            "Max": "164",
+            "Latitude": "-35.79",
+            "Longitude": "147.96"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Mary Wade Correctional Centre",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "0",
+            "Females": "86",
+            "Max": "86",
+            "Latitude": "-33.8865358",
+            "Longitude": "151.0386907"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Metropolitan Remand and Reception Centre (MRRC)",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "1,050",
+            "Males": "1067",
+            "Females": "0",
+            "Max": "1067",
+            "Latitude": "-33.830972",
+            "Longitude": "151.057667"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Metropolitan Special Programs Centre (Long Bay Correctional Centre)",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "1060",
+            "Females": "0",
+            "Max": "1060",
+            "Latitude": "-33.969444",
+            "Longitude": "151.245833"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Mid North Coast Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "500",
+            "Males": "573",
+            "Females": "44",
+            "Max": "617",
+            "Latitude": "-31.0675",
+            "Longitude": "152.7527"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Moree Police/Court Cells",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "3",
+            "Females": "0",
+            "Max": "3",
+            "Latitude": "-29.4638856",
+            "Longitude": "149.8411218"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Newcastle Police/Court Cells",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "3",
+            "Females": "0",
+            "Max": "3",
+            "Latitude": "-32.9284171",
+            "Longitude": "151.7759166"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Oberon Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "100",
+            "Males": "115",
+            "Females": "0",
+            "Max": "115",
+            "Latitude": "-33.929667",
+            "Longitude": "149.848667"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Old Berrima Gaol",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "?",
+            "Males": "0",
+            "Females": "0",
+            "Max": "0",
+            "Latitude": "-34.483",
+            "Longitude": "150.35"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Orana Juvenile Justice Centre",
+            "Status": "Operational",
+            "Managed": "Juvenile Justice NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "45",
+            "Males": "0",
+            "Females": "0",
+            "Max": "45",
+            "Latitude": "-32.25694",
+            "Longitude": "148.60111"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Outer Metropolitan Multi-Purpose Correctional Centre (John Morony Correctional Complex)",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "223",
+            "Females": "0",
+            "Max": "223",
+            "Latitude": "-33.651856",
+            "Longitude": "150.784092"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Parklea Correctional Centre",
+            "Status": "Operational",
+            "Managed": "GEO Group Australia",
+            "PublicPrivate": "Private",
+            "Capacity": "893",
+            "Males": "1098",
+            "Females": "0",
+            "Max": "1098",
+            "Latitude": "-33.72333",
+            "Longitude": "150.91861"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Parramatta Transitional Centre",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "0",
+            "Females": "14",
+            "Max": "14",
+            "Latitude": "-33.815",
+            "Longitude": "151.001111"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Port Macquarie Police/Court Cells",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "3",
+            "Females": "0",
+            "Max": "3",
+            "Latitude": "-31.4300438",
+            "Longitude": "152.9091798"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Reiby Juvenile Justice Centre",
+            "Status": "Operational",
+            "Managed": "Juvenile Justice NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "?",
+            "Males": "0",
+            "Females": "0",
+            "Max": "0",
+            "Latitude": "-34.0916",
+            "Longitude": "150.8249"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Riverina Juvenile Justice Centre",
+            "Status": "Operational",
+            "Managed": "Juvenile Justice NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "33",
+            "Males": "0",
+            "Females": "0",
+            "Max": "33",
+            "Latitude": "-35.11889",
+            "Longitude": "147.36889"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Shortland Correctional Centre (Cessnock Correctional Complex)",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "332",
+            "Females": "0",
+            "Max": "332",
+            "Latitude": "-32.816944",
+            "Longitude": "151.339167"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Silverwater Women's Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "200",
+            "Males": "0",
+            "Females": "279",
+            "Max": "279",
+            "Latitude": "-33.830972",
+            "Longitude": "151.057667"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "South Coast Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "549",
+            "Males": "528",
+            "Females": "0",
+            "Max": "549",
+            "Latitude": "-34.883",
+            "Longitude": "150.6"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Special Purpose Centre (Long Bay Correctional Centre)",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "52",
+            "Females": "3",
+            "Max": "55",
+            "Latitude": "-33.969444",
+            "Longitude": "151.245833"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "St Heliers Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "280",
+            "Males": "263",
+            "Females": "0",
+            "Max": "280",
+            "Latitude": "-32.22785",
+            "Longitude": "150.913599"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Surry Hills Police/Court Cells",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "26",
+            "Females": "3",
+            "Max": "29",
+            "Latitude": "-33.8796684",
+            "Longitude": "151.2113048"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Tamworth Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "90",
+            "Males": "87",
+            "Females": "0",
+            "Max": "90",
+            "Latitude": "-31.09222",
+            "Longitude": "150.93056"
+        },
+        {
+            "State": "New South Wales",
+            "Prison": "Wellington Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrective Services NSW",
+            "PublicPrivate": "Public",
+            "Capacity": "700",
+            "Males": "612",
+            "Females": "65",
+            "Max": "700",
+            "Latitude": "-32.5059028",
+            "Longitude": "148.9817762"
+        },
+        {
+            "State": "Northern Territory",
+            "Prison": "Alice Springs Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Northern Territory Correctional Services",
+            "PublicPrivate": "Public",
+            "Capacity": "470",
+            "Males": "518",
+            "Females": "32",
+            "Max": "550",
+            "Latitude": "-23.858288",
+            "Longitude": "133.799143"
+        },
+        {
+            "State": "Northern Territory",
+            "Prison": "Alice Springs Juvenile Holding Centre",
+            "Status": "Operational",
+            "Managed": "Northern Territory Correctional Services",
+            "PublicPrivate": "Public",
+            "Capacity": "10",
+            "Males": "0",
+            "Females": "0",
+            "Max": "10",
+            "Latitude": "-23.858288",
+            "Longitude": "133.799143"
+        },
+        {
+            "State": "Northern Territory",
+            "Prison": "Barkly Work Camp",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "48",
+            "Females": "0",
+            "Max": "48",
+            "Latitude": "-19.653365",
+            "Longitude": "134.216102"
+        },
+        {
+            "State": "Northern Territory",
+            "Prison": "Berrimah Prison",
+            "Status": "Operational",
+            "Managed": "Northern Territory Correctional Services",
+            "PublicPrivate": "Public",
+            "Capacity": "750",
+            "Males": "0",
+            "Females": "0",
+            "Max": "750",
+            "Latitude": "-12.445775",
+            "Longitude": "130.940616"
+        },
+        {
+            "State": "Northern Territory",
+            "Prison": "Darwin Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Northern Territory Correctional Services",
+            "PublicPrivate": "Public",
+            "Capacity": "1000",
+            "Males": "1007",
+            "Females": "79",
+            "Max": "1086",
+            "Latitude": "-12.4628987",
+            "Longitude": "131.0309609"
+        },
+        {
+            "State": "Northern Territory",
+            "Prison": "Datjala Work Camp",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "44",
+            "Females": "0",
+            "Max": "44",
+            "Latitude": "-12.1907399",
+            "Longitude": "136.7860341"
+        },
+        {
+            "State": "Northern Territory",
+            "Prison": "Don Dale Youth Detention Centre",
+            "Status": "Operational",
+            "Managed": "Northern Territory Correctional Services",
+            "PublicPrivate": "Public",
+            "Capacity": "38",
+            "Males": "0",
+            "Females": "0",
+            "Max": "38",
+            "Latitude": "-12.445775",
+            "Longitude": "130.940616"
+        },
+        {
+            "State": "Northern Territory",
+            "Prison": "Wildman River Wilderness Work Camp",
+            "Status": "Operational",
+            "Managed": "Northern Territory Correctional Services",
+            "PublicPrivate": "Public",
+            "Capacity": "20",
+            "Males": "0",
+            "Females": "0",
+            "Max": "20",
+            "Latitude": "-12.3",
+            "Longitude": "132.05"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Arthur Gorrie Correctional Centre",
+            "Status": "Operational",
+            "Managed": "GEO Group Australia",
+            "PublicPrivate": "Private",
+            "Capacity": "890",
+            "Males": "1167",
+            "Females": "0",
+            "Max": "1167",
+            "Latitude": "-27.580743",
+            "Longitude": "152.934347"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Borallon Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Queensland Corrective Services",
+            "PublicPrivate": "Public",
+            "Capacity": "494",
+            "Males": "706",
+            "Females": "0",
+            "Max": "706",
+            "Latitude": "-27.549676",
+            "Longitude": "152.674422"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Brisbane Correctional Centre (formerly known as Sir David Longland Correctional Centre)",
+            "Status": "Operational",
+            "Managed": "Queensland Corrective Services",
+            "PublicPrivate": "Public",
+            "Capacity": "600",
+            "Males": "783",
+            "Females": "0",
+            "Max": "783",
+            "Latitude": "-27.579461",
+            "Longitude": "152.924569"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Brisbane Women's Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Queensland Corrective Services",
+            "PublicPrivate": "Public",
+            "Capacity": "270",
+            "Males": "0",
+            "Females": "225",
+            "Max": "270",
+            "Latitude": "-27.578914",
+            "Longitude": "152.913236"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Brisbane Youth Detention Centre",
+            "Status": "Operational",
+            "Managed": "Department of Communities",
+            "PublicPrivate": "Public",
+            "Capacity": "105",
+            "Males": "0",
+            "Females": "0",
+            "Max": "105",
+            "Latitude": "-27.583",
+            "Longitude": "152.9205"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Capricornia Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Queensland Corrective Services",
+            "PublicPrivate": "Public",
+            "Capacity": "500",
+            "Males": "586",
+            "Females": "0",
+            "Max": "586",
+            "Latitude": "-23.301815",
+            "Longitude": "150.513703"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Capricornia Correctional Centre - Farm",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "72",
+            "Females": "0",
+            "Max": "72",
+            "Latitude": "-23.2274888",
+            "Longitude": "150.4687386"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Cleveland Youth Detention Centre",
+            "Status": "Operational",
+            "Managed": "Department of Communities",
+            "PublicPrivate": "Public",
+            "Capacity": "100",
+            "Males": "0",
+            "Females": "0",
+            "Max": "100",
+            "Latitude": "-19.25639",
+            "Longitude": "146.81833"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Lotus Glen Correctional Centre - Farm",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "124",
+            "Females": "0",
+            "Max": "124",
+            "Latitude": "-17.1124458",
+            "Longitude": "145.3592545"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Lotus Glen Correctional Centre - Main",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "500",
+            "Males": "844",
+            "Females": "0",
+            "Max": "844",
+            "Latitude": "-17.115039",
+            "Longitude": "145.363922"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Maryborough Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Queensland Corrective Services",
+            "PublicPrivate": "Public",
+            "Capacity": "500",
+            "Males": "575",
+            "Females": "0",
+            "Max": "575",
+            "Latitude": "-25.474975",
+            "Longitude": "152.641075"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Numinbah Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Queensland Corrective Services",
+            "PublicPrivate": "Public",
+            "Capacity": "129",
+            "Males": "0",
+            "Females": "101",
+            "Max": "129",
+            "Latitude": "-28.161177",
+            "Longitude": "153.206082"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Palen Creek Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Queensland Corrective Services",
+            "PublicPrivate": "Public",
+            "Capacity": "170",
+            "Males": "190",
+            "Females": "0",
+            "Max": "190",
+            "Latitude": "-28.270678",
+            "Longitude": "152.811599"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Southern Queensland Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Serco",
+            "PublicPrivate": "Private",
+            "Capacity": "300",
+            "Males": "0",
+            "Females": "295",
+            "Max": "300",
+            "Latitude": "-27.482126",
+            "Longitude": "152.330372"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "The Helana Jones Community Corrections Centre",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "0",
+            "Females": "23",
+            "Max": "23",
+            "Latitude": "-27.428751",
+            "Longitude": "153.042946"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Townsville Correctional Centre - Female Farm",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "0",
+            "Females": "51",
+            "Max": "51",
+            "Latitude": "-19.347313",
+            "Longitude": "146.843586"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Townsville Correctional Centre - Male Farm",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "96",
+            "Females": "0",
+            "Max": "96",
+            "Latitude": "-19.347313",
+            "Longitude": "146.843586"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Townsville Correctional Centre - Male Main",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "494",
+            "Males": "693",
+            "Females": "0",
+            "Max": "693",
+            "Latitude": "-19.347313",
+            "Longitude": "146.843586"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Townsville Womens Correctional Centre",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "0",
+            "Females": "160",
+            "Max": "160",
+            "Latitude": "-19.347313",
+            "Longitude": "146.843586"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Wolston Correctional Centre",
+            "Status": "Operational",
+            "Managed": "GEO",
+            "PublicPrivate": "Private",
+            "Capacity": "600",
+            "Males": "787",
+            "Females": "0",
+            "Max": "787",
+            "Latitude": "-27.578914",
+            "Longitude": "152.913236"
+        },
+        {
+            "State": "Queensland",
+            "Prison": "Woodford Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Queensland Corrective Services",
+            "PublicPrivate": "Public",
+            "Capacity": "1008",
+            "Males": "1291",
+            "Females": "0",
+            "Max": "1291",
+            "Latitude": "-26.949955",
+            "Longitude": "152.75776"
+        },
+        {
+            "State": "South Australia",
+            "Prison": "Adelaide Pre-Release Centre",
+            "Status": "Operational",
+            "Managed": "Department for Correctional Services",
+            "PublicPrivate": "Public",
+            "Capacity": "104",
+            "Males": "56",
+            "Females": "16",
+            "Max": "104",
+            "Latitude": "-34.844099",
+            "Longitude": "138.628578"
+        },
+        {
+            "State": "South Australia",
+            "Prison": "Adelaide Remand Centre",
+            "Status": "Operational",
+            "Managed": "Department for Correctional Services",
+            "PublicPrivate": "Public",
+            "Capacity": "274",
+            "Males": "161",
+            "Females": "0",
+            "Max": "274",
+            "Latitude": "-34.92444",
+            "Longitude": "138.59028"
+        },
+        {
+            "State": "South Australia",
+            "Prison": "Adelaide Women's Prison",
+            "Status": "Operational",
+            "Managed": "Department for Correctional Services",
+            "PublicPrivate": "Public",
+            "Capacity": "176",
+            "Males": "0",
+            "Females": "158",
+            "Max": "176",
+            "Latitude": "-34.84556",
+            "Longitude": "138.64111"
+        },
+        {
+            "State": "South Australia",
+            "Prison": "Cadell Training Centre",
+            "Status": "Operational",
+            "Managed": "Department for Correctional Services",
+            "PublicPrivate": "Public",
+            "Capacity": "204",
+            "Males": "190",
+            "Females": "0",
+            "Max": "204",
+            "Latitude": "-34.05694",
+            "Longitude": "139.7575"
+        },
+        {
+            "State": "South Australia",
+            "Prison": "James Nash House",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "3",
+            "Females": "0",
+            "Max": "3",
+            "Latitude": "-34.8497717",
+            "Longitude": "138.6349354"
+        },
+        {
+            "State": "South Australia",
+            "Prison": "Mobilong Prison",
+            "Status": "Operational",
+            "Managed": "Department for Correctional Services",
+            "PublicPrivate": "Public",
+            "Capacity": "472",
+            "Males": "424",
+            "Females": "0",
+            "Max": "472",
+            "Latitude": "-35.11306",
+            "Longitude": "139.23389"
+        },
+        {
+            "State": "South Australia",
+            "Prison": "Mount Gambier Prison",
+            "Status": "Operational",
+            "Managed": "G4S",
+            "PublicPrivate": "Private",
+            "Capacity": "503",
+            "Males": "610",
+            "Females": "0",
+            "Max": "610",
+            "Latitude": "-37.85861",
+            "Longitude": "140.68444"
+        },
+        {
+            "State": "South Australia",
+            "Prison": "Port Augusta Prison",
+            "Status": "Operational",
+            "Managed": "Department for Correctional Services",
+            "PublicPrivate": "Public",
+            "Capacity": "624",
+            "Males": "547",
+            "Females": "24",
+            "Max": "624",
+            "Latitude": "-32.51326",
+            "Longitude": "137.810864"
+        },
+        {
+            "State": "South Australia",
+            "Prison": "Port Lincoln Prison",
+            "Status": "Operational",
+            "Managed": "Department for Correctional Services",
+            "PublicPrivate": "Public",
+            "Capacity": "176",
+            "Males": "153",
+            "Females": "0",
+            "Max": "176",
+            "Latitude": "-34.7046472",
+            "Longitude": "135.797525"
+        },
+        {
+            "State": "South Australia",
+            "Prison": "Yatala Labour Prison",
+            "Status": "Operational",
+            "Managed": "Department for Correctional Services",
+            "PublicPrivate": "Public",
+            "Capacity": "578",
+            "Males": "521",
+            "Females": "0",
+            "Max": "578",
+            "Latitude": "-34.84444",
+            "Longitude": "138.62861"
+        },
+        {
+            "State": "Tasmania",
+            "Prison": "Ashley Youth Detention Centre",
+            "Status": "Operational",
+            "Managed": "Department of Health and Human Services",
+            "PublicPrivate": "Public",
+            "Capacity": "51",
+            "Males": "0",
+            "Females": "0",
+            "Max": "51",
+            "Latitude": "-41.524949",
+            "Longitude": "146.704347"
+        },
+        {
+            "State": "Tasmania",
+            "Prison": "Hobart Reception Centre",
+            "Status": "Operational",
+            "Managed": "Tasmanian Prison Service",
+            "PublicPrivate": "Public",
+            "Capacity": "50",
+            "Males": "48",
+            "Females": "0",
+            "Max": "50",
+            "Latitude": "-42.87905",
+            "Longitude": "147.3295"
+        },
+        {
+            "State": "Tasmania",
+            "Prison": "Launceston Reception Centre",
+            "Status": "Operational",
+            "Managed": "Tasmanian Prison Service",
+            "PublicPrivate": "Public",
+            "Capacity": "33",
+            "Males": "21",
+            "Females": "4",
+            "Max": "33",
+            "Latitude": "-41.4356",
+            "Longitude": "147.136"
+        },
+        {
+            "State": "Tasmania",
+            "Prison": "Mary Hutchinson Women's Prison",
+            "Status": "Operational",
+            "Managed": "Tasmanian Prison Service Department of Health and Human Services (Wilfred Lopes Centre)",
+            "PublicPrivate": "Public",
+            "Capacity": "45",
+            "Males": "0",
+            "Females": "52",
+            "Max": "52",
+            "Latitude": "-42.812",
+            "Longitude": "147.34"
+        },
+        {
+            "State": "Tasmania",
+            "Prison": "Risdon Prison Complex (incorporating the Ron Barwick Minimum Security Prison and the Wilfred Lopes Centre for Forensic Mental Health)",
+            "Status": "Operational",
+            "Managed": "Tasmanian Prison Service Department of Health and Human Services (Wilfred Lopes Centre)",
+            "PublicPrivate": "Public",
+            "Capacity": "280",
+            "Males": "301",
+            "Females": "0",
+            "Max": "301",
+            "Latitude": "-42.812",
+            "Longitude": "147.34"
+        },
+        {
+            "State": "Tasmania",
+            "Prison": "Ron Barwick Minimum Security Prison (Risdon Prison Complex)",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "265",
+            "Females": "0",
+            "Max": "265",
+            "Latitude": "-42.812",
+            "Longitude": "147.34"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "Acheron Boys Home",
+            "Status": "Operational",
+            "Managed": "Youth Justice Custodial Services",
+            "PublicPrivate": "Public",
+            "Capacity": "10",
+            "Males": "0",
+            "Females": "0",
+            "Max": "10",
+            "Latitude": "-37.509726",
+            "Longitude": "145.545502"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "Beechworth Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrections Victoria",
+            "PublicPrivate": "Public",
+            "Capacity": "210",
+            "Males": "165",
+            "Females": "0",
+            "Max": "210",
+            "Latitude": "-36.3489",
+            "Longitude": "146.6541083"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "Dame Phyllis Frost Centre",
+            "Status": "Operational",
+            "Managed": "Corrections Victoria",
+            "PublicPrivate": "Public",
+            "Capacity": "604",
+            "Males": "0",
+            "Females": "513",
+            "Max": "604",
+            "Latitude": "-37.7825",
+            "Longitude": "144.74222"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "Fulham Correctional Centre (including NALU)",
+            "Status": "Operational",
+            "Managed": "GEO Group Australia",
+            "PublicPrivate": "Private",
+            "Capacity": "893",
+            "Males": "867",
+            "Females": "0",
+            "Max": "893",
+            "Latitude": "-38.1075",
+            "Longitude": "146.97028"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "HM Melbourne Assessment Prison",
+            "Status": "Operational",
+            "Managed": "Corrections Victoria",
+            "PublicPrivate": "Public",
+            "Capacity": "305",
+            "Males": "219",
+            "Females": "0",
+            "Max": "305",
+            "Latitude": "-37.8126843",
+            "Longitude": "144.9487482"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "HM Prison Barwon (including Barwon Supermax)",
+            "Status": "Operational",
+            "Managed": "Corrections Victoria",
+            "PublicPrivate": "Public",
+            "Capacity": "478",
+            "Males": "405",
+            "Females": "0",
+            "Max": "478",
+            "Latitude": "-37.984492",
+            "Longitude": "144.3503924"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "HM Prison Dhurringile",
+            "Status": "Operational",
+            "Managed": "Corrections Victoria",
+            "PublicPrivate": "Public",
+            "Capacity": "328",
+            "Males": "199",
+            "Females": "0",
+            "Max": "328",
+            "Latitude": "-36.5183741",
+            "Longitude": "145.2228608"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "HM Prison Langi Kal Kal",
+            "Status": "Operational",
+            "Managed": "Corrections Victoria",
+            "PublicPrivate": "Public",
+            "Capacity": "428",
+            "Males": "363",
+            "Females": "0",
+            "Max": "428",
+            "Latitude": "-37.406586",
+            "Longitude": "143.4860178"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "HM Prison Loddon",
+            "Status": "Operational",
+            "Managed": "Corrections Victoria",
+            "PublicPrivate": "Public",
+            "Capacity": "468",
+            "Males": "640",
+            "Females": "0",
+            "Max": "640",
+            "Latitude": "-37.0807227",
+            "Longitude": "144.2369062"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "HM Prison Tarrengower",
+            "Status": "Operational",
+            "Managed": "Corrections Victoria",
+            "PublicPrivate": "Public",
+            "Capacity": "78",
+            "Males": "0",
+            "Females": "66",
+            "Max": "78",
+            "Latitude": "-36.977904",
+            "Longitude": "144.0454277"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "Hopkins Correctional Centre (Ararat)",
+            "Status": "Operational",
+            "Managed": "Corrections Victoria",
+            "PublicPrivate": "Public",
+            "Capacity": "762",
+            "Males": "694",
+            "Females": "0",
+            "Max": "762",
+            "Latitude": "-37.278",
+            "Longitude": "142.9815"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "Judy Lazarus Transition Centre",
+            "Status": "Operational (ABS)",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "?",
+            "Males": "23",
+            "Females": "0",
+            "Max": "23",
+            "Latitude": "-37.8124179",
+            "Longitude": "144.9471572"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "Malmsbury Youth Justice Centre",
+            "Status": "Operational",
+            "Managed": "Department of Human Services",
+            "PublicPrivate": "Public",
+            "Capacity": "74",
+            "Males": "0",
+            "Females": "0",
+            "Max": "74",
+            "Latitude": "-37.18889",
+            "Longitude": "144.385"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "Marngoneet Correctional Centre",
+            "Status": "Operational",
+            "Managed": "Corrections Victoria",
+            "PublicPrivate": "Public",
+            "Capacity": "559",
+            "Males": "799",
+            "Females": "0",
+            "Max": "799",
+            "Latitude": "-37.98194",
+            "Longitude": "144.35194"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "Melbourne Youth Justice Centre",
+            "Status": "Operational",
+            "Managed": "Department of Human Services",
+            "PublicPrivate": "Public",
+            "Capacity": "110",
+            "Males": "0",
+            "Females": "0",
+            "Max": "110",
+            "Latitude": "-37.77694",
+            "Longitude": "144.94528"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "Metropolitan Remand Centre",
+            "Status": "Operational",
+            "Managed": "Corrections Victoria",
+            "PublicPrivate": "Public",
+            "Capacity": "954",
+            "Males": "915",
+            "Females": "0",
+            "Max": "954",
+            "Latitude": "-37.79278",
+            "Longitude": "144.74611"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "Parkville Youth Residential Centre",
+            "Status": "Operational",
+            "Managed": "Department of Human Services",
+            "PublicPrivate": "Public",
+            "Capacity": "30",
+            "Males": "0",
+            "Females": "0",
+            "Max": "30",
+            "Latitude": "-37.788",
+            "Longitude": "144.951"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "Port Phillip Prison",
+            "Status": "Operational",
+            "Managed": "G4S Australia Pty. Limited",
+            "PublicPrivate": "Private",
+            "Capacity": "1117",
+            "Males": "1046",
+            "Females": "0",
+            "Max": "1117",
+            "Latitude": "-37.82833",
+            "Longitude": "144.75222"
+        },
+        {
+            "State": "Victoria",
+            "Prison": "Ravenhall Correctional Centre",
+            "Status": "Operational",
+            "Managed": "GEO Group Australia",
+            "PublicPrivate": "Private",
+            "Capacity": "1300",
+            "Males": "1193",
+            "Females": "0",
+            "Max": "1300",
+            "Latitude": "-37.7874286",
+            "Longitude": "144.7413394"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Acacia Prison",
+            "Status": "Operational",
+            "Managed": "Serco",
+            "PublicPrivate": "Private",
+            "Capacity": "1,525",
+            "Males": "1513",
+            "Females": "0",
+            "Max": "1525",
+            "Latitude": "-31.8351",
+            "Longitude": "116.3409"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Albany Regional Prison",
+            "Status": "Operational",
+            "Managed": "Department of Justice",
+            "PublicPrivate": "Public",
+            "Capacity": "310",
+            "Males": "467",
+            "Females": "3",
+            "Max": "470",
+            "Latitude": "-35.04389",
+            "Longitude": "117.81778"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Bandyup Women's Prison",
+            "Status": "Operational",
+            "Managed": "Department of Justice",
+            "PublicPrivate": "Public",
+            "Capacity": "259",
+            "Males": "0",
+            "Females": "229",
+            "Max": "259",
+            "Latitude": "-31.86222",
+            "Longitude": "115.99556"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Banksia Hill Juvenile Detention Centre",
+            "Status": "Operational",
+            "Managed": "Department of Justice",
+            "PublicPrivate": "Public",
+            "Capacity": "?",
+            "Males": "0",
+            "Females": "0",
+            "Max": "0",
+            "Latitude": "-32.109705",
+            "Longitude": "115.919085"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Boronia Pre-release Centre for Women",
+            "Status": "Operational",
+            "Managed": "Department of Justice",
+            "PublicPrivate": "Public",
+            "Capacity": "82",
+            "Males": "0",
+            "Females": "92",
+            "Max": "92",
+            "Latitude": "-32.0031",
+            "Longitude": "115.8973"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Broome Regional Prison",
+            "Status": "Operational",
+            "Managed": "Department of Justice",
+            "PublicPrivate": "Public",
+            "Capacity": "138",
+            "Males": "67",
+            "Females": "0",
+            "Max": "138",
+            "Latitude": "-17.958",
+            "Longitude": "122.2412"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Bunbury Regional Prison",
+            "Status": "Operational",
+            "Managed": "Department of Justice",
+            "PublicPrivate": "Public",
+            "Capacity": "340",
+            "Males": "370",
+            "Females": "0",
+            "Max": "370",
+            "Latitude": "-33.383589",
+            "Longitude": "115.670852"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Casuarina Prison",
+            "Status": "Operational",
+            "Managed": "Department of Justice",
+            "PublicPrivate": "Public",
+            "Capacity": "680",
+            "Males": "950",
+            "Females": "0",
+            "Max": "950",
+            "Latitude": "-32.23972",
+            "Longitude": "115.87806"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Eastern Goldfields Regional Prison",
+            "Status": "Operational",
+            "Managed": "Department of Justice",
+            "PublicPrivate": "Public",
+            "Capacity": "136",
+            "Males": "266",
+            "Females": "35",
+            "Max": "301",
+            "Latitude": "-30.7905",
+            "Longitude": "121.486"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Greenough Regional Prison",
+            "Status": "Operational",
+            "Managed": "Department of Justice",
+            "PublicPrivate": "Public",
+            "Capacity": "323",
+            "Males": "163",
+            "Females": "0",
+            "Max": "323",
+            "Latitude": "-28.834674",
+            "Longitude": "114.69919"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Hakea Prison",
+            "Status": "Operational",
+            "Managed": "Department of Justice",
+            "PublicPrivate": "Public",
+            "Capacity": "897",
+            "Males": "1155",
+            "Females": "0",
+            "Max": "1155",
+            "Latitude": "-32.10167",
+            "Longitude": "115.91944"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Karnet Prison Farm",
+            "Status": "Operational",
+            "Managed": "Department of Justice",
+            "PublicPrivate": "Public",
+            "Capacity": "326",
+            "Males": "368",
+            "Females": "0",
+            "Max": "368",
+            "Latitude": "-32.4397",
+            "Longitude": "116.0772"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Melaleuca Remand and Reintegration Facility",
+            "Status": "Operational",
+            "Managed": "Sodexo",
+            "PublicPrivate": "Private",
+            "Capacity": "254",
+            "Males": "0",
+            "Females": "240",
+            "Max": "254",
+            "Latitude": "-32.1054",
+            "Longitude": "115.921"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Pardelup Prison Farm",
+            "Status": "Operational",
+            "Managed": "Department of Justice",
+            "PublicPrivate": "Public",
+            "Capacity": "96",
+            "Males": "93",
+            "Females": "0",
+            "Max": "96",
+            "Latitude": "-34.63678",
+            "Longitude": "117.38274"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Roebourne Regional Prison",
+            "Status": "Operational",
+            "Managed": "Department of Justice",
+            "PublicPrivate": "Public",
+            "Capacity": "161",
+            "Males": "197",
+            "Females": "12",
+            "Max": "209",
+            "Latitude": "-20.721277",
+            "Longitude": "117.133462"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Wandoo Rehabilitiation Facility",
+            "Status": "Operational",
+            "Managed": "Unknown",
+            "PublicPrivate": "?",
+            "Capacity": "80",
+            "Males": "0",
+            "Females": "72",
+            "Max": "80",
+            "Latitude": "-32.075793",
+            "Longitude": "115.845119"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "West Kimberley Regional Prison",
+            "Status": "Operational",
+            "Managed": "Department of Justice",
+            "PublicPrivate": "Public",
+            "Capacity": "150",
+            "Males": "186",
+            "Females": "34",
+            "Max": "220",
+            "Latitude": "-17.35389",
+            "Longitude": "123.677194"
+        },
+        {
+            "State": "Western Australia",
+            "Prison": "Wooroloo Prison Farm",
+            "Status": "Operational",
+            "Managed": "Department of Justice",
+            "PublicPrivate": "Public",
+            "Capacity": "360",
+            "Males": "425",
+            "Females": "0",
+            "Max": "425",
+            "Latitude": "-31.8134",
+            "Longitude": "116.3385"
+        }
+    ];
+ 
+    var susceptible_population = 0;
+    var prison_churn = parseInt(document.getElementById("prison_churn").value)/100; 
+    var prison_daily_churn = 0;
+    var R0 = document.getElementById("R0_value").value; 
+    var distancing_rho = document.getElementById("social_distancing_factor").value;
+    var exposed_people = document.getElementById("exposed_people").value;
+    var t_incubation_period = document.getElementById("incubation_period").value;
+    var t_infectious_period = document.getElementById("infectious_period").value; 
+    var symptoms_period = document.getElementById("symptoms_period").value;
+    var infected_people = document.getElementById("infected_people").value;
+    var recovered_people = document.getElementById("recovered_people").value;
+    var t_max = document.getElementById("days").value; 
+    var dt = document.getElementById("step_granularity").value; //step granularity for graphing
+    var asymptomatic_rate =  document.getElementById("asymptomatic_rate").value; 
+    var hospitalisation_rate =  document.getElementById("hospitalisation_rate").value; 
+    var hospitalisation_onset =  document.getElementById("hospitalisation_onset").value; 
+    var hospitalisation_duration =  document.getElementById("hospitalisation_duration").value; 
+    var icu_rate = document.getElementById("icu_rate").value;
+    var icu_onset =  document.getElementById("icu_onset").value; 
+    var icu_duration =  document.getElementById("icu_duration").value; 
+    var case_fatality_rate = document.getElementById("fatality_rate").value;
+
+    function changePrisonList() {
+
+        var selStateFilter = document.getElementById("sel_state");
+        var selStateFilterValue = selStateFilter.value;
+
+        var selPrisonDiv = document.getElementById("sel_prison_span");
+        selPrisonDiv.style.visibility = "visible";
+           
+        if (selStateFilterValue == "All") {
+            //unfiltered
+            var filtered_prisons = prisons;
+            document.getElementById("social_distancing_factor").value = 1;
+        } else if (selStateFilterValue == "Custom") {
+            //no default values
+            var filtered_prisons = null;
+            selPrisonDiv.style.visibility = "hidden";
+            document.getElementById("social_distancing_factor").value = 0.8;
+        } else {
+            //State filtered prisons
+            var filtered_prisons = prisons.filter(d => d.State == selStateFilterValue);
+            document.getElementById("social_distancing_factor").value = 1;
+        } 
+
+        var selPrisonFilter = document.getElementById("sel_prison");
+        var selPrisonFilterValue = selPrisonFilter.value;
+
+        while (selPrisonFilter.options.length) {
+            selPrisonFilter.remove(0);
+        }
+
+        if (filtered_prisons) {
+            var i;
+            for (i = 0; i < filtered_prisons.length; i++) {
+                let selectedOption = false;
+                if (i == 0) {
+                    selectedOption = true;
+                }
+                let prison_name = filtered_prisons[i]["Prison"];
+                let prisonOption = new Option(prison_name, prison_name, selectedOption, selectedOption);
+                selPrisonFilter.options.add(prisonOption);
+                selPrisonFilter.options[0].selectedOption = true;
+            }
+            changePrisonSelection();
+        } else {
+            document.getElementById("prisoner_count").value = 43000;
+            changePrisonerStaffRatio();
+        }
+    }
+
+    function changePrisonSelection() {
+        if (document.getElementById("sel_prison_span").style.visibility == "visible") {
+            var selPrisonFilter = document.getElementById("sel_prison");
+            var selPrisonFilterValue = selPrisonFilter.value;
+
+            var prisonerCount = document.getElementById("prisoner_count");
+            var staffCount = document.getElementById("staff_count");
+
+            var prisonerStaffRatio = parseFloat(document.getElementById("prisoner_staff_ratio").value);        
+
+            var prison = prisons.filter(d => d.Prison == selPrisonFilterValue);
+            number_prisoners = parseInt(prison[0]["Max"]);
+            number_staff = Math.round(number_prisoners / prisonerStaffRatio);
+
+            prisonerCount.value = number_prisoners;
+            staffCount.value = number_staff;
+        }
+        drawChart();
+    }
+
+    function changePrisonerStaffRatio() {
+        document.getElementById("staff_count").value = Math.round(parseInt(document.getElementById("prisoner_count").value) / parseFloat(document.getElementById("prisoner_staff_ratio").value));
+        drawChart();
+    }
+
+    function drawChart() {
+
+        if (document.getElementById("sel_prison_span").style.visibility != "hidden" && document.getElementById("sel_prison").options.length == 0) {
+            //empty prisoner list from a refresh
+            changePrisonList();
+        }
+        
+        chart_selection = document.getElementsByName("chart_selection");
+        var population_selected = "";
+        if (chart_selection[0].checked) {
+            susceptible_population = parseInt(document.getElementById("prisoner_count").value) + parseInt(document.getElementById("staff_count").value)
+            population_selected = "(Combined)";
+        } else if (chart_selection[1].checked) {
+            susceptible_population = parseInt(document.getElementById("prisoner_count").value)
+            population_selected = "(Prisoners)";
+        } else if (chart_selection[2].checked) {
+            susceptible_population = parseInt(document.getElementById("staff_count").value)
+            population_selected = "(Staff)";
+        }
+        prison_churn = parseInt(document.getElementById("prison_churn").value)/100;
+        R0 = document.getElementById("R0_value").value; 
+        distancing_rho = document.getElementById("social_distancing_factor").value; 
+        t_incubation_period = document.getElementById("incubation_period").value; 
+        t_infectious_period = document.getElementById("infectious_period").value;
+        exposed_people = document.getElementById("exposed_people").value;
+        symptoms_period = document.getElementById("symptoms_period").value;
+        infected_people = document.getElementById("infected_people").value;
+        recovered_people = document.getElementById("recovered_people").value;
+        t_max = document.getElementById("days").value; 
+        dt = document.getElementById("step_granularity").value; //step granularity for graphing
+        asymptomatic_rate =  document.getElementById("asymptomatic_rate").value; 
+        hospitalisation_rate =  document.getElementById("hospitalisation_rate").value; 
+        hospitalisation_onset =  document.getElementById("hospitalisation_onset").value; 
+        hospitalisation_duration =  document.getElementById("hospitalisation_duration").value; 
+        icu_rate = document.getElementById("icu_rate").value;
+        icu_onset =  document.getElementById("icu_onset").value; 
+        icu_duration =  document.getElementById("icu_duration").value; 
+        case_fatality_rate = document.getElementById("fatality_rate").value;
+
+        
+        prison_daily_churn = ((susceptible_population * (prison_churn/100))/365.25) * parseFloat(dt);
+        
+        var data_array = init();
+        
+        var x_days = [];
+        var y_S1 = []; //Susceptible
+        var y_E1 = []; //Exposed
+        var y_I1 = []; //Infected
+        var y_A1 = []; //Asymptomatic
+        var y_Sy1 = []; //Symptomatic
+        var y_H1 = []; //Hospitalised
+        var y_C1 = []; //Critical
+        var y_R1 = []; //Recovered
+        var y_D1 = []; //Dead
+        var y_V1 = []; //Leaving system
+        
+        for (var i = 0; i < data_array[0].length; ++i) {
+            //x-axis days
+            let mod_day = (i / (t_max/dt)) * t_max;
+            x_days.push(mod_day)     
+            //y-axis Susceptible           
+            let S1 = data_array[0][i] * susceptible_population;
+            y_S1.push(S1); 
+            //y-axis Exposed    
+            let E1 = data_array[1][i] * susceptible_population;                
+            y_E1.push(E1); 
+            //y-axis Infected    
+            let I1 = data_array[2][i] * susceptible_population;              
+            y_I1.push(I1); 
+            //y-axis Asymptomatic    
+            let A1 = data_array[3][i] * susceptible_population;              
+            y_A1.push(A1); 
+            //y-axis Symptomatic    
+            let Sy1 = data_array[4][i] * susceptible_population;              
+            y_Sy1.push(Sy1); 
+            //y-axis Hospitalised    
+            let H1 = data_array[5][i] * susceptible_population;              
+            y_H1.push(H1); 
+            //y-axis Critical Care    
+            let C1 = data_array[6][i] * susceptible_population;              
+            y_C1.push(C1); 
+            //y-axis Recovered    
+            let R1 = data_array[7][i] * susceptible_population;              
+            y_R1.push(R1); 
+            //y-axis Dead    
+            let D1 = data_array[8][i] * susceptible_population;              
+            y_D1.push(D1);
+            //y-axis Leaving System    
+            let V1 = data_array[9][i] * susceptible_population;              
+            y_V1.push(V1);
+        }
+
+        var S_trace = {
+            x: x_days, 
+            y: y_S1,
+            type: "scatter",
+            line: {shape: 'spline'},
+            name: "Susceptible"};
+
+        var E_trace = {
+            x: x_days, 
+            y: y_E1,
+            type: "scatter",
+            line: {shape: 'spline'},
+            name: "Exposed"};
+
+        var I_trace = {
+            x: x_days, 
+            y: y_I1,
+            type: "scatter",
+            line: {shape: 'spline'},
+            name: "Infectious"};
+
+        var A_trace = {
+            x: x_days, 
+            y: y_A1,
+            type: "scatter",
+            line: {shape: 'spline'},
+            name: "Asymptomatic"};
+        
+        var Sy_trace = {
+            x: x_days, 
+            y: y_Sy1,
+            type: "scatter",
+            line: {shape: 'spline'},
+            name: "Symptomatic"};
+
+        var H_trace = {
+            x: x_days, 
+            y: y_H1,
+            type: "scatter",
+            line: {shape: 'spline'},
+            name: "Hospitalised"};
+
+        var C_trace = {
+            x: x_days, 
+            y: y_C1,
+            type: "scatter",
+            line: {shape: 'spline'},
+            name: "Intensive Care"};
+
+        var R_trace = {
+            x: x_days, 
+            y: y_R1,
+            type: "scatter",
+            line: {shape: 'spline'},
+            name: "Recovered"};
+
+        var D_trace = {
+            x: x_days, 
+            y: y_D1,
+            type: "scatter",
+            line: {shape: 'spline'},
+            name: "Deceased"};
+
+        var V_trace = {
+            x: x_days, 
+            y: y_V1,
+            type: "scatter",
+            line: {shape: 'spline'},
+            name: "Churn Departure"};
+
+        var plot_data = [S_trace, E_trace, I_trace, A_trace, Sy_trace, H_trace, C_trace, R_trace, D_trace, V_trace];
+        if (document.getElementById("sel_prison_span").style.visibility == "visible") {
+            var chart_title = "COVID-19 SEIR Graph - " + document.getElementById("sel_prison").value
+        } else {
+            var chart_title = "COVID-19 SEIR Graph"
+        }
+        if (population_selected.length > 0) {
+            chart_title += " " + population_selected;
+        }
+
+        var layout = {
+            title: chart_title,
+            xaxis: {
+                title: "Days"
+            },
+            yaxis: {
+                title: "Population",
+                type: "linear" //"log"
+            }
+        }
+
+        Plotly.newPlot('chart', plot_data, layout);
+    }
+
+    //based on https://towardsdatascience.com/social-distancing-to-slow-the-coronavirus-768292f04296
+    function base_seir_model(init_vals, params, t) {
+        var S_0 = init_vals[0];
+        var E_0 = init_vals[1];
+        var I_0 = init_vals[2];
+        var R_0 = init_vals[3];
+
+        var S = [S_0]; //Susceptible Population
+        var E = [E_0]; //Exposed Population (incubating)
+        var I = [I_0]; //Infected Population
+        var A = [I_0 * (asymptomatic_rate / 100)]; //Asymptomatic Infected Population
+        var Sy = [I_0 * (1 - (asymptomatic_rate / 100))]; //Symptomatic Infected Population
+        var R = [R_0]; //Recovered Population (Removed Population = Recovered + Deaths)
+        var H = [0]; //Hospitalisation
+        var C = [0]; //Critical Care
+        var D = [0]; //Deaths
+        var V = [0]; //Prisoners leaving the system - parole/completion of sentence, Staff leaving - long service leave, resigning, retirement
+
+        var sigma = params[0];
+        var beta = params[1];
+        var gamma = params[2];
+        var rho = params[3];
+
+        var dt = t[1] - t[0];
+
+        //prison_daily_churn = ((susceptible_population * (prison_churn/100))/365.25) * parseFloat(dt);
+
+        //β = (beta) R0 * γ - infection rate
+        //μ = (mu) new entrants to population
+        //ν = (nu) departures from population
+        //σ = (sigma) 1/incubation period
+        //γ = (gamma) 1/infectious period
+        //ρ - (rho) distancing measures
+        for (time in t) {        
+            //Static: dS/dt = -ρβSI
+            //Dynamic: dS/dt = μN - νS - ρβSI
+            let next_vS = S[S.length - 1] * (prison_churn/100);    
+            let next_S = S[S.length - 1] - (rho * beta * S[S.length - 1] * I[I.length - 1]) * dt; 
+            //Static: dE/dt = ρβSI - σE
+            //Dynamic: dE/dt = ρβSI - σE - νE
+            let next_vE = E[E.length - 1] * (prison_churn/100);   
+            let next_E = E[E.length - 1] + (rho * beta * S[S.length - 1] * I[I.length - 1] - sigma * E[E.length - 1]) * dt; 
+            //Static: dI/dt = σE - γI
+            //Dynamic: dI/dt = σE - γI - νI
+            let next_vI = I[I.length - 1] * (prison_churn/100);  
+            let next_I = I[I.length - 1] + (sigma * E[E.length - 1] - gamma * I[I.length - 1]) * dt;
+            let next_A = next_I * (asymptomatic_rate / 100);
+            let next_Sy = Sy[Sy.length - 1] + ((1 - (asymptomatic_rate / 100)) * sigma * E[E.length - 1] - Sy[Sy.length - 1]/symptoms_period) * dt;
+            let next_H = H[H.length - 1] + ((hospitalisation_rate / 100) * E[E.length - 1]/hospitalisation_onset - H[H.length - 1]/hospitalisation_duration) * dt;
+            let next_C = C[C.length - 1] + ((icu_rate / 100) * E[E.length - 1]/icu_onset - C[C.length - 1]/icu_duration) * dt;
+            //Static: dR/dt = γI
+            //Dynamic: dR/dt = γI - νR
+            let next_vR = R[R.length - 1] * (prison_churn/100);  
+            let next_R = R[R.length - 1] + D[D.length - 1] + (gamma * I[I.length - 1]) * dt;
+            let next_D = next_R * (case_fatality_rate/100);
+            next_R -= next_D;
+            S.push(next_S);
+            E.push(next_E);
+            I.push(next_I);
+            A.push(next_A);
+            Sy.push(next_Sy);
+            H.push(next_H);
+            C.push(next_C);
+            R.push(next_R);
+            D.push(next_D);
+            V.push(next_vS + next_vE + next_vI + next_vR);
+        }
+        return [S, E, I, A, Sy, H, C, R, D, V];
+    }
+
+    function NewArray(size, increment) {
+        var x = [];
+        var inc_value = 0;
+        for (var i = 0; i < size; ++i) {
+            x[i] = inc_value;
+            inc_value += increment;
+        }        
+        return x;
+    }
+
+    function init() {
+        
+        let init_vals = [1 - 1/susceptible_population, exposed_people/susceptible_population, infected_people/susceptible_population, recovered_people/susceptible_population];
+            
+        let sigma = 1/t_incubation_period; //inverse of the incubation period (1/t_incubation_period)
+        let gamma = 1/t_infectious_period; //inverse of the mean infectious period (1/t_infectious_period)   
+        let beta = R0 * gamma; //average contact rate in the population
+        let params = [sigma, beta, gamma, distancing_rho];    
+        
+        let t = NewArray((t_max/dt), dt)
+
+        results = base_seir_model(init_vals, params, t);
+
+        return results;
+    }
+
+
+
+    </script>
+</body>
+</html>
