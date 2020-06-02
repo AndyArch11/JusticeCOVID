@@ -326,6 +326,8 @@
         <dd>The population who have been exposed to the infection and no longer infectious.</dd>
         <dt>Deceased</dt>
         <dd>The population who have been exposed to the infection and died as a result.</dd>
+        <dt>Population Change</dt>
+        <dd>The accumulative change in population of new prisonors arriving and existing prisoners leaving, assuming that the prison is not locked down and is still accepting new prisoners following an outbreak of coronavirus.  Assumes the population remains static with the same number arriving as leaving.</dd>
     </dl></div>
 
     <h2>Considerations and Limitations</h2>
@@ -334,7 +336,8 @@
         <li>This model does not remove identified cases that have been quarantined or hospitalised cases from the infectious pool, which for a more realistic model should at least remove the hospitalised cases.  However, as many prisons have self contained infirmaries and limited ability to quarantine, not modelling this may be more realistic of an actual outbreak in a prison.</li>
         <li>All models have limitations, this model is meant to inform of potential timelines and numbers but is not necessarily reflective of what would actually occur</li>
         <li>Many of the input parameters needed to model COVID-19 are still being identified as new studies are published.  The default values used in this model are what is currently understood of the pandemic.</li>
-        <li>This is a closed population model, and does not account for additions to or removals from the population.  In the real world, there are ongoing new prisoners to prisons, staff churn, transfers, etc</li>
+        <li>This model is a dynamic SEIR model, allowing the modelling of incoming and outgoing prisoners. However, it does not also model subsequent external infection vectors such as from staff or new prisoners following the initial outbreak.</li>
+        <li>For a closed SEIR model, where there is no change to the population, change the 'Churn per Year %' down to '0'</li>
         <li>The spread of the infection does not appear to be influenced by the age, gender or comorbidities of adults, only the severity of the illness appears to be influenced by these factors</li>
         <li>The behaviour of the infection spread on a population can vary considerably subject to degree of preventative measures implemented</li>
         <li>While social distancing measures are known to modify the spread of an infection, what specific measures affect the spread to what degree is still unknown</li>
@@ -2372,7 +2375,7 @@
         case_fatality_rate = document.getElementById("fatality_rate").value;
 
         
-        prison_daily_churn = ((susceptible_population * (prison_churn/100))/365.25) * parseFloat(dt);
+        prison_daily_churn = (prison_churn/365.25) * parseFloat(dt);
         
         var data_array = init();
         
@@ -2492,7 +2495,7 @@
             y: y_V1,
             type: "scatter",
             line: {shape: 'spline'},
-            name: "Churn Departure"};
+            name: "Population Change"};
 
         var plot_data = [S_trace, E_trace, I_trace, A_trace, Sy_trace, H_trace, C_trace, R_trace, D_trace, V_trace];
         if (document.getElementById("sel_prison_span").style.visibility == "visible") {
@@ -2543,9 +2546,9 @@
 
         var dt = t[1] - t[0];
 
-        //prison_daily_churn = ((susceptible_population * (prison_churn/100))/365.25) * parseFloat(dt);
+        //prison_daily_churn = (prison_churn/365.25) * parseFloat(dt);
 
-        //β = (beta) R0 * γ - infection rate
+        //β = (beta) R0 * γ (the infection rate)
         //μ = (mu) new entrants to population
         //ν = (nu) departures from population
         //σ = (sigma) 1/incubation period
@@ -2554,24 +2557,24 @@
         for (time in t) {        
             //Static: dS/dt = -ρβSI
             //Dynamic: dS/dt = μN - νS - ρβSI
-            let next_vS = S[S.length - 1] * (prison_churn/100);    
-            let next_S = S[S.length - 1] - (rho * beta * S[S.length - 1] * I[I.length - 1]) * dt; 
+            let next_vS = S[S.length - 1] * (prison_churn/365.25);   
+            let next_S = S[S.length - 1] + prison_daily_churn - (next_vS + rho * beta * S[S.length - 1] * I[I.length - 1]) * dt; 
             //Static: dE/dt = ρβSI - σE
             //Dynamic: dE/dt = ρβSI - σE - νE
-            let next_vE = E[E.length - 1] * (prison_churn/100);   
-            let next_E = E[E.length - 1] + (rho * beta * S[S.length - 1] * I[I.length - 1] - sigma * E[E.length - 1]) * dt; 
+            let next_vE = E[E.length - 1] * (prison_churn/365.25);    
+            let next_E = E[E.length - 1] + (rho * beta * S[S.length - 1] * I[I.length - 1] - sigma * E[E.length - 1] - next_vE) * dt; 
             //Static: dI/dt = σE - γI
             //Dynamic: dI/dt = σE - γI - νI
-            let next_vI = I[I.length - 1] * (prison_churn/100);  
-            let next_I = I[I.length - 1] + (sigma * E[E.length - 1] - gamma * I[I.length - 1]) * dt;
+            let next_vI = I[I.length - 1] * (prison_churn/365.25);    
+            let next_I = I[I.length - 1] + (sigma * E[E.length - 1] - gamma * I[I.length - 1] - next_vI) * dt;
             let next_A = next_I * (asymptomatic_rate / 100);
             let next_Sy = Sy[Sy.length - 1] + ((1 - (asymptomatic_rate / 100)) * sigma * E[E.length - 1] - Sy[Sy.length - 1]/symptoms_period) * dt;
             let next_H = H[H.length - 1] + ((hospitalisation_rate / 100) * E[E.length - 1]/hospitalisation_onset - H[H.length - 1]/hospitalisation_duration) * dt;
             let next_C = C[C.length - 1] + ((icu_rate / 100) * E[E.length - 1]/icu_onset - C[C.length - 1]/icu_duration) * dt;
             //Static: dR/dt = γI
             //Dynamic: dR/dt = γI - νR
-            let next_vR = R[R.length - 1] * (prison_churn/100);  
-            let next_R = R[R.length - 1] + D[D.length - 1] + (gamma * I[I.length - 1]) * dt;
+            let next_vR = R[R.length - 1] * (prison_churn/365.25);     
+            let next_R = R[R.length - 1] + D[D.length - 1] + Math.abs((gamma * I[I.length - 1] - next_vR) * dt); //TODO need to work out why negative values are occuring and how to correctly address.
             let next_D = next_R * (case_fatality_rate/100);
             next_R -= next_D;
             S.push(next_S);
@@ -2583,7 +2586,8 @@
             C.push(next_C);
             R.push(next_R);
             D.push(next_D);
-            V.push(next_vS + next_vE + next_vI + next_vR);
+            next_V = V[V.length - 1] + prison_daily_churn;
+            V.push(next_V);
         }
         return [S, E, I, A, Sy, H, C, R, D, V];
     }
