@@ -142,9 +142,9 @@
         const female_prisoners = 3502;
         const male_staff = 18290;
         const female_staff = 12710;
-        const indigenous_prisoners = 12080;
+        const indigenous_prisoners = 12111;
         const indigenous_population = 798365;
-        const non_indigenous_prisoners = 31163;
+        const non_indigenous_prisoners = 31165;
         const non_indigenous_population = 23392542;
         const asymptomatic = 0.3; // There is no authoritive value on the number of people who test positive and are completely asymptomatic and remain so for the duration of the infection, but initials studies indicate a figure between 30-60%
         const symptomatic = 0.9 - asymptomatic; //if 10% go on to be hospitalised (see const hospitalised), then the symptomatic cases who aren't hospitalised must be what is left of the 90% who are not hospitalised and are not aysmptomatic
@@ -160,12 +160,12 @@
         const es_sex_covid19_mortality = [0.068, 0.049];
 
         const age2 = ["20-29", "30-39", "40-49", "50-59", "60+"];
+        const prisoner_count_by_age2 = [13043, 14584, 8840, 3760, 2040];
         const au_covid19_mortality_by_age2 = [0, 0.001, 0.001, 0.002, 0.009];
         const cn_covid19_mortality_by_age2 = [0.002, 0.002, 0.004, 0.013, 0.036];
         const it_covid19_mortality_by_age2 = [0, 0.003, 0.004, 0.01, 0.035];
         const kr_covid19_mortality_by_age2 = [0, 0.001, 0.001, 0.005, 0.018];
         const es_covid19_mortality_by_age2 = [0.002, 0.001, 0.003, 0.004, 0.019];
-        const prisoner_count_by_age2 = [13043, 14584, 8840, 3760, 2040];
         const non_indigenous_prisoner_count_by_age2 = [8439, 10529, 6767, 3118, 1917];
         const indigenous_prisoner_count_by_age2 = [4604, 4055, 2073, 642, 123];   
 
@@ -368,22 +368,22 @@
 
 
 
-            //Death count by Indigeneity and Age per 1,000,000
-            var indigenous_prisoner_death_per1k_by_age = [Math.round(indigenous_prisoner_count_by_age2[0] * covid19_mortality_by_age2[0] * covid19_spread)/(indigenous_population/1000000) * bame_loading, 
-                                                            Math.round(indigenous_prisoner_count_by_age2[1] * covid19_mortality_by_age2[1] * covid19_spread)/(indigenous_population/1000000) * bame_loading, 
-                                                            Math.round(indigenous_prisoner_count_by_age2[2] * covid19_mortality_by_age2[2] * covid19_spread)/(indigenous_population/1000000) * bame_loading, 
-                                                            Math.round(indigenous_prisoner_count_by_age2[3] * covid19_mortality_by_age2[3] * covid19_spread)/(indigenous_population/1000000) * bame_loading, 
-                                                            Math.round(indigenous_prisoner_count_by_age2[4] * covid19_mortality_by_age2[4] * covid19_spread)/(indigenous_population/1000000) * bame_loading];
-            var non_indigenous_prisoner_death__per1k_by_age = [Math.round(non_indigenous_prisoner_count_by_age2[0] * covid19_mortality_by_age2[0] * covid19_spread)/(non_indigenous_population/1000000), 
-                                                            Math.round(non_indigenous_prisoner_count_by_age2[1] * covid19_mortality_by_age2[1] * covid19_spread)/(non_indigenous_population/1000000), 
-                                                            Math.round(non_indigenous_prisoner_count_by_age2[2] * covid19_mortality_by_age2[2] * covid19_spread)/(non_indigenous_population/1000000), 
-                                                            Math.round(non_indigenous_prisoner_count_by_age2[3] * covid19_mortality_by_age2[3] * covid19_spread)/(non_indigenous_population/1000000), 
-                                                            Math.round(non_indigenous_prisoner_count_by_age2[4] * covid19_mortality_by_age2[4] * covid19_spread)/(non_indigenous_population/1000000)];
+            //Death count by Indigeneity and Age per 100,000
+            var indigenous_prisoner_death_per1k_by_age = [((indigenous_prisoner_count_by_age2[0] * covid19_mortality_by_age2[0] * covid19_spread)/(indigenous_population/100000)) * bame_loading, 
+                                                            ((indigenous_prisoner_count_by_age2[1] * covid19_mortality_by_age2[1] * covid19_spread)/(indigenous_population/100000)) * bame_loading,
+                                                            ((indigenous_prisoner_count_by_age2[2] * covid19_mortality_by_age2[2] * covid19_spread)/(indigenous_population/100000)) * bame_loading, 
+                                                            ((indigenous_prisoner_count_by_age2[3] * covid19_mortality_by_age2[3] * covid19_spread)/(indigenous_population/100000)) * bame_loading, 
+                                                            ((indigenous_prisoner_count_by_age2[4] * covid19_mortality_by_age2[4] * covid19_spread)/(indigenous_population/100000)) * bame_loading];
+            var non_indigenous_prisoner_death__per1k_by_age = [(non_indigenous_prisoner_count_by_age2[0] * covid19_mortality_by_age2[0] * covid19_spread)/(non_indigenous_population/100000), 
+                                                            (non_indigenous_prisoner_count_by_age2[1] * covid19_mortality_by_age2[1] * covid19_spread)/(non_indigenous_population/100000), 
+                                                            (non_indigenous_prisoner_count_by_age2[2] * covid19_mortality_by_age2[2] * covid19_spread)/(non_indigenous_population/100000), 
+                                                            (non_indigenous_prisoner_count_by_age2[3] * covid19_mortality_by_age2[3] * covid19_spread)/(non_indigenous_population/100000), 
+                                                            (non_indigenous_prisoner_count_by_age2[4] * covid19_mortality_by_age2[4] * covid19_spread)/(non_indigenous_population/100000)];
             var indigenous_prisoner_death_per1k_by_age_trace = {
                 y: indigenous_prisoner_death_per1k_by_age,
                 x: age2,
                 type: "bar",
-                name: "Indigenous Prisoner Deaths per 1,000,000",
+                name: "Indigenous Prisoner Deaths per 100,000",
                 opacity: 0.6,
                 marker: {
                     color: 'red',
@@ -393,7 +393,7 @@
                 y: non_indigenous_prisoner_death__per1k_by_age,
                 x: age2,
                 type: "bar",
-                name: "non_Indigenous Prisoner Deaths per 1,000,000",
+                name: "non_Indigenous Prisoner Deaths per 100,000",
                 opacity: 0.5,
                 marker: {
                     color: 'blue',
@@ -402,7 +402,7 @@
 
             var data = [indigenous_prisoner_death_per1k_by_age_trace, non_indigenous_prisoner_death__per1k_by_age_trace];
             var layout = {
-                title: "Projected Covid-19 Death Count of Infected Prisoners by Indigeneity and Age per 1,000,000",
+                title: "Projected Covid-19 Death Count of Infected Prisoners by Indigeneity and Age per 100,000",
                 bargap: 0.15
             };
             Plotly.newPlot('death_by_indigeneity_and_age_per1m', data, layout);

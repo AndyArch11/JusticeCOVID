@@ -323,7 +323,7 @@
         <dt>Intensive Care</dt>
         <dd>Hospitalised cases that require ICU.</dd>
         <dt>Recovered</dt>
-        <dd>The population who have been exposed to the infection and no longer infectious.</dd>
+        <dd>The population who have been exposed to the infection and no longer infectious.  Only includes those still in prison, as they are discharged, numbers will reduce.</dd>
         <dt>Deceased</dt>
         <dd>The population who have been exposed to the infection and died as a result.</dd>
         <dt>Population Change</dt>
@@ -2574,7 +2574,7 @@
             //Static: dR/dt = γI
             //Dynamic: dR/dt = γI - νR
             let next_vR = R[R.length - 1] * (prison_churn/365.25);     
-            let next_R = R[R.length - 1] + D[D.length - 1] + Math.abs((gamma * I[I.length - 1] - next_vR) * dt); //TODO need to work out why negative values are occuring and how to correctly address.
+            let next_R = R[R.length - 1] + D[D.length - 1] + (gamma * I[I.length - 1] - next_vR) * dt; 
             let next_D = next_R * (case_fatality_rate/100);
             next_R -= next_D;
             S.push(next_S);
